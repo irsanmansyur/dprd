@@ -14,8 +14,10 @@ class User extends MY_Controller
 
     public function index()
     {
-        $aspirasi = $this->aspirasi_m;
-        $this->data['all_aspirasi'] = $aspirasi->getWhere("user_id")->result_array();
+        $aspirasi = $this->db->get_where("web_aspirasi", ['user_id' => $this->data['user']['id_user']]);
+        $this->data['all_aspirasi'] = $aspirasi->result_array();
+
+
 
         $this->template->load("public", 'user/index', $this->data);
     }

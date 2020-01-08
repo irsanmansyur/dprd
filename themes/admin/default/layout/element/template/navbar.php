@@ -77,5 +77,6 @@
                     </ol>
                 </nav>
             </div>
+            <div class="notif" id="ajax"></div>
             <!-- content -->
             <?= $this->session->flashdata('message'); ?>

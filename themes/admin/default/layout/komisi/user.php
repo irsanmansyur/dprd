@@ -39,26 +39,26 @@ $this->load->view($thema_load . 'element/template/head_meta.php');
                     <tbody>
                         <?php $i = 1; ?>
                         <?php foreach ($komisi_user->result_array() as $row) : ?>
-                            <tr>
-                                <th scope="row"><?= $i; ?></th>
+                            <tr class="user-id" id="<?= $row['id_user']; ?>">
+                                <th class='number'><?= $i; ?></th>
                                 <td><img src="<?= getThumb("profile_" . $row['file']) ?>" alt="" />
                                 </td>
                                 <td><?= $row['name']; ?></td>
                                 <td><?= $row['email']; ?></td>
                                 <?php $komisi = cekInAccessKomisi($row['id_user']) ?>
                                 <td>
-                                    <?= ($komisi['name'] != null) ? "<span class='badge badge-success'>" . $komisi['name'] . "</span>" : "<a href='" . base_url("admin/komisi/setUser/") . "' data-url='" . base_url('admin/komisi/setkomisi/') . "' data-id_user='" . $row["id_user"] . "' class='setUser " . $row["id_user"] . "' data-toggle='modal' data-target='.modal#setuser'><span class='badge badge-danger'>Sets</span></a>"; ?>
+                                    <?= ($komisi['name'] != null) ? "<span class='badge badge-success komisi " . $row['id_user'] . "'>" . $komisi['name'] . "</span> <a href='" . base_url("admin/komisi/setUser/") . "' data-url='" . base_url('admin/komisi/setkomisi/') . "' data-id_user='" . $row["id_user"] . "' class='setUser " . $row["id_user"] . "' data-toggle='modal' data-target='.modal#setuser'><span class='badge badge-danger'>Change</span></a>"  :  "<a href='" . base_url("admin/komisi/setUser/") . "' data-url='" . base_url('admin/komisi/setkomisi/') . "' data-id_user='" . $row["id_user"] . "' class='setUser " . $row["id_user"] . "' data-toggle='modal' data-target='.modal#setuser'><span class='badge badge-danger'>Sets</span></a>"; ?>
                                 <td>
                                     <div class="togglebutton">
                                         <label>
-                                            <input class="userActive <?= $row['id_user']; ?>" type="checkbox" <?= ($row['is_active'] == 1) ? "Checked=checked" : "" ?> data-userid="<?= $row['id_user']; ?>" data-active="<?= $row['is_active'] ?>">
+                                            <input data-userid="<?= $row['id_user']; ?>" data-url="<?= base_url('admin/komisi/userSet'); ?>" class="userActive <?= $row['id_user']; ?>" type="checkbox" <?= ($row['is_active'] == 1) ? "Checked=checked" : "" ?> data-active="<?= $row['is_active'] ?>">
                                             <span class="toggle"></span>
                                             <span class="label <?= $row['id_user']; ?> mt-2"><?= $row['is_active'] ? "Active" : "Non Active"; ?></span>
                                         </label>
                                     </div>
                                 </td>
                                 <td>
-                                    <a href="" class="mdl btn btn-danger" id="delete" data-toggle="modal" data-url="<?= base_url('admin/user/delete/') . $row['id_user']; ?>" data-target=".modal#logout"><i class="material-icons">close</i>Delete<div class="ripple-container"></div></a>
+                                    <a href="" class="mdl btn btn-danger" id="delete" data-toggle="modal" data-url="<?= base_url('admin/komisi/userDelete/') . $row['id_user']; ?>" data-target=".modal#logout" data-iduser="<?= $row['id_user']; ?>"><i class="material-icons">close</i>Delete<div class="ripple-container"></div></a>
                                 </td>
                             </tr>
                             <?php $i++; ?>
@@ -78,6 +78,7 @@ $this->load->view($thema_load . 'element/template/head_meta.php');
     <?php
     $this->load->view($thema_load . 'element/template/fixed-setting.php');
     ?>
+
 
 
     <div class="modal fade" id="setuser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -113,46 +114,8 @@ $this->load->view($thema_load . 'element/template/head_meta.php');
         </div>
     </div>
     <!-- jqery required -->
+    <script src="<?= $thema_folder; ?>layout/komisi/user.js" type="text/javascript"></script>
 
-    <script>
-        $('.userActive').on('click', function() {
-            const userId = $(this).data('userid');
-            const is_active = $(this).data('active');
-            $.ajax({
-                url: "<?= base_url('admin/komisi/userSet'); ?>",
-                type: 'post',
-                dataType: 'json',
-                data: {
-                    id_user: userId,
-                    is_active: is_active == 1 ? 0 : 1
-                },
-                beforeSend: function() {
-                    $("#loader-wrapper").show();
-                },
-                success: function(e) {
-                    $("#loader-wrapper").hide();
-                    if (e.status) {
-                        console.log("sukses");
-                        console.log(e.data.is_active);
-                        $(".userActive." + userId).data('active', e.data.is_active)
-                        const lbl = (e.data.is_active == 1) ? "active" : "Non Active";
-                        $(".label." + userId).text(lbl);
-                    } else {
-                        console.log("Gagal");
-                    }
-                }
-            });
-
-        });
-        $(".setUser").on('click', function() {
-            const userId = $(this).data("id_user");
-            const url = $(this).data("url");
-            $(".input.user-id").val(userId);
-            $(".form.setKomisi").attr("action", url);
-            console.log(url);
-
-        })
-    </script>
 
 
 </body>

@@ -86,22 +86,26 @@ class Auth extends MY_Controller
     private function _login()
     {
         $email = $this->input->post('email');
-        $password = $this->input->post('password');
+        $this->db->where("email", $email);
 
-        $this->load->model('user_model');
-        $user = $this->user_model->cekUser($email)->row_array();
+        $role = $this->data['page']['id'];
+        $role ? $this->db->where("role_id", $role) : '';
+
+        $user = $this->db->get("tbl_user")->row_array();
 
         // jika usernya ada
         if ($user) {
             // jika usernya aktif
             if ($user['is_active'] == 1) {
                 // cek password
+                $password = $this->input->post('password');
                 if (password_verify($password, $user['password'])) {
                     $data = [
                         'time' => time() + (60 * 60),
                         'email' => $user['email'],
                         'role_id' => $user['role_id']
                     ];
+
                     $this->session->set_userdata($data);
                     $this->session->set_flashdata('notif', '<div class="alert alert-succes" role="alert">Succes Login!</div>');
                     if ($this->session->userdata('url')) {
@@ -186,7 +190,7 @@ class Auth extends MY_Controller
             // cek koneksi internet
             $connected = @fsockopen('www.google.com', 80);
             if (!$connected) {
-                redirect("admin/auth/registration/" . $name);
+                // redirect("admin/auth/registration/" . $name);
             }
             // simpang data user ke database
             $user->setField($post);
@@ -203,8 +207,6 @@ class Auth extends MY_Controller
                     ];
                     $file->setField($file_data);
                     $eks = $file->add($file_data);
-                } else {
-                    die(var_dump("tdk upload"));
                 }
                 // mengirim token ke email
                 $token =  uniqid(); //random token

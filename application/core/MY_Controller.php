@@ -60,11 +60,13 @@ class MY_Controller extends CI_Controller
  */
 class Admin_Controller extends MY_Controller
 {
+
+    private $role_id = '';
     public function __construct()
     {
         parent::__construct();
         $response = is_login();
-        $role_id = $this->session->userdata('role_id');
+        $this->role_id = $this->session->userdata('role_id');
         if (!$response->status) {
             $this->session->set_flashdata('message', '<div class="alert alert-danger alert-with-icon" data-notify="container"><i class="fa fa-volume-up" data-notify="icon"></i><button type="button" class="close" data-dismiss="alert" aria-label="Close"><i class="fa fa-times-circle"></i></button><span data-notify="message">Menu yang anda akses sebelumnya dilarang!</span></div>');
             redirect('admin/auth');
@@ -72,18 +74,34 @@ class Admin_Controller extends MY_Controller
 
         // setting role
         $this->load->model('admin/menu_m');
-        $this->data['menu_all'] = $this->menu_m->getMenuRoleId()->result_array();
+
+        $this->db->select("tbl_user_menu.*");
+        $this->db->from("tbl_user_menu");
+        $this->db->join('tbl_user_access_menu', "tbl_user_access_menu.menu_id=tbl_user_menu.id_menu");
+        $this->db->join('tbl_user', "tbl_user.role_id = tbl_user_access_menu.role_id ");
+        $this->db->where([
+            'tbl_user.menu_active' => "yes",
+            "tbl_user_access_menu.role_id" => $this->role_id
+        ]);
+        $this->data['menu_all'] = $this->db->get()->result_array();
 
         // $hak_akses = $this->menu_m->role()->num_rows();
         // die(var_dump($hak_akses));
         $hak_akses = false;
 
-        $submenu = $this->menu_m->userAccess()->result_array();
+        $this->db->select('tbl_user_sub_menu' . ".*,tbl_user_access_menu.role_id");
+        $this->db->from("tbl_user_sub_menu");
+        $this->db->join('tbl_user_access_menu', "tbl_user_access_menu.menu_id=tbl_user_sub_menu.menu_id");
+        $this->db->where([
+            "tbl_user_sub_menu.class" => $this->router->fetch_class(),
+            "tbl_user_sub_menu.method" => $this->router->fetch_method()
+        ]);
+        $submenu = $this->db->get()->result_array();
         if (!$submenu) {
             $hak_akses = true;
         } else
             foreach ($submenu as $row) {
-                ($row['role_id'] == $role_id) ? ($hak_akses = true) : ("");
+                ($row['role_id'] == $this->role_id) ? ($hak_akses = true) : ("");
             }
         if ($hak_akses) {
             $url = $this->data['page']['url'];

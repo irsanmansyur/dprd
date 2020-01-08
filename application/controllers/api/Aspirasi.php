@@ -21,9 +21,9 @@ require(APPPATH . 'libraries/RestController.php');
  * @license         MIT
  * @link            https://github.com/chriskacerguis/codeigniter-restserver
  */
-class Komentar extends RestController
-{
 
+class Aspirasi extends RestController
+{
     function __construct()
     {
         // Construct the parent class
@@ -35,30 +35,30 @@ class Komentar extends RestController
         $this->methods['index_post']['limit'] = 100; // 100 requests per hour per user/key
         $this->methods['index_delete']['limit'] = 50; // 50 requests per hour per user/key
         $this->load->library('form_validation');
-
-        $this->load->model('komentar_m');
     }
 
     public function index_get()
     {
-        $this->db->select("web_komentar.*,tbl_user_file.file,tbl_user.role_id,tbl_user.name AS username");
-        $this->db->from("web_komentar");
-        $this->db->join("tbl_user", "tbl_user.id_user=web_komentar.user_id");
+        $this->db->select("web_aspirasi.*,tbl_user.name AS username,tbl_user_file.file,web_komisi.name AS komisi");
+        $this->db->from("web_aspirasi");
+        $this->db->join("tbl_user", "tbl_user.id_user=web_aspirasi.user_id");
         $this->db->join("tbl_user_file", "tbl_user.file_id=tbl_user_file.id_file");
+        $this->db->join("web_komisi", "web_komisi.id_komisi=web_aspirasi.komisi_id");
         count($this->get()) > 0 ? $this->db->where($this->get()) : '';
+        $this->get("komisi_id") ? $this->db->where("komisi_id.id_komisi", $this->get('komisi_id')) : '';
         $eks = $this->db->get();
         if ($eks) {
-            $komentar = $eks->result_array();
-            if ($komentar) {
+            $aspirasi = $eks->result_array();
+            if ($aspirasi) {
                 $this->response([
                     "status" => true,
-                    "data" => $komentar
+                    "data" => $aspirasi
                 ], 200); // OK (200) being the HTTP response code
             } else {
                 // Set the response and exit
                 $this->response([
                     'status' => false,
-                    'message' => 'No komentar were found'
+                    'message' => 'No Aspirasi were found'
                 ], 200);
             }
         } else  $this->response([
@@ -69,36 +69,36 @@ class Komentar extends RestController
 
     public function index_post()
     {
-        $this->form_validation->set_rules("komentar", "Komentar", "required|min_length[5]");
+        $this->form_validation->set_rules("message", "Pesan Aspiarsi", "required|min_length[5]");
         $this->form_validation->set_rules("user_id", "Id User", "required|min_length[4]");
-        $this->form_validation->set_rules("aspirasi_id", "Id aspirasi", "required|min_length[4]");
+        $this->form_validation->set_rules("komisi_id", "Id Komisi", "required|min_length[4]");
+        $this->form_validation->set_rules("status", "Status Aspirasi", "in_list[3,4]");
         if ($this->form_validation->run()) {
-            $tbl = initTable("web_komentar", "kmt");
+            $tbl = initTable("web_aspirasi", "asp");
             $data = [
                 $tbl['key'] => $tbl['field'][$tbl['key']],
-                "komentar" => $this->post('komentar'),
+                "message" => $this->post('message'),
                 "user_id" => $this->post('user_id'),
-                "aspirasi_id" => $this->post('aspirasi_id')
+                "komisi_id" => $this->post('komisi_id')
             ];
-            $this->post('parent') ? $data['parent'] = $this->post('parent') : '';
-            $this->db->insert($tbl['name'], $data);
-            $respon = hasilCUD("Komentar Ditambahkan");
+            $this->db->insert("web_aspirasi", $data);
+            $respon = hasilCUD("Data Aspirasi Ditambahkan");
             if ($respon->status) {
-                $this->response($respon, 201);
+                $this->response($respon, 200);
             } else
-                $this->response($respon, 400);
+                $this->response($respon, 404);
         } else {
             $this->response([
                 'status' => FALSE,
                 'message' => 'Lengkapi data dulu',
                 "dataErrors" => validation_errors('<span class="error">', '</span>')
-            ], 200);
+            ], 404); // NOT_FOUND (404) being the HTTP response code
         }
     }
 
     public function index_put()
     {
-        $tbl = initTable("web_komentar", "kmt");
+        $tbl = initTable("web_aspirasi", "asp");
         $where = $this->input->get();
         if (count($where) > 0) {
             $this->db->where($where);
@@ -108,14 +108,16 @@ class Komentar extends RestController
                 if ($respon->status)
                     $this->response($respon, 201);
                 else
-                    $this->response($respon, 304);
+                    $this->response($respon, 200);
             } else {
                 $this->response(['status' => false], 400);
             }
-        }
+        } else
+            $this->response(['status' => false, 'message' => "Update Ditolak, Ada kesalahan.!"], 500);
     }
     public function index_delete()
     {
+
         $where = $this->input->get();
         if (count($this->delete()) > 0) {
             foreach ($this->delete() as $row => $value) {
@@ -123,17 +125,15 @@ class Komentar extends RestController
             }
         }
 
-        $respon = $this->db->delete("web_komentar", $where);
+        $respon = $this->db->delete("web_aspirasi", $where);
         if ($respon) {
             $eks = hasilCUD("deleted.!");
-            if ($eks->status) {
-                $this->response($eks, 200);
-            } else $this->response($eks, 304);
+            $this->response($eks, 200);
         } else {
             $this->response([
                 'status' => false,
                 "message" => "Terjadi Kesalahan"
-            ], 500); // BAD_REQUEST (400) being the HTTP response code
+            ], 502); // BAD_REQUEST (400) being the HTTP response code
         }
     }
 }

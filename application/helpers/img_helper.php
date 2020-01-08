@@ -27,12 +27,12 @@ function upload_file($name, $folder = '')
     return $data;
 }
 
-function getThumb($img)
+function getThumb($img, $type = 'profile_')
 {
     $ci = get_instance();
     $imgb = 'img/thumbnail/default.png';
-    if (is_file(FCPATH . 'assets/img/thumbnail/' . $img)) {
-        $imgb = 'img/thumbnail/' . $img;
+    if (is_file(FCPATH . 'assets/img/thumbnail/' . $type . $img)) {
+        $imgb = 'img/thumbnail/' . $type . $img;
     }
     return base_url() . 'assets/' . $imgb;
 }

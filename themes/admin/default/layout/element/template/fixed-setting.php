@@ -107,12 +107,14 @@
                 <div class="modal-body"></div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary url" href="<?= base_url('admin/auth/logout'); ?>">Exit</a>
+                    <a class="btn btn-primary url mdl" href="<?= base_url('admin/auth/logout'); ?>">Exit</a>
                 </div>
             </div>
+
+
         </div>
     </div>
-
+    <div class="fullpage"></div>
 
     <script src="<?= $thema_folder; ?>assets/js/material-dashboard.min.js?v=2.1.0" type="text/javascript"></script>
     <script>
@@ -178,6 +180,9 @@
             if ($sidebar_responsive.length != 0) {
                 $sidebar_responsive.attr('data-color', new_color);
             }
+        });
+        $(".modal").on('shown', function() {
+            $('.modal-open, .modal').perfectScrollbar();
         });
 
         $('.fixed-plugin .background-color .badge').click(function() {

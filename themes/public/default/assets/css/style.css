@@ -3,7 +3,7 @@
 	box-sizing: border-box;
 }
 body {
-	possition: relative;
+	position: relative;
 	font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size: 14px;
 	line-height: 1.618;
@@ -96,9 +96,6 @@ p {
 }
 p:last-child {
 	margin: 0px;
-}
-ul,
-ol {
 }
 a {
 	text-decoration: none;
@@ -237,7 +234,7 @@ a:hover {
 .cursor {
 	pointer-events: none;
 	cursor: none;
-	possition: relative;
+	position: relative;
 }
 .loader {
 	pointer-events: none;

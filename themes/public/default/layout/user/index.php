@@ -102,48 +102,38 @@
                     <div class="col-md-6 mr-auto ml-auto">
                         <div class="profile">
                             <div class="avatar">
-                                <img src="https://www.biography.com/.image/ar_1:1%2Cc_fill%2Ccs_srgb%2Cg_face%2Cq_auto:good%2Cw_300/MTU0NjQzOTk4OTQ4OTkyMzQy/ansel-elgort-poses-for-a-portrait-during-the-baby-driver-premiere-2017-sxsw-conference-and-festivals-on-march-11-2017-in-austin-texas-photo-by-matt-winkelmeyer_getty-imagesfor-sxsw-square.jpg" alt="Circle Image" class="img-raised rounded-circle img-fluid">
+                                <img src="<?= getThumb($user['file']) ?>">
                             </div>
                             <div class="name">
-                                <h3 class="title">Christian Louboutin</h3>
-                                <h6>Designer</h6>
-                                <span class="join-in text-italic">2018-08-25</span>
+                                <h3 class="title"><?= $user['name'] ?></h3>
+                                <h6><?= $user['email'] ?></h6>
+                                <span class="join-in text-italic"><b>Join in</b> <?= date("d, M Y", $user['date_created']) ?></span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row mt-3">
                     <div class="col-md-8">
                         <div class="section-title">
                             <h2 class="">Daftar Aspirasi</h2>
                             <ul class="nav aspirasi-type nav-pills border-bottom">
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark <?= is_active("user") ?>" href="#">Semua</a>
+                                <li class="nav-item asp" data-status="0">
+                                    <a class="nav-link text-dark" href="#">Semua</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark <?= is_active("user", "ditanggapi") ?>" href="#">Ditanggapi</a>
+                                <li class="nav-item asp" data-status="1">
+                                    <a class="nav-link text-dark" href="#">Ditanggapi</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark <?= is_active("user", "read") ?>" href="#">Dibaca</a>
+                                <li class="nav-item asp" data-status="2">
+                                    <a class="nav-link text-dark" href="#">Belum Di Tanggapi</a>
+                                </li>
+                                <li class="nav-item asp" data-status="3">
+                                    <a class="nav-link text-dark" href="#">Belum Dibaca</a>
                                 </li>
                             </ul>
                         </div>
-                        <?php foreach ($all_aspirasi as $row) : ?>
-                            <div class="card mb-1 border-0">
-                                <div class="card-body">
-                                    <h5 class="card-title"><?= $row['komisi'] ?></h5>
-                                    <p class="text-monospace"><?= $row['message'] ?></p>
-                                    <div class="complaint-meta">
-                                        <a class="meta-info mr-2" href="#uri"><i class="fas fa-reply"></i> Tanggapan <span class="align-text-bottom"> 1</span></a>
-                                        <a class="meta-info mr-2" href="#uri" data-url="<?= base_url("komentar/getId/") . $row['id_aspirasi'] ?>">
-                                            <i class="far fa-comments"></i> Komentar <span class="align-top"> 1</span>
-                                            <a class="meta-info" href="#uri"><i class="fas fa-thumbs-up"></i> Dukun<span class="align-text-bottom"> 1</span></a>
-                                    </div>
-                                </div>
-                            <?php endforeach ?>
-                            </div>
+                        <div id="data-aspirasi">
+                        </div>
                     </div>
-
                     <div class="col-md-4 border-left shadow-lg">
                         <div class="content section-title">
                             <h2 class="pb-2 border-bottom">Aspirasi Terbaru</h2>
@@ -153,13 +143,15 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-                    Created for <a href="https://easetemplate.com/downloads/digital-marketing-website-template-hike-bold-design/" target="_blank">easetemplate</a>
-                </div>
+
             </div>
         </div>
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                Created for <a href="https://easetemplate.com/downloads/digital-marketing-website-template-hike-bold-design/" target="_blank">easetemplate</a>
+            </div>
+        </div>
+    </div>
     </div>
 
     <div class="full">
@@ -174,25 +166,71 @@
 
     <?php $this->load->view($thema_load . 'template/footer.php'); ?>
 
+    <link href="<?= $thema_folder; ?>assets/css/agency.min.css" rel="stylesheet">
+
+    <link href="<?= $thema_folder; ?>assets/css/style.css" rel="stylesheet">
+
+    <script src="<?= $thema_folder; ?>layout/user/index.js"></script>
 
     <script>
-        $(".meta-info").each(function() {
-            $(".full").hide();
-            $(this).click(function() {
-                console.log($(this).data('url'));
-                $(".meta-info").removeClass("loading");
-                window.addEventListener("mousemove", function(e) {
-                    let x = e.clientX + 20;
-                    let y = e.clientY;
-                    $(".loader").css({
-                        "left": x + "px",
-                        "top": y + "px"
-                    });
+        var baseUrl = "<?= base_url() ?>";
+        var user = <?= json_encode($user); ?>;
+
+        var aspirasi_all = null;
+        var komentar_all = [];
+        var loadAspirasi = fetch(baseUrl + "api/aspirasi?id_user=" + user.id_user).then((response) => {
+            return response.json();
+        }).catch((error) => console.error(error));
+        loadAspirasi.then((res) => {
+            if (res.status) {
+                aspirasi_all = res.data;
+                res.data.map(res => {
+
+                    fetch(baseUrl + "api/komentar?aspirasi_id=" + res.id_aspirasi).then(
+                            res => {
+                                return res.json();
+                            }).then(resp => {
+                            if (resp.status) {
+                                resp.data.map(rs => {
+                                    komentar_all.push(rs);
+                                })
+                            }
+                            init(aspirasi_all);
+
+                        })
+                        .catch((error) => console.error(error));
                 })
-                $(this).addClass("loading");
-                $(".full").show();
-            })
-        })
+            };
+        });
+
+        function init(data) {
+            let html = '';
+            if (data.length < 1) {
+
+                document.getElementById("data-aspirasi").innerHTML = "";
+            }
+            data.map(res => {
+
+                let komentar = komentar_all.filter(rs => rs.aspirasi_id == res.id_aspirasi);
+
+                let CountKomentr = komentar.filter(rs => rs.role_id != 2).length > 0 ? komentar.length : 0;
+                let CountTanggapan = komentar.filter(rs => rs.role_id == 2).length > 0 ? komentar.length : 0;
+
+                html += `<div class="card mb-1 border-0" data-id='${res.id_aspirasi}'>
+                                <div class="card-body">
+                                    <h5 class="card-title">${res.komisi}</h5>
+                                    <p class="text-monospace">${res.message}</p>
+                                    <div class="complaint-meta">
+                                        <a class="meta-info mr-2" href="#uri"><i class="fas fa-reply"></i> Tanggapan <span class="align-text-bottom"> ${CountTanggapan}</span></a>
+                                        <a class="meta-info mr-2" href="#uri" data-url="">
+                                            <i class="far fa-comments"></i> Komentar <span class="align-top">${CountKomentr}</span></a>
+                                    </div>
+                                </div>`;
+                document.getElementById("data-aspirasi").innerHTML = html;
+
+            });
+        }
+        $(".full").hide();
     </script>
 
 </body>

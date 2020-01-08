@@ -71,10 +71,15 @@ function is_login($roleId = null)
     $ci = &get_instance();
     $email = $ci->session->userdata('email');
     if ($email) {
-        $user = $ci->user_model->cekUser($email)->row_array();
+        $ci->db->select("tbl_user.id_user,tbl_user.date_created,tbl_user.role_id,tbl_user.name,tbl_user.email,tbl_user.no_hp,tbl_user.alamat,tbl_user.tgl_lahir,tbl_user_file.file");
+        $ci->db->from("tbl_user");
+        $ci->db->join("tbl_user_file", "tbl_user_file.id_file=tbl_user.file_id");
+        $ci->db->where(['tbl_user.email' => $email]);
+        $user = $ci->db->get()->row_array();
         if ($user) {
             $msg->message = "user Ditemukan";
             $msg->user = $user;
+            $ci->data['user'] = $user;
             $ci->user_model->setFieldTable($user);
             $ci->aspirasi_m->setFieldTable($user);
             if (!$roleId) {
@@ -194,4 +199,33 @@ function cekInAccessKomisi($id_user)
     $ci->db->where("web_komisi_user.user_id", $id_user);
     $eks = $ci->db->get()->row_array();
     return $eks;
+}
+
+function initTable($table, $string = 'tbl')
+{
+    $ci = get_instance();
+    $key = null;
+    $field = null;
+    foreach ($ci->db->field_data($table) as $row) {
+        if ($row->primary_key == 1) {
+            $key = $row->name;
+            $val = '';
+        } else if ($row->name == "date_created" || $row->name == "date_updated") {
+            $val = time();
+        } else
+            $val = '';
+        $field[$row->name] = $val;
+    }
+
+    $ci->db->select_max($key);
+    $ci->db->from($table);
+    $eks = $ci->db->get()->row_array()[$key];
+    $noUrut = (int) substr($eks, -3, 3);
+    $noUrut++;
+    $field[$key] = $string . '_' . sprintf("%03s", $noUrut);
+    return [
+        "name" => $table,
+        'key' => $key,
+        'field' => $field
+    ];
 }

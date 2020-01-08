@@ -248,6 +248,10 @@ class Tbl extends CI_Model
     {
         $this->fieldSelected[] = $field;
     }
+    function getFieldSelected()
+    {
+        return  $this->fieldSelected;
+    }
 
     /** */
     /** 
@@ -256,11 +260,15 @@ class Tbl extends CI_Model
      * 
      *
      **/
-
+    private $where = [];
+    function setWhere($where = [])
+    {
+        $this->where = $where;
+    }
     function update()
     {
         $data = [];
-        if ($this->fieldSelected > 0) {
+        if (count($this->fieldSelected) < 1) {
             $data = $this->field;
         } else {
             foreach ($this->fieldSelected as $value) {
@@ -270,7 +278,16 @@ class Tbl extends CI_Model
             }
         }
 
-        $this->db->update($this->table, $data, [$this->key => $this->field[$this->key]]);
+        if (count($this->where) > 0) {
+            foreach ($this->fieldSelected as $value) {
+                if (array_key_exists($value, $this->field)) {
+                    $this->where[] = [$value => $this->field[$value]];
+                }
+            }
+        } else
+            $this->where = [$this->key => $this->field[$this->key]];
+
+        $this->db->update($this->table, $data, $this->where);
         $respon = hasilCUD();
         $respon->data = $data;
         return $respon;
@@ -380,7 +397,7 @@ class Tbl extends CI_Model
                         if (!$join) {
                             $msg->status = false;
                             $index = $key +     1;
-                            $msg->message[] = "</br>Periksa Tabel Join Array anda pada indeks : {$index} = <b>{$tableParent} , $tableChildrent</b></br>";
+                            $msg->message = "</br>Periksa Tabel Join Array anda pada indeks : {$index} = <b>{$tableParent} , $tableChildrent</b></br>";
                         }
                     } else {
                         $tableParent = $value;

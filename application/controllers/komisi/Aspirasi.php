@@ -1,39 +1,29 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-class Komisi extends Admin_Controller
+class Aspirasi extends Admin_Controller
 {
 
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('admin/komisi_m');
-        $this->load->library('form_validation');
         $this->post = $this->input->post();
         $this->get = $this->input->get();
     }
     public function index()
     {
-        $this->data['page']['title'] = 'Mengolah Komisi';
+        $this->data['page']['title'] = 'Daftar Aspirasi Yang Masuk';
         $this->data['page']['description'] = 'Silahkan edit menu Atau Tambahkan Komisi.!';
         // $this->data['page']['before'] = ['url' => base_url('admin/admin/role'), "title" => "Role Access"];
         $this->data['page']['submenu'] = 'Menu Komisi';
 
 
-        $validation = $this->form_validation;
-        $komisi = $this->komisi_m;
+        $this->db->select("web_komisi_user.*");
+        $this->db->from("web_komisi_user");
+        $this->db->where("web_komisi_user.user_id", $this->data['user']['id_user']);
+        $eks = $this->db->get()->row_array();
+        $this->data['komisi'] = $eks;
 
-        $this->data['all_komisi'] = $komisi->getWhere()->result_array();
-
-        $validation->set_rules($komisi->getRules());
-        if ($validation->run() == false) {
-            $this->template->load('admin', 'komisi/index', $this->data);
-        } else {
-            $komisi->setPrimaryKey($komisi->getLastId());
-            $komisi->setFieldTable($this->post);
-            $komisi->add();
-            $respon  = hasilCUD("Sukses Menambahkan Komisi");
-            redirect('admin/komisi');
-        }
+        $this->template->load('admin', 'aspirasi/komisi', $this->data);
     }
     public function delete($id)
     {

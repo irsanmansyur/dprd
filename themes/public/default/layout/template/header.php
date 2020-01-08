@@ -50,7 +50,7 @@
 
                 </ul>
                 <div class="navbar-nav">
-                    <?php if (!$this->session->userdata('masyarakat_login')) : ?>
+                    <?php if ($this->session->userdata('role_id') != "3") : ?>
                         <div class="my-auto mr-md-2">
                             <a class="nav-link btn btn-outline-warning btn-sm" href="<?= base_url('admin/auth') ?>">Login</a>
                         </div>
