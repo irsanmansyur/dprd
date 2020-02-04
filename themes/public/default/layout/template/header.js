@@ -54,11 +54,15 @@ const elNotif = document.querySelector(".nav-item.notif");
 
 docReady(async function() {
 	const notif = await getNotif();
-	setNotif(notif);
+	console.log(notif);
+	console.log(user);
+
+	setNotif(notif.filter(notif => notif.user_id != user.id_user));
 });
 
 function setNotif(notif) {
-	const num = notif.length > 0 ? notif.length : 0;
+	const num = notif.length > 0 ? notifs.length : 0;
+
 	let elNum = elNotif.querySelector("a span.num");
 
 	elNum.innerHTML = num;

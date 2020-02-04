@@ -18,6 +18,7 @@ class Label extends Admin_Controller
         if (!$id || !isAccess(1)) {
             redirect('admin/user/blocked');
         }
+
         $this->komisi_m->setPrimaryKey($id);
         $this->data['komisi'] = $this->komisi_m->getWhere($this->komisi_m->getKeyName())->row_array();
 
@@ -35,19 +36,62 @@ class Label extends Admin_Controller
         $validation->set_rules($this->label_m->getRules());
 
         if ($validation->run() == false) {
-            $this->label_m->setField($this->komisi_m->getPrimaryKey());
-            $respon = $this->label_m->getWhere($this->komisi_m->getKeyName(), ["join" => 'web_komisi']);
-            if ($respon->status) {
-                $this->data['all_label'] = $respon->data;
+            $tbl = initTable("web_komisi_label");
+            $this->db->select($tbl['name'] . ".*");
+            $this->db->from($tbl['name']);
+            $this->db->join("web_komisi", "web_komisi_label.komisi_id=web_komisi.id_komisi");
+            $this->db->where("komisi_id", $id);
+            $this->db->order_by("label", "asc");
+            $data = $this->db->get();
+            if ($data) {
+                $this->data['all_label'] = $data;
             } else
-                return var_dump($respon);
+                return var_dump($data);
             $this->template->load('admin', 'label/index', $this->data);
         } else {
             $this->post['komisi_id'] = $id;
-            $this->label_m->setField($this->post);
 
-            $this->label_m->add();
-            $respon  = hasilCUD("Sukses Menambahkan Label");
+
+
+            /**
+             * proses menghilankan kata awal dan akhir
+             */
+            $stemmerFactory = new \Sastrawi\Stemmer\StemmerFactory();
+            $stemmer = $stemmerFactory->createStemmer();
+            $sentence = $this->input->post('label');
+            $outputstemmer = $stemmer->stem($sentence);
+
+
+
+            /**
+             * proses menghilankan kata yang tidak penting
+             */
+            $stopWordRemoverFactory = new \Sastrawi\StopWordRemover\StopWordRemoverFactory();
+            $stopword = $stopWordRemoverFactory->createStopWordRemover();
+            $outputstopword = $stopword->remove($outputstemmer);
+
+            $array = preg_split('/[^[:alnum:]]+/', strtolower($outputstopword));
+            $arr_textmining = [];
+
+
+
+            foreach ($array as $item) {
+                if (array_key_exists($item, $arr_textmining)) {
+                    $arr_textmining[$item]++;
+                } else {
+                    if (strlen($item) > 2) {
+                        $tbl = initTable("web_komisi_label", "lbl");
+                        $data = [
+                            $tbl["key"] => $tbl['field'][$tbl["key"]],
+                            "komisi_id" => $this->post['komisi_id'],
+                            "label" => $item
+                        ];
+                        $this->db->insert($tbl['name'], $data);
+                        $arr_textmining[$item] = 1;
+                        $respon  = hasilCUD("Sukses Menambahkan Label");
+                    }
+                }
+            }
             redirect('admin/label/' . $id);
         }
     }
