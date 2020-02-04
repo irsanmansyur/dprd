@@ -170,6 +170,33 @@ $(".tanggapi").click(function(e) {
 	htmlTanggapi();
 });
 
+function getTanggal(dateInt) {
+	let d = new Date(parseInt(dateInt, 10) * 1000);
+	let days = [
+		"Sunday", //senin
+		"Monday", //selasa
+		"Tuesday", //rabu
+		"Wednesday", //kamis
+		"Thursday", //jumat
+		"Friday", //sabtu
+		"Saturday" //minggu
+	];
+	let months = [
+		"January",
+		"February",
+		"March",
+		"April",
+		"May",
+		"June",
+		"July",
+		"August",
+		"September",
+		"October",
+		"November",
+		"December"
+	];
+	return days[d.getDay()] + "/" + months[d.getMonth()] + "/" + d.getFullYear();
+}
 $(".getInfo").click(function(e) {
 	$(".meta-info").removeClass("is-active");
 	e.preventDefault();
@@ -190,15 +217,16 @@ $(".getInfo").click(function(e) {
 				komentar_all = dt.data;
 				dt.data.forEach(row => {
 					if ($(this).data("role") == row.role_id && row.parent == 0) {
+						let date_created = getTanggal(row.date_created);
 						list += `<li>
 								<div class="comment-main-level">
 									<div class="comment-avatar"><img src="${baseUrl}assets/img/thumbnail/profile_${row.file}" alt=""></div>
 									<div class="comment-box">
 										<div class="comment-head">
 											<h6 class="comment-name by-author"><a href="#">${row.username}</a></h6>
-											<span>hace 20 minutos</span>
+											<span>${date_created}</span>
 											<i class="fa fa-reply kmt-reply" data-id="${row.id_komentar}"></i>
-											<i class="fa fa-heart"></i>
+											
 										</div>
 										<div class="comment-content">
 											${row.komentar}
@@ -235,8 +263,6 @@ let ReplyKomentar = $(".comments-list").on("click", ".kmt-reply", function() {
 	komentar_selected = komentar_all.find(obj => {
 		return obj.id_komentar === id_komentar;
 	});
-	console.log(aspirasi_selected);
-	console.log(komentar_selected);
 	let htmlRefly = `
 
 	`;
@@ -301,15 +327,17 @@ function listReplies(parent, list) {
 	var reply = ``;
 	list.forEach(element => {
 		if (element.parent == parent) {
+			let date_created = getTanggal(element.date_created);
+
 			let lists = `<li>
 							<div class="comment-main-level reply">
 								<div class="comment-avatar"><img src="${baseUrl}assets/img/thumbnail/profile_${element.file}" alt=""></div>
 								<div class="comment-box">
 									<div class="comment-head">
 										<h6 class="comment-name by-author"><a href="#">${element.username}</a></h6>
-										<span>hace 20 minutos</span>
+										<span>${date_created}</span>
 										<i class="fa fa-reply kmt-reply" data-id="${element.id_komentar}"></i>
-										<i class="fa fa-heart"></i>
+										
 									</div>
 									<div class="comment-content">
 										${element.komentar}

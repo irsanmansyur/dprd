@@ -59,21 +59,21 @@ $this->load->view($thema_load . 'element/template/head_meta.php');
                 </div>
                 <form action="" method="post" id="formInput">
                     <div class="modal-body">
-                        <div class="form-group d-block">
+                        <div class="form-group mb-4">
                             <select class="form-control" data-style="btn btn-link" id="komisi_id" name="komisi_id">
                                 <?php foreach ($all_komisi as $row) : ?>
                                     <option value="<?= $row['id_komisi'] ?>"><?= $row['name'] ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group mt-5">
                             <label for="message">Pesan Aspirasi</label>
                             <textarea class="form-control" name="message" id="message" rows="2"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary submit">Add</button>
+                        <button type="submit" class="btn btn-primary submit">Edit</button>
                     </div>
                 </form>
             </div>

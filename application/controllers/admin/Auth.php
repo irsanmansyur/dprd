@@ -110,8 +110,8 @@ class Auth extends MY_Controller
                     $this->session->set_flashdata('notif', '<div class="alert alert-succes" role="alert">Succes Login!</div>');
                     if ($this->session->userdata('url')) {
                         redirect($this->session->userdata('url'));
-                    } else
-                        redirect('admin/user');
+                    }
+                    $user['role_id'] == 3 ? redirect("user") : redirect('admin/dashboard');
                 } else {
                     $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Wrong password!</div>');
                     if ($this->session->userdata('email')) {

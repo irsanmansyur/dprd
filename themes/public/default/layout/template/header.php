@@ -22,12 +22,23 @@
 
     <!-- Custom styles for this template -->
     <link href="<?= $thema_folder; ?>assets/css/agency.min.css" rel="stylesheet">
+    <link href="<?= $thema_folder; ?>assets/css/style.css" rel="stylesheet">
 
+    <link href="<?= $thema_folder; ?>assets/simplebar/simplebar.css" rel="stylesheet">
+    <script>
+        const baseUrl = "<?= base_url() ?>";
+        const theme = {
+            folder: "<?= $thema_folder ?>"
+        };
+        const login = "<?= $login ?>";
+        const user = <?= json_encode($user) ?>;
+    </script>
 </head>
 
 <body id="page-top">
 
     <!-- Navigation -->
+
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
         <div class="container">
             <a class="navbar-brand js-scroll-trigger" href="<?= base_url() ?>#page-top"><?= $this->setting->site_name ?></a>
@@ -43,10 +54,12 @@
                     <li class="nav-item">
                         <a class="nav-link js-scroll-trigger" href="<?= base_url() ?>#about">About</a>
                     </li>
-                    <form class="form-inline my-2 my-lg-0" action="<?= base_url('aspirasi/search') ?>" method="post">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Search Inspirasi">
-                        <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Search</button>
-                    </form>
+                    <?php if ($this->session->userdata('role_id') == "3") : ?>
+                        <!-- <form class="form-inline my-2 my-lg-0" action="<?= base_url('aspirasi/search') ?>" method="post">
+                            <input class="form-control mr-sm-2" type="search" placeholder="Search Inspirasi">
+                            <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Search</button>
+                        </form> -->
+                    <?php endif ?>
 
                 </ul>
                 <div class="navbar-nav">
@@ -58,20 +71,21 @@
                             <a class="nav-link btn btn-danger btn-sm mx-auto text-light" href="<?= base_url('admin/auth/registration/masyarakat') ?>">Register</a>
                         </div>
                     <?php else : ?>
-                        <div class="nav-item">
-                            <a class="mt-2 mr-md-2 btn btn-outline-warning waves-effect waves" href="#">
-                                <span class="badge badge-danger ml-2">4</span>
-                                <i class="fas fa-bell"></i>
+                        <div class="nav-item dropdown notif">
+                            <a class="mt-2 mr-md-2 btn btn-outline-warning waves-effect waves" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="text">Notifikasi</span>
+                                <span class="badge badge-danger ml-2 num">4</span>
+                                <i class="fas fa-bell"></i><span class="sr-only">(current)</span>
                             </a>
+                            <ul class="dropdown-menu dropdown-menu-right mt-2 scrollable-menu" style="min-width: 300px" aria-labelledby="navbarDropdown"></ul>
                         </div>
                         <div class="nav-item dropdown">
                             <a class="dropdown-toggle btn btn-primary text-left d-block mt-2" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Irsan Mansyur
+                                <?= $user['name'] ?>
                             </a>
                             <div class="dropdown-menu mt-2" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="<?= base_url('user') ?>">Profile</a>
-                                <a class="dropdown-item" href="<?= base_url('user/profile') ?>">Change Profile</a>
-                                <a class="dropdown-item" href="<?= base_url('user/change_password') ?>">Change Password</a>
+                                <a class="dropdown-item" href="<?= base_url('admin/user/profile') ?>">Change Profile</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" data-toggle="modal" data-target=".modal#logout" href="#">Logout</a>
                             </div>
@@ -82,16 +96,6 @@
             </div>
         </div>
     </nav>
+    <?= $this->session->flashdata('message'); ?>
 
-    <!-- Home Title -->
-    <header class="masthead">
-        <div class="container">
-            <div class="intro-text">
-                <div class="intro-lead-in"><?= @$page['title']; ?></div>
-                <div class="intro-heading text-uppercase">DPRD Makassar</div>
-                <?php if ($this->router->fetch_class() == "home" && "index" == $this->router->fetch_method()) : ?>
-                    <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" data-toggle="modal" data-target="#laporModal" href="<?= base_url('user/lapor') ?>">Laporkan!</a>
-                <?php endif; ?>
-            </div>
-        </div>
-    </header>
+    <script src="<?= $thema_folder; ?>layout/template/header.js"></script>

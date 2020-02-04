@@ -1,0 +1,140 @@
+$utama: #fed136;
+$kedua: #c04f03;
+$dekstop: 750px;
+$mobile: 400px;
+@mixin dekstops {
+	@media (min-width: $dekstop) {
+		@content;
+	}
+}
+@mixin mobile {
+	@media (max-width: $mobile) {
+		@content;
+	}
+}
+.page-caption {
+	.page-title {
+		@include mobile {
+			font-size: 2em;
+		}
+	}
+}
+
+#data-aspirasi {
+	margin-top: 5px;
+}
+.cardImg-profile {
+	width: 55px;
+	height: 50px;
+	left: 15px;
+	top: 10px;
+	@include mobile {
+		width: 55px;
+		height: 50px;
+		left: 10px;
+		top: 10px;
+		padding: 0;
+	}
+}
+.bg-utama {
+	background-color: $utama;
+	color: lighten($utama, 100%) !important;
+}
+.c-utama {
+	color: $utama;
+}
+.card {
+	position: relative;
+	overflow: hidden;
+	.card-title {
+		@include mobile {
+			padding: 0;
+			font-size: 1.2em;
+		}
+	}
+	.lihat {
+		position: absolute;
+		visibility: hidden;
+		top: 0;
+		right: 0;
+		width: 0%;
+		height: 100%;
+		background-color: darken($utama, 55%);
+		opacity: 0.8;
+		cursor: pointer;
+		z-index: 1;
+		transition: all 0.25s ease;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		a:hover {
+			z-index: 2;
+			background-color: lighten($utama, 15%);
+			color: $kedua !important;
+		}
+	}
+}
+.btn-utama {
+	background-color: $utama !important;
+}
+.btn-utama:hover {
+	font-weight: bold;
+	background-color: lighten($utama, 15%);
+	color: $kedua !important;
+}
+.card.baru:hover {
+	.lihat {
+		visibility: visible;
+		width: 100%;
+	}
+}
+.card-header {
+	padding-left: 80px;
+	padding-right: 70px;
+	position: relative;
+}
+
+.card.lihat:hover + .card.lihat::after {
+	height: 100%;
+}
+.card.lihat .card.komentar {
+	background-color: lighten($utama, 35%);
+}
+.card.komentar.childrend {
+	background-color: transparent;
+	border: none;
+	.card-header {
+		min-height: 55px;
+		.date-created {
+			@include dekstops() {
+				position: absolute;
+				right: 0px;
+				top: 10px;
+				text-align: right;
+			}
+			text-align: left;
+		}
+		.card-text {
+			@include mobile {
+				margin-left: -70px;
+				padding-top: 8px;
+				margin-right: -60px;
+			}
+		}
+	}
+	.card-body {
+		padding: 0px 10px;
+	}
+}
+
+.card-body {
+	@include mobile {
+		padding: 7px;
+	}
+}
+.rounded {
+	@include mobile {
+		padding-right: 5px !important;
+		padding-left: 5px !important;
+	}
+}

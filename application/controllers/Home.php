@@ -6,6 +6,7 @@ class Home extends MY_Controller
 	public function __construct()
 	{
 		parent::__construct();
+		$response = is_login(3);
 		$this->load->library('form_validation');
 	}
 
@@ -48,9 +49,14 @@ class Home extends MY_Controller
 				$this->load->helper("cosine_helper");
 
 				$array = preg_split('/[^[:alnum:]]+/', strtolower($outputstopword));
+				$arr_textmining = [];
 				foreach ($array as $item) {
-					if (strlen($item) > 2)
-						@$arr_textmining[$item]++;
+					if (array_key_exists($item, $arr_textmining)) {
+						$arr_textmining[$item]++;
+					} else {
+						if (strlen($item) > 2)
+							$arr_textmining[$item] = 1;
+					}
 				}
 
 				print_r($arr_textmining);
@@ -68,11 +74,11 @@ class Home extends MY_Controller
 						@$cosine[$row['id_komisi']] = cosineSimilarity($arr_textmining, $csn);
 				}
 				$kms_id = null;
-				$max = -1;
+				$max = 0;
 				foreach ($cosine as $key => $value) {
 					$max > $value ? '' : [$max = $value, $kms_id = $key];
 				}
-
+				$max == 0 ? $kms_id = "kms_000" : '';
 				$aspirasi = initTable("web_aspirasi", 'asp');
 
 				$data = [
@@ -80,17 +86,14 @@ class Home extends MY_Controller
 					'message' => $this->input->post('message'),
 					'status' => 3,
 					'user_id' => $response->user['id_user'],
-					'komisi_id' => $kms_id == null ? "kms_000" : $kms_id
+					'komisi_id' => $kms_id
 				];
-				die();
 				$this->db->insert("web_aspirasi", $data);
-				$this->session->set_flashdata('message', '<div class="alert alert-success alert-with-icon" data-notify="container"><i class="fa fa-volume-up" data-notify="icon"></i><button type="button" class="close" data-dismiss="alert" aria-label="Close"><i class="fa fa-times-circle"></i></button><span data-notify="message">Aspirasi Anda sudah dikirim.!</br>Cek Secara berkala akun anda untuk melihat tanggapan dari komisi terkait.!!</span></div>');
-
+				$this->session->set_flashdata('message', '<div style="position: absolute; top:50px; right: 5px;z-index:9999999"><div class="toast fade show"><div class="toast-header"><strong class="mr-auto"><i class="fa fa-globe"></i>  Aspirasi Anda Berhasil Dikirim!</strong><small class="text-muted">just now</small><button type="button" class="ml-2 mb-1 close" data-dismiss="toast">&times;</button></div><div class="toast-body">Pantau akun anda untuk menerima tanggapan atau komentar.!</div></div></div>');
 				redirect(base_url("user"));
 			}
 		} else {
-			$this->data['page']['title'] = 'Selamat datang.!</br>Silahkan Kirim Keluhan atau aspirasi anda disini.!';
-
+			$this->data['page']['title'] = 'Selamat datang.! Silahkan Kirim Keluhan atau aspirasi anda disini.!';
 
 			$this->visitor->setVisitor();
 			$this->template->load("public", 'index', $this->data);

@@ -37,15 +37,33 @@ class Aspirasi extends RestController
         $this->load->library('form_validation');
     }
 
-    public function index_get()
+    public function index_get($id = null)
     {
-        $this->db->select("web_aspirasi.*,tbl_user.name AS username,tbl_user_file.file,web_komisi.name AS komisi");
-        $this->db->from("web_aspirasi");
-        $this->db->join("tbl_user", "tbl_user.id_user=web_aspirasi.user_id");
+
+        $this->db->select("asp.*,tbl_user.name AS username,tbl_user_file.file,web_komisi.name AS komisi,(SELECT COUNT(id_komentar) FROM web_komentar AS kmt INNER JOIN tbl_user ON tbl_user.id_user=kmt.user_id where kmt.aspirasi_id=asp.id_aspirasi AND role_id!=2) AS jml_komentar,(SELECT COUNT(id_komentar) FROM web_komentar AS kmt INNER JOIN tbl_user ON tbl_user.id_user=kmt.user_id where kmt.aspirasi_id=asp.id_aspirasi AND role_id=2) AS jml_tanggapan");
+        $this->db->from("web_aspirasi asp");
+        $this->db->join("web_komentar kmt", "kmt.aspirasi_id=asp.id_aspirasi", "left");
+        $this->db->join("tbl_user", "tbl_user.id_user=asp.user_id");
         $this->db->join("tbl_user_file", "tbl_user.file_id=tbl_user_file.id_file");
-        $this->db->join("web_komisi", "web_komisi.id_komisi=web_aspirasi.komisi_id");
-        count($this->get()) > 0 ? $this->db->where($this->get()) : '';
-        $this->get("komisi_id") ? $this->db->where("komisi_id.id_komisi", $this->get('komisi_id')) : '';
+        $this->db->join("web_komisi", "web_komisi.id_komisi=asp.komisi_id");
+        $this->db->group_by("asp.id_aspirasi");
+
+
+        $page = 0;
+        $total = 1;
+        foreach ($this->get() as $key => $val) {
+
+            if ($key == "page") {
+                $page = $val;
+            } elseif ($key == "baru") {
+                $this->db->limit(10, 0);
+            } elseif ($key == "total") {
+                $total = is_int($val) ? $val : 1;
+            } else
+                $this->db->where([$key => $val]);
+        }
+        // is_int($page) ? $this->db->limit($total, $page) : '';
+        $this->db->order_by('asp.id_aspirasi', "desc");
         $eks = $this->db->get();
         if ($eks) {
             $aspirasi = $eks->result_array();

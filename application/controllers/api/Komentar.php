@@ -78,7 +78,8 @@ class Komentar extends RestController
                 $tbl['key'] => $tbl['field'][$tbl['key']],
                 "komentar" => $this->post('komentar'),
                 "user_id" => $this->post('user_id'),
-                "aspirasi_id" => $this->post('aspirasi_id')
+                "aspirasi_id" => $this->post('aspirasi_id'),
+                "date_created" => time()
             ];
             $this->post('parent') ? $data['parent'] = $this->post('parent') : '';
             $this->db->insert($tbl['name'], $data);
@@ -100,9 +101,11 @@ class Komentar extends RestController
     {
         $tbl = initTable("web_komentar", "kmt");
         $where = $this->input->get();
+        $data = $this->put();
+        $data['date_created'] = time();
         if (count($where) > 0) {
             $this->db->where($where);
-            $update = $this->db->update($tbl['name'], $this->put());
+            $update = $this->db->update($tbl['name'], $data);
             if ($update) {
                 $respon = hasilCUD("Data Berhasil Di Update");
                 if ($respon->status)

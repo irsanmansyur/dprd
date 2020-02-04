@@ -1,3 +1,6 @@
+:root {
+	--link-color: #fed136;
+}
 * {
 	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
@@ -81,7 +84,29 @@ body {
 	color: #0026ff;
 	border-color: #ffab00;
 }
-@media only screen and (max-width: 480px) {
+
+div.dropdown a span.text {
+	display: none;
+}
+
+div.dropdown-menu a.dropdown-item:hover {
+	color: #fed136;
+	border-bottom: 1px solid #fed136;
+}
+@media only screen and (max-width: 500px) {
+	div.dropdown a span.text {
+		display: inline-flex;
+	}
+	div.dropdown.notif .dropdown-menu a {
+		max-width: 100%;
+		word-wrap: break-word;
+		overflow: hidden;
+	}
+	div.dropdown.notif a {
+		display: block;
+		text-align: left;
+		margin-bottom: 5px;
+	}
 	.notfound .notfound-404 {
 		height: 122px;
 		line-height: 122px;
@@ -89,10 +114,6 @@ body {
 	.notfound .notfound-404 h1 {
 		font-size: 122px;
 	}
-}
-p {
-	margin: 0 0 20px;
-	line-height: 1.7;
 }
 p:last-child {
 	margin: 0px;
@@ -135,10 +156,12 @@ a:hover {
 .card-block {
 	padding: 80px;
 }
-.section-title {
-	margin-bottom: 60px;
-}
 
+/* =aspirasi */
+.card.aspirasi {
+	position: relative;
+	overflow: hidden;
+}
 .aspirasi-type .nav-item .nav-link.active,
 .aspirasi-type .nav-item .nav-link:hover {
 	color: #0f5792 !important;
@@ -256,4 +279,110 @@ a:hover {
 		left: 0%;
 		width: 100%;
 	}
+}
+
+.identitas {
+	padding-left: 60px;
+}
+
+form.komentar {
+	overflow: hidden;
+}
+.komentar > textarea,
+.komentar > textarea:focus {
+	border: none;
+	outline: none;
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	resize: none;
+	box-shadow: none;
+	color: #868686;
+}
+
+.komentar .label-komentar,
+.komentar .label-komentar::after {
+	position: absolute;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+	transition: all 0.5s ease;
+}
+.komentar .label-komentar {
+	bottom: 0;
+	border-bottom: 1px solid #868686;
+}
+.label-komentar::after {
+	content: "";
+	bottom: -1px;
+	border-bottom: 3px solid var(--link-color);
+	transform: translateX(100%);
+}
+
+.label-text {
+	position: absolute;
+	top: 10px;
+	left: 0;
+	transition: all 0.5s ease;
+}
+.submit-komentar {
+	position: absolute;
+	bottom: 20px;
+	right: 20px;
+}
+
+.komentar textarea:focus + .label-komentar:after,
+.komentar textarea:valid + .label-komentar:after {
+	transform: translateX(0);
+}
+.komentar textarea:focus + .label-komentar .label-text,
+.komentar textarea:valid + .label-komentar .label-text {
+	transform: translateY(-10px);
+	font-size: 14px;
+	color: var(--link-color);
+}
+
+/* 
+scroll menu 
+*/
+.scrollable-menu {
+	height: auto;
+	max-height: 200px;
+	overflow-x: hidden;
+}
+
+.dropdown-menu span.komentar {
+	font-size: 12px;
+}
+
+/* =animation loading background */
+@keyframes placeHolderShimmer {
+	0% {
+		background-position: 0px 0;
+	}
+	100% {
+		background-position: 100em 0;
+	}
+}
+
+.c-animated-background {
+	animation-duration: 3s;
+	animation-fill-mode: forwards;
+	animation-iteration-count: infinite;
+	animation-name: placeHolderShimmer;
+	animation-timing-function: linear;
+	background: fff;
+	background: linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	padding-top: 50px;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+}
+/* =komentar */
+.list-komentar {
+	transition: all 500ms, opacity 0.5s linear;
 }

@@ -71,15 +71,17 @@ function is_login($roleId = null)
     $ci = &get_instance();
     $email = $ci->session->userdata('email');
     if ($email) {
-        $ci->db->select("tbl_user.id_user,tbl_user.date_created,tbl_user.role_id,tbl_user.name,tbl_user.email,tbl_user.no_hp,tbl_user.alamat,tbl_user.tgl_lahir,tbl_user_file.file");
+        $ci->db->select("tbl_user.id_user,tbl_user.tentang_saya,tbl_user.date_created,tbl_user.role_id,tbl_user.name,tbl_user.email,tbl_user.no_hp,tbl_user.alamat,tbl_user.tgl_lahir,tbl_user.file_id,tbl_user_file.file,tbl_user_role.name as role_name");
         $ci->db->from("tbl_user");
         $ci->db->join("tbl_user_file", "tbl_user_file.id_file=tbl_user.file_id");
+        $ci->db->join("tbl_user_role", "tbl_user_role.id=tbl_user.role_id");
         $ci->db->where(['tbl_user.email' => $email]);
         $user = $ci->db->get()->row_array();
         if ($user) {
             $msg->message = "user Ditemukan";
             $msg->user = $user;
             $ci->data['user'] = $user;
+            $ci->data['login'] = true;
             $ci->user_model->setFieldTable($user);
             $ci->aspirasi_m->setFieldTable($user);
             if (!$roleId) {
@@ -92,6 +94,7 @@ function is_login($roleId = null)
                 $msg->message  = "User Punya Hak Akses";
             } else {
                 $msg->message = "user Tidak dizinkan";
+                $ci->data['login'] = false;
             }
         } else $msg->message  = "user Tidak Ditemukan";
     }
@@ -228,4 +231,26 @@ function initTable($table, $string = 'tbl')
         'key' => $key,
         'field' => $field
     ];
+}
+function getApi($url)
+{
+    // persiapkan curl
+    $ch = curl_init();
+
+    // set url 
+    curl_setopt($ch, CURLOPT_URL, $url);
+
+    // set user agent    
+    curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
+
+    // return the transfer as a string 
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+    // $output contains the output string 
+    $output = curl_exec($ch);
+
+    // tutup curl 
+    curl_close($ch);
+    // mengembalikan hasil curl
+    return $output;
 }

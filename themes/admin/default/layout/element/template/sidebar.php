@@ -35,7 +35,7 @@
                                </a>
                            </li>
                            <li class="nav-item">
-                               <a class="nav-link text-danger" id="dataOut" href="#" data-toggle="modal" data-target="#logout">
+                               <a class="nav-link text-danger" id="dataOut" href="#" data-toggle="modal" data-url="<?= base_url('admin/auth/logout') ?>" data-target="#logout">
                                    <span class="sidebar-mini text-danger"><i class="material-icons text-danger">settings_power</i></span>
                                    <span class="sidebar-normal">Logout</span>
                                </a>

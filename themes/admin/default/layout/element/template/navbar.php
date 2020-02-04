@@ -25,7 +25,7 @@
                     <span class="navbar-toggler-icon icon-bar"></span>
                 </button>
                 <div class="collapse navbar-collapse justify-content-end">
-                    <form class="navbar-form" method="post" action="<?= base_url('admin/search') ?>">
+                    <!-- <form class="navbar-form" method="post" action="<?= base_url('admin/search') ?>">
                         <div class="input-group no-border">
                             <input type="text" value="<?= $this->input->post('search'); ?>" name="search" class="form-control" placeholder="Search...">
                             <button type="submit" class="btn btn-white btn-round btn-just-icon">
@@ -33,8 +33,8 @@
                                 <div class="ripple-container"></div>
                             </button>
                         </div>
-                    </form>
-                    <ul class="navbar-nav">
+                    </form> -->
+                    <!-- <ul class="navbar-nav">
                         <li class="nav-item dropdown">
                             <a class="nav-link" href="<?= base_url('admin/user/notification') ?>" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="material-icons">notifications</i>
@@ -47,7 +47,7 @@
                                 <a class="dropdown-item" href="#"> Tidak Ada Notifikasi Baru</a>
                             </div>
                         </li>
-                    </ul>
+                    </ul> -->
                 </div>
             </div>
         </nav>

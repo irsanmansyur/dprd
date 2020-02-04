@@ -18,37 +18,69 @@
           </div>
       </div>
   </footer>
-
-  <div class="modal fade" id="logout" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
+  </div>
+  <!-- Modal input aspirasi -->
+  <div class="modal fade" id="laporModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" id="modal-add-aspirasi" role="document">
           <div class="modal-content">
               <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Apaka anda yakin ingin keluar ?</h5>
-                  <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">×</span>
+                  <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
                   </button>
               </div>
               <div class="modal-body">
-                  <p>Tekan "Exit" jika ingin keluar, Tekan "Cancel" untuk membatalkan</p>
+
+                  <form class="mt-3 komentar" method="post" action="<?= base_url() ?>">
+                      <div class="form-group mt-4 komentar position-relative">
+                          <textarea name='message' required class="form-control komentar_1" id="add_komentar_1" rows="3"></textarea>
+                          <label for="add_komentar_1" class="label-komentar">
+                              <span class="label-text">Ketikkan Komentar Anda Disini</span></label>
+                          <input type="submit" value="Kirim" class="btn btn-primary submit-komentar">
+                      </div>
+                  </form>
+                  <ul id="progressbar">
+
+                  </ul>
               </div>
-              <div class="modal-footer">
-                  <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                  <a class="btn btn-primary" href="<?= base_url('admin/auth/logout'); ?>">Exit</a>
+
+          </div>
+
+
+
+          <!-- modal keluar -->
+          <div class="modal fade" id="logout" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">Apaka anda yakin ingin keluar ?</h5>
+                          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">×</span>
+                          </button>
+                      </div>
+                      <div class="modal-body">
+                          <p>Tekan "Exit" jika ingin keluar, Tekan "Cancel" untuk membatalkan</p>
+                      </div>
+                      <div class="modal-footer">
+                          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                          <a class="btn btn-primary" href="<?= base_url('admin/auth/logout'); ?>">Exit</a>
+                      </div>
+                  </div>
               </div>
           </div>
-      </div>
-  </div>
-  <!-- Bootstrap core JavaScript -->
-  <script src="<?= $thema_folder; ?>assets/vendor/jquery/jquery.min.js"></script>
-  <script src="<?= $thema_folder; ?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+          <!-- Bootstrap core JavaScript -->
+          <script src="<?= $thema_folder; ?>assets/vendor/jquery/jquery.min.js"></script>
+          <script src="<?= $thema_folder; ?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-  <!-- Plugin JavaScript -->
-  <script src="<?= $thema_folder; ?>assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+          <!-- Plugin JavaScript -->
+          <script src="<?= $thema_folder; ?>assets/vendor/jquery-easing/jquery.easing.min.js"></script>
 
-  <!-- Contact form JavaScript -->
-  <script src="<?= $thema_folder; ?>assets/js/jqBootstrapValidation.js"></script>
-  <script src="<?= $thema_folder; ?>assets/js/contact_me.js"></script>
+          <!-- Contact form JavaScript -->
+          <script src="<?= $thema_folder; ?>assets/js/jqBootstrapValidation.js"></script>
+          <script src="<?= $thema_folder; ?>assets/js/contact_me.js"></script>
 
-  <!-- Custom scripts for this template -->
-  <script src="<?= $thema_folder; ?>assets/js/agency.min.js"></script>
-  <script src="<?= $thema_folder; ?>assets/js/main.js"></script>
+          <!-- Custom scripts for this template -->
+          <script src="<?= $thema_folder; ?>assets/js/agency.min.js"></script>
+          <script src="<?= $thema_folder; ?>assets/js/main.js"></script>
+
+          <script src="<?= $thema_folder; ?>layout/template/footer.js"></script>

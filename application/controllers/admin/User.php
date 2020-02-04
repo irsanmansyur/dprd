@@ -99,15 +99,11 @@ class User extends Admin_Controller
 				}
 			}
 			$post['file_id'] = $id_file;
+			$this->db->update("tbl_user", $post, ['id_user' => $this->data['user']['id_user']]);
 
-			$user->setField($post);
-			// die(var_dump($user->getField()));
+			$eks = hasilCUD("Sukses Update");
 
-			$eks = $user->update();
-
-			$eks->status ? [$status = true, $msg[] = "Update Data Profile success"] : $msg[] = $eks->message;
-
-			setNotif($status, $msg);
+			setNotif($eks->status, $eks->message);
 			header("Refresh:0");
 		}
 	}
@@ -122,13 +118,15 @@ class User extends Admin_Controller
 			$this->data['page']['description'] = 'Silahkan ubah password lama anda, gunakan karakter yang susah di tebak.!';
 			// $this->data['page']['before'] = ['url' => base_url('admin/menu'), "title" => "Menu Access"];
 			$this->data['page']['submenu'] = 'Ganti password';
+
 			$this->template->load('admin', 'user/profile/changepassword', $this->data);
 		} else {
 			$oldPassword = $this->input->post('oldPassword');
 			// cek kebenran password lama
-			if (password_verify($oldPassword, $this->data['user']['password'])) {
+			$user = $this->db->get_where("tbl_user", ["id_user" => $this->data['user']['id_user']])->row_array();
+			if (password_verify($oldPassword, $user['password'])) {
 				$password = password_hash($this->input->post('password'), PASSWORD_DEFAULT);
-				$email = $this->session->userdata('email');
+				$email = $user['email'];
 				$this->db->set('password', $password);
 				$this->db->where('email', $email);
 				$this->db->update('tbl_user');

@@ -1,5 +1,16 @@
 <?php $this->load->view($thema_load . 'template/header.php'); ?>
-
+<!-- Home Title -->
+<header class="masthead">
+  <div class="container">
+    <div class="intro-text">
+      <div class="intro-lead-in"><?= @$page['title']; ?></div>
+      <div class="intro-heading text-uppercase">DPRD Makassar</div>
+      <?php if ($this->router->fetch_class() == "home" && "index" == $this->router->fetch_method()) : ?>
+        <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" data-toggle="modal" data-target="#laporModal" href="<?= base_url('user/lapor') ?>">Laporkan!</a>
+      <?php endif; ?>
+    </div>
+  </div>
+</header>
 <!-- panduan -->
 <section class="page-section" id="panduan">
   <div class="container">
@@ -119,32 +130,8 @@
   </div>
 </section>
 
+<!-- Central Modal Small -->
 
-<!-- Modal 1 -->
-<div class="modal fade" id="laporModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <form action="<?= base_url("/") ?>" method="post" id="formInput">
-        <div class="modal-body">
-          <div class="form-group">
-            <label for="message-text" class="col-form-label">Aspirasi Anda:</label>
-            <textarea class="form-control" name="message" id="message-text" rows="6"></textarea>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary" name="submit">Kirim..!</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
 
 <?php $this->load->view($thema_load . 'template/footer.php'); ?>
 <script src="<?= base_url() ?>assets/js/vendor/jquery.validate.min.js"></script>
@@ -183,6 +170,8 @@
     });
   });
 </script>
+
+
 
 </body>
 
