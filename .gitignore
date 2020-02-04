@@ -12,8 +12,6 @@ application/logs/*
 composer.lock
 
 
-/vendor/
-
 # IDE Files
 #-------------------------
 /nbproject/
