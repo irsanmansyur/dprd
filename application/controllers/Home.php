@@ -58,8 +58,7 @@ class Home extends MY_Controller
 							$arr_textmining[$item] = 1;
 					}
 				}
-
-				print_r($arr_textmining);
+				var_dump($arr_textmining);
 				$all_komisi = $this->komisi_m->getKomisi();
 				foreach ($all_komisi as $row) {
 					$csn = null;

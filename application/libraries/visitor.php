@@ -14,6 +14,7 @@ class Visitor
     $this->browser = $this->ci->agent->browser();
 
     $this->setVisitor();
+    //dd
   }
 
   function ip_user()
