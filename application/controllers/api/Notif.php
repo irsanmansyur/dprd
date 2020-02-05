@@ -24,11 +24,11 @@ class Notif extends RestController
         $this->db->select('web_komentar.*,tbl_user_role.name as namerole,web_aspirasi.message,tbl_user.name,tbl_user_file.file');
         $this->db->from("web_komentar");
         $this->db->join("tbl_user", "tbl_user.id_user=web_komentar.user_id");
-        $this->db->join("tbl_user_file", "tbl_user.file_id=tbl_user_file.id_file");
-        $this->db->join('tbl_user_role', 'tbl_user_role.id=tbl_user.role_id');
         $this->db->join('web_aspirasi', "web_aspirasi.id_aspirasi=web_komentar.aspirasi_id");
+        $this->db->join("tbl_user_file", "tbl_user_file.id_file=tbl_user.file_id");
+        $this->db->join('tbl_user_role', 'tbl_user_role.id=tbl_user.role_id');
         $this->db->where(['web_aspirasi.user_id' => $id_user, 'web_komentar.type' => 0]);
-        $this->db->order_by('id_komentar', 'desc');
+        $this->db->order_by('web_komentar.id_komentar', 'desc');
 
         $res = $this->db->get();
         if ($res) {
