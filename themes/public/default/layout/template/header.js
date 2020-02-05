@@ -39,7 +39,7 @@ function getTanggal(dateInt) {
 		"11",
 		"12"
 	];
-	return days[d.getDay()] + "/" + months[d.getMonth()] + "/" + d.getFullYear();
+	return d.getDate() + "/" + months[d.getMonth()] + "/" + d.getFullYear();
 }
 function addCss(url) {
 	let link = document.createElement("link");
@@ -79,9 +79,7 @@ function setNotif(notif) {
 				}
 			}
 
-			let waktu = new Date(res.date_created * 1000);
-			let ttime =
-				waktu.getDate() + "-" + waktu.getMonth() + "-" + waktu.getFullYear();
+			let ttime = getTanggal(res.date_created);
 			icon += `<span class="card-text text-justify text-monospace">${kmt}.</span><span class="position-absolute text-muted" style="top:6px;right:15px;font-size:12px">${ttime}</span>`;
 			isi += `<li><div class="card-body identitas position-relative mt-3" style='padding-left:55px'>
 			<img src="${baseUrl}assets/img/thumbnail/profile_${res.file}" style="width: 40px;height:40px;left:5px;top:10px" alt="" class="position-absolute rounded-circle">
