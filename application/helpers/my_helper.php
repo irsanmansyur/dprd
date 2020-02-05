@@ -70,6 +70,7 @@ function is_login($roleId = null)
     $msg =  response("Inisialisasi");
     $ci = &get_instance();
     $email = $ci->session->userdata('email');
+    $ci->data['login'] = false;
     if ($email) {
         $ci->db->select("tbl_user.id_user,tbl_user.tentang_saya,tbl_user.date_created,tbl_user.role_id,tbl_user.name,tbl_user.email,tbl_user.no_hp,tbl_user.alamat,tbl_user.tgl_lahir,tbl_user.file_id,tbl_user_file.file,tbl_user_role.name as role_name");
         $ci->db->from("tbl_user");

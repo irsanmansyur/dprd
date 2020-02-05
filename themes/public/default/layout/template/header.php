@@ -30,13 +30,12 @@
         const theme = {
             folder: "<?= $thema_folder ?>"
         };
-        const login = "<?= $login ?>";
-        const user = <?= json_encode($user) ?>;
+        const login = <?= $login ? "true" : "false"; ?>;
+        const user = <?= $login ? json_encode($user) : "[]" ?>;
     </script>
 </head>
 
 <body id="page-top">
-
     <!-- Navigation -->
 
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
@@ -74,7 +73,7 @@
                         <div class="nav-item dropdown notif">
                             <a class="mt-2 mr-md-2 btn btn-outline-warning waves-effect waves" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="text">Notifikasi</span>
-                                <span class="badge badge-danger ml-2 num">4</span>
+                                <span class="badge badge-danger ml-2 num">0</span>
                                 <i class="fas fa-bell"></i><span class="sr-only">(current)</span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right mt-2 scrollable-menu" style="min-width: 300px" aria-labelledby="navbarDropdown"></ul>
