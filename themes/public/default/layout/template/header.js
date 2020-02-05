@@ -54,9 +54,6 @@ const elNotif = document.querySelector(".nav-item.notif");
 
 docReady(async function() {
 	$(".toast").toast({
-		closeButton: false,
-		debug: false,
-		onclick: null,
 		hideDuration: 2000,
 		timeOut: 5000,
 		extendedTimeOut: 1000,
