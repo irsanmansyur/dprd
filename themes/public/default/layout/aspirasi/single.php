@@ -52,7 +52,7 @@
                     ?>
                     <div class="card mb-2">
                         <div class="card-header identitas position-relative" style='padding-left:80px'>
-                            <img src="<?= getThumb($aspirasi['file']) ?>" style="width: 55px;height:50px;left:15px;top:12px" alt="" class="position-absolute rounded-circle">
+                            <img src="<?= $aspirasi['file'] ?>" style="width: 55px;height:50px;left:15px;top:12px" alt="" class="position-absolute rounded-circle">
                             <h5 class="card-title mb-0"><?= $aspirasi['username'] ?></h5>
                             <span class="text-muted">Di arahkan ke : </span>
                             <span class="komisi font-weight-bold"><?= $aspirasi['komisi'] ?></span>
@@ -70,7 +70,7 @@
                                 <?php foreach ($parent_tanggapan as $row) : ?>
                                     <div class="card card-body mb-2">
                                         <div class="card-header identitas position-relative" style='padding-left:80px'>
-                                            <img src="<?= getThumb($row['file']) ?>" style="width: 55px;height:50px;left:15px;top:12px" alt="" class="position-absolute rounded-circle">
+                                            <img src="<?= $row['file'] ?>" style="width: 55px;height:50px;left:15px;top:12px" alt="" class="position-absolute rounded-circle">
                                             <h5 class="card-title mb-0"><?= $row['username'] ?></h5>
                                             <span class="text-muted">Menanggapi : </span>
                                             <span class="position-absolute text-muted" style="top:12px;right:15px"><?= date("D, m - Y", $row['date_created']) ?> </span>
@@ -114,7 +114,7 @@
                                         <?php foreach ($tanggapan_child as $child) : ?>
                                             <div class="mt-3 ml-3 collapse" id="balasan_<?= $id ?>">
                                                 <div class="card-header identitas position-relative mt-3" style='padding-left:80px'>
-                                                    <img src="<?= getThumb($child['file']) ?>" style="width: 55px;height:50px;left:15px;top:12px" alt="" class="position-absolute rounded-circle">
+                                                    <img src="<?= $child['file'] ?>" style="width: 55px;height:50px;left:15px;top:12px" alt="" class="position-absolute rounded-circle">
                                                     <h5 class="card-title mb-0"><?= $child['username'] ?></h5>
                                                     <span class="text-muted">Membalas : </span>
                                                     <span class="card-text text-justify text-monospace"><?= $child['komentar'] ?>.</span>
@@ -148,7 +148,7 @@
                                 foreach ($parent_komentar as $row) : ?>
                                     <div class="card card-body mb-2">
                                         <div class="card-header identitas position-relative" style='padding-left:80px'>
-                                            <img src="<?= getThumb($row['file']) ?>" style="width: 55px;height:50px;left:15px;top:12px" alt="" class="position-absolute rounded-circle">
+                                            <img src="<?= $row['file'] ?>" style="width: 55px;height:50px;left:15px;top:12px" alt="" class="position-absolute rounded-circle">
                                             <h5 class="card-title mb-0"><?= $row['username'] ?></h5>
                                             <span class="text-muted">Berkomentar : </span>
                                             <span class="position-absolute text-muted" style="top:12px;right:15px"><?= date("D, m - Y", $row['date_created']) ?> </span>
@@ -193,7 +193,7 @@
                                         <?php foreach ($komentar_child as $child) : ?>
                                             <div class="mt-3 ml-3 collapse" id="balasan_<?= $id ?>">
                                                 <div class="card-body identitas position-relative mt-3" style='padding-left:80px'>
-                                                    <img src="<?= getThumb($child['file']) ?>" style="width: 55px;height:50px;left:15px;top:12px" alt="" class="position-absolute rounded-circle">
+                                                    <img src="<?= $child['file'] ?>" style="width: 55px;height:50px;left:15px;top:12px" alt="" class="position-absolute rounded-circle">
                                                     <h5 class="card-title mb-0"><?= $child['username'] ?></h5>
                                                     <span class="text-muted">Membalas : </span><span class="card-text text-justify text-monospace"><?= $child['komentar'] ?>.</span>
                                                     <span class="position-absolute text-muted" style="top:12px;right:15px"><?= date("D, m - Y", $row['date_created']) ?> </span>
@@ -214,7 +214,7 @@
                             <div class="card mb-2 aspirasi baru" data-idasp="<?= $row['id_aspirasi'] ?>">
                                 <div class="lihat"><a href="<?= base_url("aspirasi/id/") . $row['id_aspirasi'] ?>" class="btn bg-utama">Lihat</a></div>
                                 <div class="card-header identitas position-relative" style="padding-left:80px">
-                                    <img src="<?= getThumb($row['file']) ?>" alt="" class="position-absolute rounded-circle cardImg-profile">
+                                    <img src="<?= $row['file'] ?>" alt="" class="position-absolute rounded-circle cardImg-profile">
                                     <h5 class="card-title mb-0"><?= $row['username'] ?></h5>
                                     <span class="text-muted">Di arahkan ke : </span><span class="komisi font-weight-bold"><?= $row['komisi'] ?></span>
                                     <span class="position-absolute text-muted text-right" style="top:12px;right:15px"><?= date("d/M/Y", $row["date_created"]) ?></span>

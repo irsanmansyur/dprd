@@ -19,22 +19,24 @@ class Aspirasi extends MY_Controller
         $res = getApi(base_url() . "api/aspirasi?id_aspirasi=$id");
         $aspirasi = json_decode($res, TRUE);
 
-        $res = getApi(base_url() . "api/komentar?aspirasi_id=$id");
-        $komentar = json_decode($res, TRUE);
-        if ($komentar["status"]) {
+        if ($aspirasi['status']) {
             $idKmt = $this->data['page']['id2'];
             $idKmt ? $this->db->update('web_komentar', ['type' => 1], ['id_komentar' => $this->data['page']['id2']]) : '';
         }
 
+        $res = getApi(base_url() . "api/komentar?aspirasi_id=$id");
+        $komentar = json_decode($res, TRUE);
+
         $res = getApi(base_url() . "api/aspirasi?baru='yes'");
         $aspirasi_baru = json_decode($res, TRUE);
 
-        $this->data['komentar'] = $komentar['status'] ? $komentar['data'] : [];
 
-        $this->data['aspirasi'] = $aspirasi['data'][0];
-        $this->data['aspirasi_baru'] = $aspirasi_baru['data'];
+        $this->data['komentar'] = $komentar['status'] ? $komentar['data'] : [];
+        $this->data['aspirasi'] = $aspirasi['status'] ? $aspirasi['data'][0] : [];
+
+        $this->data['aspirasi_baru'] = $aspirasi['status'] ? $aspirasi_baru['data'] : [];
         $this->data['page']['title'] = 'Selamat datang.! Silahkan Kirim Keluhan atau aspirasi anda disini.!';
-        $this->template->load("public", $aspirasi['status'] ? 'aspirasi/single' : 'aspirasi/error', $this->data);
+        $this->template->load("public", 'aspirasi/single', $this->data);
     }
     function send()
     {
