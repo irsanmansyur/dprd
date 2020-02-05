@@ -53,7 +53,25 @@ function addCss(url) {
 const elNotif = document.querySelector(".nav-item.notif");
 
 docReady(async function() {
+	$(".toast").toast.options = {
+		closeButton: false,
+		debug: false,
+		newestOnTop: false,
+		progressBar: false,
+		positionClass: "md-toast-top-right",
+		preventDuplicates: false,
+		onclick: null,
+		showDuration: 300,
+		hideDuration: 2000,
+		timeOut: 5000,
+		extendedTimeOut: 1000,
+		showEasing: "swing",
+		hideEasing: "linear",
+		showMethod: "fadeIn",
+		hideMethod: "fadeOut"
+	};
 	$(".toast").toast("show");
+
 	if (login) {
 		const notif = await getNotif();
 		setNotif(notif.filter(notif => notif.user_id != user.id_user));
