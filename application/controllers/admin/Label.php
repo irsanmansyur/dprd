@@ -98,10 +98,10 @@ class Label extends Admin_Controller
     public function delete($id)
     {
         $komisi_id = $this->get['komisi_id'];
-        $this->label_m = $this->label_m;
-        $this->label_m->setPrimaryKey($id);
-        $this->label_m->deleted();
-        hasilCUD("Sukses Menghapus label");
+
+        $this->db->delete("web_komisi_label", ["id_label" => $id]);
+        $eks = hasilCUD("Sukses Menghapus label");
+        return $eks;
         redirect(base_url('admin/label/' . $komisi_id));
     }
     public function edit($id)

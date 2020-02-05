@@ -3,7 +3,6 @@
 application/cache/*
 !application/cache/index.html
 
-application/config/config.php
 application/logs/*
 !application/logs/index.html
 
@@ -23,5 +22,3 @@ composer.lock
 *.stTheme.cache
 *.sublime-workspace
 *.sublime-project
-/tests/tests/
-/tests/results/
