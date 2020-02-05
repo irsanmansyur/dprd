@@ -53,7 +53,8 @@ function addCss(url) {
 const elNotif = document.querySelector(".nav-item.notif");
 
 docReady(async function() {
-	$(".toast").toast.options = {
+	toast.options = {};
+	$(".toast").toast({
 		closeButton: false,
 		debug: false,
 		newestOnTop: false,
@@ -69,7 +70,7 @@ docReady(async function() {
 		hideEasing: "linear",
 		showMethod: "fadeIn",
 		hideMethod: "fadeOut"
-	};
+	});
 	$(".toast").toast("show");
 
 	if (login) {
