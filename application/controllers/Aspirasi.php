@@ -21,7 +21,7 @@ class Aspirasi extends MY_Controller
 
         if ($aspirasi['status']) {
             $idKmt = $this->data['page']['id2'];
-            $idKmt ? $this->db->update('web_komentar', ['type' => 1], ['id_komentar' => $this->data['page']['id2']]) : '';
+            $idKmt ? $this->db->update('web_komentar', ['type' => "1"], ['id_komentar' => $this->data['page']['id2']]) : '';
         }
 
         $res = getApi(base_url() . "api/komentar?aspirasi_id=$id");
