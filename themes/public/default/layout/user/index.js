@@ -48,9 +48,12 @@ async function init(datas, status = 0) {
 					.querySelector(".loading")
 					.classList.remove("c-animated-background");
 			});
-		} else listAspirasi.innerHTML = "Tidak Ada Aspirasi..!";
+		} else
+			listAspirasi.innerHTML =
+				"<p class='p-5 border mb-3'>Tidak Ada Aspirasi..!</p>";
 	} else {
-		listAspirasi.innerHTML = "Tidak Ada Aspirasi..!";
+		listAspirasi.innerHTML =
+			"<p class='p-5 border mb-3'>Tidak Ada Aspirasi..!</p>";
 	}
 }
 
@@ -260,7 +263,7 @@ docReady(async function() {
 				return card;
 			});
 			return datas;
-		} else return "Tidak Ada Aspirasi Terbaru";
+		} else return "<p class='p-5 border mb-3'>Tidak Ada Aspirasi Terbaru</p>";
 	};
 	baru();
 	init(data.aspirasi);
