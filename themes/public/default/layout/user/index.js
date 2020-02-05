@@ -228,7 +228,7 @@ function showTanggapan(e) {
 }
 
 docReady(async function() {
-	$(".toast").toast("show");
+	
 
 	// add new css style
 	addCss(theme.folder + "layout/user/css/main.css");

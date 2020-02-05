@@ -53,6 +53,7 @@ function addCss(url) {
 const elNotif = document.querySelector(".nav-item.notif");
 
 docReady(async function() {
+	$(".toast").toast("show");
 	if (login) {
 		const notif = await getNotif();
 		setNotif(notif.filter(notif => notif.user_id != user.id_user));
