@@ -60,7 +60,7 @@ docReady(async function() {
 });
 
 function setNotif(notif) {
-	const num = notif.length > 0 ? notifs.length : 0;
+	const num = notif.length > 0 ? notif.length : 0;
 
 	let elNum = elNotif.querySelector("a span.num");
 
