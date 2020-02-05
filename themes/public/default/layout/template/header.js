@@ -55,7 +55,7 @@ const elNotif = document.querySelector(".nav-item.notif");
 docReady(async function() {
 	$(".toast").toast({
 		hideDuration: 2000,
-		timeOut: 5000,
+		delay: 5000,
 		extendedTimeOut: 1000,
 		hideEasing: "linear"
 	});
