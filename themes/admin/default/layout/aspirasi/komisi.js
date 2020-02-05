@@ -9,7 +9,7 @@ dftAspirasi.on("click", ".mdl#lihat", function() {
 	let message = _parent.children("td[name=message]").text();
 	let name = _parent.children("td[name=username]").text();
 	let status = _parent.children("td[name=status]").data("status");
-	let image = baseUrl + "assets/img/thumbnail/profile_" + $(this).data("image");
+	let image = $(this).data("image");
 	let url = baseUrl + "api/aspirasi?id_aspirasi=" + $(this).data("id");
 	let komisi_id = $(this).data("komisi");
 	aspirasi_selected = aspirasi_all.find(obj => {
@@ -20,7 +20,7 @@ dftAspirasi.on("click", ".mdl#lihat", function() {
 		id_aspirasi: $(this).data("id"),
 		status: _parent.children("td[name=status]").data("status"),
 		message: _parent.children("td[name=message]").text(),
-		image: baseUrl + "assets/img/thumbnail/profile_" + $(this).data("image"),
+		image:  $(this).data("image"),
 		komisi_id: $(this).data("komisi")
 	};
 
@@ -220,7 +220,7 @@ $(".getInfo").click(function(e) {
 						let date_created = getTanggal(row.date_created);
 						list += `<li>
 								<div class="comment-main-level">
-									<div class="comment-avatar"><img src="${baseUrl}assets/img/thumbnail/profile_${row.file}" alt=""></div>
+									<div class="comment-avatar"><img src="${row.file}" alt=""></div>
 									<div class="comment-box">
 										<div class="comment-head">
 											<h6 class="comment-name by-author"><a href="#">${row.username}</a></h6>
@@ -331,7 +331,7 @@ function listReplies(parent, list) {
 
 			let lists = `<li>
 							<div class="comment-main-level reply">
-								<div class="comment-avatar"><img src="${baseUrl}assets/img/thumbnail/profile_${element.file}" alt=""></div>
+								<div class="comment-avatar"><img src="${element.file}" alt=""></div>
 								<div class="comment-box">
 									<div class="comment-head">
 										<h6 class="comment-name by-author"><a href="#">${element.username}</a></h6>

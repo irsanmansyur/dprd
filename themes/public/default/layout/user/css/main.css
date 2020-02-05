@@ -4,6 +4,12 @@
   }
 }
 
+@media (max-width: 400px) {
+  #asp-terbaru h2 {
+    margin-top: 15px;
+  }
+}
+
 #data-aspirasi {
   margin-top: 5px;
 }
