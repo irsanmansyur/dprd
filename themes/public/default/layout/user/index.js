@@ -156,7 +156,7 @@ function cardParent(res) {
 }
 
 function cardChildrend(komentar) {
-	let date_created = getTanggal(asp.date_created);
+	let date_created = getTanggal(komentar.date_created);
 
 	let htmlChildrend = `
 		<div class="card mt-2 komentar childrend">
