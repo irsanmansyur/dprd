@@ -57,19 +57,11 @@ docReady(async function() {
 	$(".toast").toast({
 		closeButton: false,
 		debug: false,
-		newestOnTop: false,
-		progressBar: false,
-		positionClass: "md-toast-top-right",
-		preventDuplicates: false,
 		onclick: null,
-		showDuration: 300,
 		hideDuration: 2000,
 		timeOut: 5000,
 		extendedTimeOut: 1000,
-		showEasing: "swing",
-		hideEasing: "linear",
-		showMethod: "fadeIn",
-		hideMethod: "fadeOut"
+		hideEasing: "linear"
 	});
 	$(".toast").toast("show");
 
