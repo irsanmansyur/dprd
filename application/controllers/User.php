@@ -16,8 +16,7 @@ class User extends MY_Controller
     {
         $aspirasi = $this->db->get_where("web_aspirasi", ['user_id' => $this->data['user']['id_user']]);
         $this->data['all_aspirasi'] = $aspirasi->result_array();
-
-
+        $this->data['page']['title'] =  "Daftar aspirasi User";
 
         $this->template->load("public", 'user/index', $this->data);
     }
