@@ -69,7 +69,7 @@ function tampilkanAspirasiIni(res) {
 	let html = `
 			<div class="loading c-animated-background"></div>
 			<div class="card-header identitas position-relative" style='padding-left:80px'>
-				<img src="${baseUrl}assets/img/thumbnail/profile_${res.file}"  alt="" class="position-absolute rounded-circle cardImg-profile">
+				<img src="${res.file}"  alt="" class="position-absolute rounded-circle cardImg-profile">
 				<h5 class="card-title mb-0">${res.username}</h5>
 				<span class="text-muted">Di arahkan ke : </span><span class="komisi font-weight-bold">${res.komisi}</span>
 				<span class="position-absolute text-muted text-right" style="top:12px;right:15px">${date_created} ${tbl}</span>
@@ -132,9 +132,9 @@ function cardParent(res) {
 	htmlCardChildrend += "</div>";
 	let html = `
 			<div class="card-header identitas position-relative" style='padding-left:80px'>
-				<img src="${img +
-					"profile_" +
-					res.file}" onerror="this.onerror=null;this.src='${img}default.png';"  alt="" class="position-absolute rounded-circle cardImg-profile">
+				<img src="${
+					res.file
+				}" alt="" class="position-absolute rounded-circle cardImg-profile">
 				<h5 class="card-title komentar mb-0">${res.username}</h5>
 				<span class="text-muted">${
 					res.role_id == 2 ? "Menanggapi : " : "Berkomentar : "
@@ -159,7 +159,7 @@ function cardChildrend(komentar) {
 		<div class="card mt-2 komentar childrend">
 			<div class="card-header identitas position-relative mt-3" style='padding-left:80px;background: transparent;
 			border: none;'>
-				<img src="${baseUrl}assets/img/thumbnail/profile_${komentar.file}" onerror="this.onerror=null;this.src='${baseUrl}assets/img/thumbnail/default.png';"  alt="" class="position-absolute rounded-circle cardImg-profile">
+				<img src="${komentar.file}" alt="" class="position-absolute rounded-circle cardImg-profile">
 				<h5 class="card-title komentar mb-0">${komentar.username}</h5>
 				<span class="text-muted date-created" style="">${date_created}</span>
 				<p class="card-text text-justify text-monospace"><span class="text-muted">Membalas : </span>
@@ -247,7 +247,7 @@ docReady(async function() {
 				let html = `
 				<div class="lihat"><a href="${baseUrl}/aspirasi/id/${asp.id_aspirasi}" class="btn bg-utama">Lihat</a></div>
 				<div class="card-header identitas position-relative" style='padding-left:80px'>
-					<img src="${baseUrl}assets/img/thumbnail/profile_${asp.file}"  alt="" class="position-absolute rounded-circle cardImg-profile">
+					<img src="${asp.file}"  alt="" class="position-absolute rounded-circle cardImg-profile">
 					<h5 class="card-title mb-0">${asp.username}</h5>
 					<span class="text-muted">Di arahkan ke : </span><span class="komisi font-weight-bold">${asp.komisi}</span>
 					<span class="position-absolute text-muted text-right" style="top:12px;right:15px">${date_created}</span>

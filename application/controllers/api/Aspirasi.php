@@ -66,8 +66,12 @@ class Aspirasi extends RestController
         $this->db->order_by('asp.id_aspirasi', "desc");
         $eks = $this->db->get();
         if ($eks) {
+
             $aspirasi = $eks->result_array();
             if ($aspirasi) {
+                foreach ($aspirasi as $key => $val) {
+                    $aspirasi[$key]["file"] = getThumb($val['file']);
+                }
                 $this->response([
                     "status" => true,
                     "data" => $aspirasi

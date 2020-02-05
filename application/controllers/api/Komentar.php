@@ -50,6 +50,9 @@ class Komentar extends RestController
         if ($eks) {
             $komentar = $eks->result_array();
             if ($komentar) {
+                foreach ($komentar as $key => $val) {
+                    $komentar[$key]["file"] = getThumb($val['file']);
+                }
                 $this->response([
                     "status" => true,
                     "data" => $komentar
