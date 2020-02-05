@@ -12,7 +12,7 @@ function cosineSimilarity($tokensA, $tokensB)
     $nilaiAtas = 0;
     $x = $y = 0;
 
-    print_r("<table border=1 padding=2><thead><tr><td>Token</td><td>X</td><td>Y</td></tr></thead><tbody>");
+    var_dump("<table border=1 padding=2><thead><tr><td>Token</td><td>X</td><td>Y</td></tr></thead><tbody>");
     foreach ($uniqueMergedTokens as $token => $v) {
         $xArray[$address] = isset($tokensA[$token]) ?  $tokensA[$token] : 0;
         $yArray[$address] = isset($tokensB[$token]) ?  $tokensB[$token] : 0;
@@ -23,17 +23,17 @@ function cosineSimilarity($tokensA, $tokensB)
         $ay = ($yArray[$address] * $yArray[$address]);
         $x += $ax;
         $y += $ay;
-        print_r("<tr><td>$token </td><td>" . $xArray[$address] . "</td><td>" . $yArray[$address] . "</td></tr>");
+        var_dump("<tr><td>$token </td><td>" . $xArray[$address] . "</td><td>" . $yArray[$address] . "</td></tr>");
         $address++;
     }
-    print_r("</tbody>");
-    print_r("<tfoot><tr><td>Akar (a*a) </td><td>" . sqrt($x) . "</td><td>" . sqrt($y) . "</td></tfoot>");
-    print_r("</table>");
+    var_dump("</tbody>");
+    var_dump("<tfoot><tr><td>Akar (a*a) </td><td>" . sqrt($x) . "</td><td>" . sqrt($y) . "</td></tfoot>");
+    var_dump("</table>");
     $nilaiBawah = (sqrt($x) * sqrt($y));
     $hasil = $nilaiAtas / $nilaiBawah;
-    print_r("Nilai Atas  = " . $nilaiAtas . "</br>");
-    print_r("Nilai Bawah = " . $nilaiBawah . "</br>");
-    print_r("Hasilnya    = " . $hasil . "</br></br>");
+    var_dump("Nilai Atas  = " . $nilaiAtas . "</br>");
+    var_dump("Nilai Bawah = " . $nilaiBawah . "</br>");
+    var_dump("Hasilnya    = " . $hasil . "</br></br>");
     return $hasil;
 }
 
