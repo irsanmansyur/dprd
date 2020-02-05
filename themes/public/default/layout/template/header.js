@@ -53,7 +53,6 @@ function addCss(url) {
 const elNotif = document.querySelector(".nav-item.notif");
 
 docReady(async function() {
-	toast.options = {};
 	$(".toast").toast({
 		closeButton: false,
 		debug: false,

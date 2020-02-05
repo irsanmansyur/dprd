@@ -8,8 +8,4 @@ metaInfo.forEach(function(e) {
 	});
 });
 
-// add new css style
-console.log("ok");
-
 let a = addCss(theme.folder + "layout/user/css/main.css");
-console.log(a);
