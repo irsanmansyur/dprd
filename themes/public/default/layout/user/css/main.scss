@@ -19,9 +19,9 @@ $mobile: 400px;
 		}
 	}
 }
-#asp-terbaru{
-	h2{
-		@include mobile{
+#asp-terbaru {
+	h2 {
+		@include mobile {
 			margin-top: 15px;
 		}
 	}
