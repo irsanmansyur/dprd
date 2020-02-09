@@ -61,6 +61,9 @@ $route['translate_uri_dashes'] = FALSE;
 // Router Notif
 $route['api/notif'] = 'api/notif/index'; // komentar 4
 
+// Router Komisi
+$route['api/komisi'] = 'api/notif/komisi'; // komentar 4
+
 // router aspirasi
 $route['api/aspirasi/page/(:num)'] = 'api/aspirasi/index/$1'; // komentar 4
 
@@ -70,4 +73,4 @@ $route['api/komentar'] = 'api/komentar/index'; // komentar 4
 $route['api/komentar/id/(:any)'] = 'api/komentar/index/id_komentar/$1'; // komentar 4
 $route['api/komentar/aspirasi/(:any)(\.)([a-zA-Z0-9_-]+)(.*)'] = 'api/komentar/index/aspirasi_id/$1'; // komentar 4
 // $route['komentar/(:num)(\.)([a-zA-Z0-9_-]+)(.*)'] = 'api/komentar/index/id/$1/format/$3$4'; // komentar 8
-$route['admin/label/(:any)'] = 'admin/label/index/$1'; // komentar 4
+$route['admin/komisi/label/(:any)'] = 'admin/komisi/label/index/$1'; // komentar 4

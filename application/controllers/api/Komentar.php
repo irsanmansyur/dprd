@@ -41,17 +41,16 @@ class Komentar extends RestController
 
     public function index_get()
     {
-        $this->db->select("web_komentar.*,tbl_user_file.file,tbl_user.role_id,tbl_user.name AS username");
+        $this->db->select("web_komentar.*,tbl_user.image,tbl_user.role_id,tbl_user.name AS username");
         $this->db->from("web_komentar");
         $this->db->join("tbl_user", "tbl_user.id_user=web_komentar.user_id");
-        $this->db->join("tbl_user_file", "tbl_user.file_id=tbl_user_file.id_file");
         count($this->get()) > 0 ? $this->db->where($this->get()) : '';
         $eks = $this->db->get();
         if ($eks) {
             $komentar = $eks->result_array();
             if ($komentar) {
                 foreach ($komentar as $key => $val) {
-                    $komentar[$key]["file"] = getThumb($val['file']);
+                    $komentar[$key]["image"] = getThumb($val['image']);
                 }
                 $this->response([
                     "status" => true,

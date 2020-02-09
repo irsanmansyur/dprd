@@ -61,7 +61,7 @@ class Aspirasi extends Admin_Controller
             "join" => [
                 ["tbl_user_file", 'tbl_user']
             ],
-            "select" => "tbl_user_file.file",
+            "select" => "tbl_user_file.image",
             "start" => 0
         ]);
         $komisi = $this->tbl;

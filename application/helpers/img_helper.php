@@ -5,6 +5,9 @@ function deleteImg($folder, $img)
     if (is_file(FCPATH . "assets/img/" . $folder . "/" . $img)) {
         unlink(FCPATH . "assets/img/" . $folder . "/" . $img);
     }
+    if (is_file(FCPATH . "assets/img/thumbnail/" . $folder . "_" . $img)) {
+        unlink(FCPATH . "assets/img/thumbnail/" . $folder . "_" . $img);
+    }
 }
 
 function upload_file($name, $folder = '')

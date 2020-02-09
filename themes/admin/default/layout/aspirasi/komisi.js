@@ -20,7 +20,7 @@ dftAspirasi.on("click", ".mdl#lihat", function() {
 		id_aspirasi: $(this).data("id"),
 		status: _parent.children("td[name=status]").data("status"),
 		message: _parent.children("td[name=message]").text(),
-		image:  $(this).data("image"),
+		image: $(this).data("image"),
 		komisi_id: $(this).data("komisi")
 	};
 
@@ -379,11 +379,12 @@ function loadAspirasi() {
                             <td name='message'>${e.message}</td>
                             <td name='status' data-status="${e.status}"><span class="badge badge-${status[0]}">${status[1]}</span></td>
                             <td>
-                                <a href="" data-image="${e.file}" class="mdl badge badge-danger" id="lihat"  data-id="${e.id_aspirasi}" data-toggle="modal" data-url="${baseUrl}api/aspirasi?id_aspirasi=${e.id_aspirasi}" data-target=".modal#lihat">Lihat</a>
+                                <a href="" data-image="${e.image}" class="mdl badge badge-danger" id="lihat"  data-id="${e.id_aspirasi}" data-toggle="modal" data-url="${baseUrl}api/aspirasi?id_aspirasi=${e.id_aspirasi}" data-target=".modal#lihat">Lihat</a>
                             </td>
 						</tr>
 					
 					`;
+
 					Urut++;
 				});
 				dftAspirasi.html(tr);

@@ -53,57 +53,38 @@ class User extends Admin_Controller
 			$timestamp = strtotime($date);
 			$post['tgl_lahir'] = $timestamp;
 
-			$fileName = $this->data['user']['file'];
-			$id_file = $this->data['user']['file_id'];
+			$fileName = $this->data['user']['image'];
 
 			if ($upload_image) {
 				$config['allowed_types'] = 'gif|jpg|jpeg|png';
-				$config['max_size']      = '2048';
+				$config['max_size']      = '3048';
 				$config['upload_path'] = './assets/img/profile/';
 				$this->load->library('upload', $config);
 
-
 				if ($this->upload->do_upload('image')) {
+
 					// cretate thumbnail image
-					$newFileName = $this->upload->data('file_name');
-					$this->_create_thumbs($newFileName);
-
-					$file = $this->file_model;
-					$fieldFile = [
-						"id_file" => $id_file,
-						'file' => $newFileName,
-						'user_id' => $user->getField()['id_user']
-					];
-
-					if ($id_file == "file_001") //file default
+					if ($fileName != "default.png") //file default
 					{
-						$id_file = $file->getLastId();
-						$fieldFile['id_file'] = $id_file;
-						$file->add($fieldFile);
-						$msg[] = "Foto Profile Upload";
-					} else {
 						if (is_file(FCPATH . 'assets/img/profile/' . $fileName))
 							unlink(FCPATH . 'assets/img/profile/' . $fileName);
 						if (is_file(FCPATH . 'assets/img/thumbnail/profile_' . $fileName))
 							unlink(FCPATH . 'assets/img/thumbnail/profile_' . $fileName);
-						$file->setFieldTable($fieldFile);
-						$file->update();
-						$msg[] = "Foto Profil Updated";
 					}
-					$eks = hasilCUD();
-					if (!$eks->status)
-						$msg[] = $eks->message;
-					else $status = true;
+					$fileName = $this->upload->data('file_name');
+					_img_create_thumbs($fileName, "profile");
+
+					$msg[] = "Foto Profil Updated";
 				} else {
 					$msg[] = $this->upload->display_errors();
 				}
 			}
-			$post['file_id'] = $id_file;
+			$post['image'] = $fileName;
 			$this->db->update("tbl_user", $post, ['id_user' => $this->data['user']['id_user']]);
 
 			$eks = hasilCUD("Sukses Update");
-
-			setNotif($eks->status, $eks->message);
+			$msg[] = $eks->message;
+			setNotif($eks->status, $msg);
 			header("Refresh:0");
 		}
 	}

@@ -1,0 +1,43 @@
+#lblImage {
+  position: relative;
+  overflow: hidden;
+}
+
+#lblImage .profile {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  padding: 4px;
+  background-color: white;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+#lblImage .profile:hover + span#text {
+  left: 34px;
+  visibility: visible;
+}
+
+#lblImage span#text {
+  position: absolute;
+  top: 50%;
+  left: -100%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 24px;
+  height: 55px;
+  font-weight: bold;
+  background-color: #000;
+  opacity: 0.45;
+  visibility: hidden;
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+  /* background-color: #000000; */
+}
+
+.form-group.image input[type="file"] {
+  display: none;
+}
+/*# sourceMappingURL=user.css.map */

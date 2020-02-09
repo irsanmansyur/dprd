@@ -72,9 +72,8 @@ function is_login($roleId = null)
     $email = $ci->session->userdata('email');
     $ci->data['login'] = false;
     if ($email) {
-        $ci->db->select("tbl_user.id_user,tbl_user.tentang_saya,tbl_user.date_created,tbl_user.role_id,tbl_user.name,tbl_user.email,tbl_user.no_hp,tbl_user.alamat,tbl_user.tgl_lahir,tbl_user.file_id,tbl_user_file.file,tbl_user_role.name as role_name");
+        $ci->db->select("tbl_user.id_user,tbl_user.tentang_saya,tbl_user.date_created,tbl_user.role_id,tbl_user.name,tbl_user.email,tbl_user.no_hp,tbl_user.alamat,tbl_user.tgl_lahir,tbl_user.image,tbl_user_role.name as role_name");
         $ci->db->from("tbl_user");
-        $ci->db->join("tbl_user_file", "tbl_user_file.id_file=tbl_user.file_id");
         $ci->db->join("tbl_user_role", "tbl_user_role.id=tbl_user.role_id");
         $ci->db->where(['tbl_user.email' => $email]);
         $user = $ci->db->get()->row_array();

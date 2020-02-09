@@ -18,8 +18,8 @@ $this->load->view($thema_load . 'element/template/head_meta.php');
         <div class="card card-profile">
             <div class="card-header ">
                 <div class="card-avatar">
-                    <a href="#<?= $user['file'] ?>">
-                        <img class="img" src="<?= getProfile($user['file'], 'thumbnail'); ?>">
+                    <a href="#<?= $user['image'] ?>">
+                        <img class="img" src="<?= getProfile($user['image'], 'thumbnail'); ?>">
                     </a>
                 </div>
             </div>

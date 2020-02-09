@@ -9,19 +9,38 @@ class Dashboard extends Admin_Controller
     //Menampilkan Dashboard
     function index()
     {
-        $file = $this->file_model;
+        $this->data['page']['title'] = 'Selamat Datang..!';
+        $this->data['page']['description'] = 'Silahkan lihat informasi.!';
+
         $this->data['jumlah_user'] =  $this->user_model->getAll()->num_rows();
         $this->data['jumlah_submenu'] =  $this->menu_m->getSubmenu()->num_rows();
         $this->data['jumlah_menu'] =  $this->menu_m->getMenu()->num_rows();
-        $this->data['jumlah_file'] =  $file->getAll()->num_rows();
 
+        $this->db->where([
+            "status" => "1"
+        ]);
+        $this->db->from("web_aspirasi asp");
+        $this->db->join("web_komisi", "web_komisi.id_komisi=asp.komisi_id");
+
+        $this->data['aspirasi_read'] = $this->db->count_all_results();
+
+        $this->db->where([
+            "status!=" => "1",
+        ]);
+        $this->db->from("web_aspirasi asp");
+        $this->db->join("web_komisi", "web_komisi.id_komisi=asp.komisi_id");
+
+        $this->data['aspirasi_not_read'] = $this->db->count_all_results();
 
         $visitor = $this->visitor_m->getVisitor()->result_array();
         foreach ($visitor as $row) {
             $this->data['days'][] = $row['date_created'];
             $this->data['count'][] = $row['Count'];
         }
-        $this->template->load('admin', 'dashboard', $this->data);
+        if ($this->session->userdata("role_id") == 2) {
+            $this->template->load('admin', 'komisi/dashboard', $this->data);
+        } else
+            $this->template->load('admin', 'dashboard', $this->data);
     }
 
     function test()

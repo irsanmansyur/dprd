@@ -112,7 +112,6 @@ $this->load->view($thema_load . 'element/template/head_meta.php');
     </div>
     <script>
         var dftAspirasi = $("tbody.daftar-aspirasi");
-        var baseUrl = "<?= base_url() ?>";
         const user = <?= json_encode($user) ?>;
         var urlLoadAspirasi = baseUrl + "api/aspirasi?id_komisi=<?= $komisi['komisi_id'] ?>"
         var tr = null;

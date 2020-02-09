@@ -16,57 +16,40 @@ $this->load->view($thema_load . 'element/template/head_meta.php');
 
     <!-- isi content -->
     <div class="row">
-        <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class=" col-md-6 col-sm-6">
             <div class="card card-stats">
                 <div class="card-header card-header-warning card-header-icon">
                     <div class="card-icon">
                         <i class="material-icons">
-                            account_circle
+                            message
                         </i>
                     </div>
-                    <p class="card-category">User</p>
-                    <h3 class="card-title"><?= $jumlah_user ?></h3>
+                    <p class="card-category">Aspirasi Ditanggapi</p>
+                    <h3 class="card-title"><?= $aspirasi_read ?></h3>
                 </div>
                 <div class="card-footer">
                     <div class="stats">
                         <i class="material-icons text-danger">warning</i>
-                        <p>Jumlah User Selain Admin...</p>
+                        <p>Jumlah Aspirasi yang sudah ditanggapi...</p>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="col-md-6 col-sm-6">
             <div class="card card-stats">
-                <div class="card-header card-header-rose card-header-icon">
+                <div class="card-header card-header-danger card-header-icon">
                     <div class="card-icon">
                         <i class="material-icons">
-                            folder
+                            swap_horizontal_circle
                         </i>
                     </div>
-                    <p class="card-category">Menu</p>
-                    <h3 class="card-title"><?= $jumlah_menu ?></h3>
+                    <p class="card-category">Aspirasi Belum Ditanggapi</p>
+                    <h3 class="card-title"><?= $aspirasi_not_read ?></h3>
                 </div>
                 <div class="card-footer">
                     <div class="stats">
-                        <i class="material-icons">local_offer</i> Jumlah Menu berdasarkan User Role
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-6 col-sm-6">
-            <div class="card card-stats">
-                <div class="card-header card-header-success card-header-icon">
-                    <div class="card-icon">
-                        <i class="material-icons">
-                            folder_open
-                        </i>
-                    </div>
-                    <p class="card-category">Jumlah Submenu</p>
-                    <h3 class="card-title"><?= $jumlah_submenu ?></h3>
-                </div>
-                <div class="card-footer">
-                    <div class="stats">
-                        <i class="material-icons">date_range</i> Berdasarkan User role dan menu
+                        <i class="material-icons text-danger">warning</i>
+                        <p>Jumlah Aspirasi yang Belum ditanggapi...</p>
                     </div>
                 </div>
             </div>

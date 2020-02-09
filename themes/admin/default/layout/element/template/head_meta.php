@@ -61,4 +61,27 @@
         <script src="<?= $thema_folder; ?>assets/vendor/summernote/summernote-bs4.min.js"></script>
     <?php endif; ?>
 
+    <script>
+        const baseUrl = "<?= base_url() ?>";
+        const folderTheme = "<?= $thema_folder; ?>";
+
+        function getData(url, method = {}) {
+            return fetch(baseUrl + url, method)
+                .then((response) => response.json())
+                .then(res => res)
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        }
+
+        function addCss(url) {
+
+            let link = document.createElement("link");
+            link.rel = "stylesheet";
+            link.type = "text/css";
+            link.href = folderTheme + url;
+            document.querySelector("head").appendChild(link);
+            return "Added";
+        }
+    </script>
 </head>

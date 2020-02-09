@@ -118,9 +118,8 @@ class User_model extends CI_Model
     // menampilkan user berdasarkan email
     function getUser($email)
     {
-        $this->db->select('tbl_user.*,tbl_user_file.file,tbl_user_role.name AS role_name');
+        $this->db->select('tbl_user.*,tbl_user.image,tbl_user_role.name AS role_name');
         $this->db->from($this->table);
-        $this->db->join('tbl_user_file', "tbl_user_file.id_file=tbl_user.file_id");
         $this->db->join('tbl_user_role', "tbl_user_role.id=tbl_user.role_id");
         $this->db->where([
             "{$this->table}.email" => $email
@@ -131,9 +130,9 @@ class User_model extends CI_Model
     // Mengecek apakah user ada atau tidak berdasarkan email
     function cekUser($email)
     {
-        $this->db->select('tbl_user.*,tbl_user_file.file,tbl_user_role.name AS role_name');
+        $this->db->select('tbl_user.*,tbl_user_file.image,tbl_user_role.name AS role_name');
         $this->db->from($this->table);
-        $this->db->join('tbl_user_file', "tbl_user_file.id_file=tbl_user.file_id");
+        $this->db->join('tbl_user_file', "tbl_user_file.id_file=tbl_user.image_id");
         $this->db->join('tbl_user_role', "tbl_user_role.id=tbl_user.role_id");
         $this->db->where([
             "{$this->table}.email" => $email

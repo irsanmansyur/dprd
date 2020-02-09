@@ -168,20 +168,16 @@ class Auth extends MY_Controller
             } else
                 $post["role_id"] = $roleId['id'];
 
-            $file = new $this->tbl; //inisialisai table modal FILE
-            $file->setTable("tbl_user_file", 'file');
-            $post['file_id'] = 'file_001'; //File Default 
+
+            $image = 'default.png'; //File Default 
             $upload_image = $_FILES['image']['name'];
             if ($upload_image) {
                 $config['allowed_types'] = 'gif|jpg|jpeg|png';
-                $config['max_size']      = '2048';
+                $config['max_size']      = '3048';
                 $config['upload_path'] = './assets/img/profile/';
                 $this->load->library('upload', $config);
                 if ($this->upload->do_upload('image')) {
                     $image = $this->upload->data('file_name');
-                    $post['file_id']  = $file->getLastKey();
-
-                    $post['image'] = $image;
                     _img_create_thumbs($image, "profile");
                 }
             }
@@ -193,21 +189,11 @@ class Auth extends MY_Controller
                 // redirect("admin/auth/registration/" . $name);
             }
             // simpang data user ke database
+            $post['image'] = $image;
             $user->setField($post);
             $eks = $user->add();
             if ($eks->status) { //jika ada sukses input user
 
-                if ($post['file_id'] !== 'file_001') { // cek jika ada  file di upload
-                    // buat account  file 
-                    $user_data = $user->getField();
-                    $file_data = [
-                        "type" => 1, // 1 for Image 2 for file
-                        "user_id" => $user_data['id_user'],
-                        "file" => $post['image'] //save image jika ada
-                    ];
-                    $file->setField($file_data);
-                    $eks = $file->add($file_data);
-                }
                 // mengirim token ke email
                 $token =  uniqid(); //random token
                 $send  = $this->_sendEmail($token, 'verify');

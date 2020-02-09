@@ -20,7 +20,7 @@ $this->load->view($thema_load . 'element/template/head_meta.php');
                 <div class="card card-profile">
                     <div class="card-avatar">
                         <a href="#pablo" id="changePhoto">
-                            <img class="img" src="<?= getProfile($user['file'], 'thumbnail') ?>">
+                            <img class="img" src="<?= getProfile($user['image'], 'thumbnail') ?>">
                         </a>
                     </div>
                     <div class="card-body">

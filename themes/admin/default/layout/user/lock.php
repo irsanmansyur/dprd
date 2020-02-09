@@ -17,8 +17,8 @@
                             <div class="card-header ">
 
                                 <div class="card-avatar">
-                                    <a href="#<?= $user['file'] ?>">
-                                        <img class="img" src="<?= getProfile($user['file'], 'thumbnail'); ?>">
+                                    <a href="#<?= $user['image'] ?>">
+                                        <img class="img" src="<?= getProfile($user['image'], 'thumbnail'); ?>">
                                     </a>
                                 </div>
                             </div>

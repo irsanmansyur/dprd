@@ -47,7 +47,7 @@ class Label extends Admin_Controller
                 $this->data['all_label'] = $data;
             } else
                 return var_dump($data);
-            $this->template->load('admin', 'label/index', $this->data);
+            $this->template->load('admin', 'komisi/label/index', $this->data);
         } else {
             $this->post['komisi_id'] = $id;
 
@@ -92,7 +92,7 @@ class Label extends Admin_Controller
                     }
                 }
             }
-            redirect('admin/label/' . $id);
+            redirect('admin/komisi/label/' . $id);
         }
     }
     public function delete($id)
@@ -101,8 +101,9 @@ class Label extends Admin_Controller
 
         $this->db->delete("web_komisi_label", ["id_label" => $id]);
         $eks = hasilCUD("Sukses Menghapus label");
-        return $eks;
-        redirect(base_url('admin/label/' . $komisi_id));
+        $tp = $eks->status ? "success" : "danger";
+        $this->session->set_flashdata("message", "<div class='alert alert-$tp' role='alert'>$eks->message</div>");
+        redirect(base_url('admin/komisi/label/' . $komisi_id));
     }
     public function edit($id)
     {
@@ -121,7 +122,7 @@ class Label extends Admin_Controller
             $this->label_m->setField($this->post);
             $this->label_m->update();
             hasilCUD("Berhasil Update Label");
-            redirect(base_url('admin/label/' . $komisi_id));
+            redirect(base_url('admin/komisi/label/' . $komisi_id));
         }
     }
     public function reply($id)

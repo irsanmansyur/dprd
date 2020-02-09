@@ -19,28 +19,29 @@ $this->load->view($thema_load . 'element/template/head_meta.php');
             <div class="card-icon">
                 <i class="material-icons">assignment</i>
             </div>
-            <h4 class="card-title">Daftar Label <?= @$komisi['name'] ?></h4>
+            <h4 class="card-title">Daftar Komisi</h4>
         </div>
         <div class="card-body">
-            <a href="" data-url="<?= base_url('admin/label/') . $komisi['id_komisi']; ?>" id="addLabel" class="btn btn-primary mb-3 mdl add" data-toggle="modal" data-target=".modal#label">Add New Label</a>
+            <a href="" data-url="<?= base_url('admin/komisi/home'); ?>" id="addKomisi" class="btn btn-primary mb-3 mdl add" data-toggle="modal" data-target=".modal#komisi">Add New Komisi</a>
             <div class="table-responsive">
                 <table class="table table-hover">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Label</th>
+                            <th scope="col">Nama</th>
                             <th scope="col">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php $i = 1; ?>
-                        <?php foreach ($all_label->result_array() as $row) : ?>
+                        <?php foreach ($all_komisi as $row) : ?>
                             <tr>
                                 <th scope="row"><?= $i; ?></th>
-                                <td><?= $row['label']; ?></td>
+                                <td><?= $row['name']; ?></td>
                                 <td>
-                                    <a href="" data-komisi_id="<?= $row['komisi_id'] ?>" data-label="<?= $row['label'] ?>" data-url="<?= base_url('admin/label/edit/') . $row['id_label']; ?>?komisi_id=<?= $row['komisi_id'] ?>" class="badge badge-success mdl" id="edit" data-toggle="modal" data-target=".modal#label">edit</a>
-                                    <a href="" class="mdl badge badge-danger" id="delete" data-toggle="modal" data-url="<?= base_url('admin/label/delete/') . $row['id_label']; ?>?komisi_id=<?= $row['komisi_id'] ?>" data-target=".modal#logout">delete</a>
+                                    <a href="<?= base_url('admin/komisi/label/') . $row['id_komisi']; ?>" data-id="<?= $row['id_komisi'] ?>" class="badge badge-primary" id="label">Show Label</a>
+                                    <a href="" data-name="<?= $row['name'] ?>" data-url="<?= base_url('admin/komisi/home/edit/') . $row['id_komisi']; ?>" class="badge badge-success mdl" id="edit" data-toggle="modal" data-target=".modal#komisi">edit</a>
+                                    <a href="" class="mdl badge badge-danger" id="delete" data-toggle="modal" data-url="<?= base_url('admin/komisi/home/delete/') . $row['id_komisi']; ?>" data-target=".modal#logout">delete</a>
                                 </td>
                             </tr>
                             <?php $i++; ?>
@@ -62,21 +63,20 @@ $this->load->view($thema_load . 'element/template/head_meta.php');
 
     <!-- modal dan scrip code -->
     <!-- Modal -->
-    <div class="modal fade" id="label" tabindex="-1" role="dialog" aria-labelledby="#modalLabel" aria-hidden="true">
+    <div class="modal fade" id="komisi" tabindex="-1" role="dialog" aria-labelledby="#modalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalLabel">Add New Label</h5>
+                    <h5 class="modal-title" id="modalLabel">Add New Menu</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="<?= base_url('admin/label'); ?>" method="post" id="formInput">
+                <form action="<?= base_url('admin/komisi'); ?>" method="post" id="formInput">
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="#label" class="bmd-label-floating">Nama label .*</label>
-                            <input type="hidden" class="form-control input komisi_id" id="komisi" required="true" name="komisi_id">
-                            <input type="text" class="form-control input label" id="label" required="true" name="label">
+                            <label for="#komisi" class="bmd-label-floating">Nama Komisi .*</label>
+                            <input type="text" class="form-control input name" id="komisi" required="true" name="name">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -95,20 +95,17 @@ $this->load->view($thema_load . 'element/template/head_meta.php');
     <script>
         $('.mdl.add').on('click', function() {
             const url_add = $(this).data('url');
-            $('#formInput').attr('action', url_add).parent().find("#modalLabel").html('Add label');
-            $('#formInput').find("button.submit").html('Add label');
-            $('#formInput').find(".input.label").val('').parent().removeClass('is-filled');
+            $('#formInput').attr('action', url_add).parent().find("#modalLabel").html('Add Komisi');
+            $('#formInput').find("button.submit").html('Add Komisi');
+            $('#formInput').find(".input.name").val('').parent().removeClass('is-filled');
         });
         $('.mdl#edit').each(function(index) {
             $(this).on('click', function() {
-                console.log("Click edit");
-                const val_label = $(this).data('label');
+                const val_name = $(this).data('name');
                 const url_edit = $(this).data('url');
-                const val_komisi_id = $(this).data('komisi_id');
-                $('#formInput').attr('action', url_edit).parent().find("#modalLabel").html('Edit label');
-                $('#formInput').find("button.submit").html('Edit label');
-                $('#formInput').find(".input.label").val(val_label).parent().addClass('is-filled');
-                $('#formInput').find(".input.komisi_id").val(val_komisi_id).parent().addClass('is-filled');
+                $('#formInput').attr('action', url_edit).parent().find("#modalLabel").html('Edit Komisi');
+                $('#formInput').find("button.submit").html('Edit Komisi');
+                $('#formInput').find(".input.name").val(val_name).parent().addClass('is-filled');
             });
         })
         $('.mdl#delete').each(function() {
@@ -126,7 +123,7 @@ $this->load->view($thema_load . 'element/template/head_meta.php');
         $(function() {
             $("#formInput").validate({
                 rules: {
-                    label: {
+                    name: {
                         required: true,
                         minlength: 4
                     },
@@ -142,6 +139,8 @@ $this->load->view($thema_load . 'element/template/head_meta.php');
             });
         });
     </script>
+
+
 
 </body>
 

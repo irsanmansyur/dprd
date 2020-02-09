@@ -78,9 +78,7 @@ class Admin_Controller extends MY_Controller
         $this->db->select("tbl_user_menu.*");
         $this->db->from("tbl_user_menu");
         $this->db->join('tbl_user_access_menu', "tbl_user_access_menu.menu_id=tbl_user_menu.id_menu");
-        $this->db->join('tbl_user', "tbl_user.role_id = tbl_user_access_menu.role_id ");
         $this->db->where([
-            'tbl_user.menu_active' => "yes",
             "tbl_user_access_menu.role_id" => $this->role_id
         ]);
         $this->data['menu_all'] = $this->db->get()->result_array();
@@ -115,7 +113,6 @@ class Admin_Controller extends MY_Controller
         }
         $this->data['user'] = $response->user;
         $this->user_model->setFieldTable($this->data['user']);
-        $this->file_model->setFieldTable($this->data['user']);
     }
 }
 class Publik_Controller extends MY_Controller

@@ -11,7 +11,7 @@
        <div class="sidebar-wrapper">
            <div class="user">
                <div class="photo">
-                   <img src="<?= getProfile($user['file'], 'thumbnail') ?>">
+                   <img src="<?= getProfile($user['image'], 'thumbnail') ?>">
                </div>
                <div class="user-info">
                    <a data-toggle="collapse" href="#collapseExample" class="username">
@@ -52,7 +52,6 @@
                        <p> Dashboard </p>
                    </a>
                </li>
-
                <!-- QUERY MENU -->
                <?php foreach ($menu_all as $m) : ?>
                    <?php

@@ -22,7 +22,7 @@
                 <div class="col-md-6 mr-auto ml-auto">
                     <div class="profile">
                         <div class="avatar">
-                            <img src="<?= getThumb($user['file']) ?>">
+                            <img src="<?= getThumb($user['image']) ?>">
                         </div>
                         <div class="name">
                             <h3 class="title"><?= $user['name'] ?></h3>

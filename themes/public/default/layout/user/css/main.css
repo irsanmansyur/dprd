@@ -1,160 +1,160 @@
 @media (max-width: 400px) {
-	.page-caption .page-title {
-		font-size: 2em;
-	}
+  .page-caption .page-title {
+    font-size: 2em;
+  }
 }
 
 @media (max-width: 400px) {
-	#asp-terbaru h2 {
-		margin-top: 15px;
-	}
+  #asp-terbaru h2 {
+    margin-top: 15px;
+  }
 }
 
 #data-aspirasi {
-	margin-top: 5px;
+  margin-top: 5px;
 }
 
 .cardImg-profile {
-	width: 55px;
-	height: 50px;
-	left: 15px;
-	top: 10px;
+  width: 55px;
+  height: 50px;
+  left: 15px;
+  top: 10px;
 }
 
 @media (max-width: 400px) {
-	.cardImg-profile {
-		width: 55px;
-		height: 50px;
-		left: 10px;
-		top: 10px;
-		padding: 0;
-	}
+  .cardImg-profile {
+    width: 55px;
+    height: 50px;
+    left: 10px;
+    top: 10px;
+    padding: 0;
+  }
 }
 
 .bg-utama {
-	background-color: #fed136;
-	color: white !important;
+  background-color: #fed136;
+  color: white !important;
 }
 
 .c-utama {
-	color: #fed136;
+  color: #fed136;
 }
 
 .card {
-	position: relative;
-	overflow: hidden;
+  position: relative;
+  overflow: hidden;
 }
 
 @media (max-width: 400px) {
-	.card .card-title {
-		padding: 0;
-		font-size: 1.2em;
-	}
+  .card .card-title {
+    padding: 0;
+    font-size: 1.2em;
+  }
 }
 
 .card .lihat {
-	position: absolute;
-	visibility: hidden;
-	top: 0;
-	right: 0;
-	width: 0%;
-	height: 100%;
-	background-color: #1b1500;
-	opacity: 0.8;
-	cursor: pointer;
-	z-index: 1;
-	-webkit-transition: all 0.25s ease;
-	transition: all 0.25s ease;
-	display: -webkit-box;
-	display: -ms-flexbox;
-	display: flex;
-	-webkit-box-align: center;
-	-ms-flex-align: center;
-	align-items: center;
-	-webkit-box-pack: center;
-	-ms-flex-pack: center;
-	justify-content: center;
+  position: absolute;
+  visibility: hidden;
+  top: 0;
+  right: 0;
+  width: 0%;
+  height: 100%;
+  background-color: #1b1500;
+  opacity: 0.8;
+  cursor: pointer;
+  z-index: 1;
+  -webkit-transition: all 0.25s ease;
+  transition: all 0.25s ease;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
 .card .lihat a:hover {
-	z-index: 2;
-	background-color: #fee282;
-	color: #c04f03 !important;
+  z-index: 2;
+  background-color: #fee282;
+  color: #c04f03 !important;
 }
 
 .btn-utama {
-	background-color: #fed136 !important;
+  background-color: #fed136 !important;
 }
 
 .btn-utama:hover {
-	font-weight: bold;
-	background-color: #fee282;
-	color: #c04f03 !important;
+  font-weight: bold;
+  background-color: #fee282;
+  color: #c04f03 !important;
 }
 
 .card.baru:hover .lihat {
-	visibility: visible;
-	width: 100%;
+  visibility: visible;
+  width: 100%;
 }
 
 .card-header {
-	padding-left: 80px;
-	padding-right: 70px;
-	position: relative;
+  padding-left: 80px;
+  padding-right: 70px;
+  position: relative;
 }
 
 .card.lihat:hover + .card.lihat::after {
-	height: 100%;
+  height: 100%;
 }
 
 .card.lihat .card.komentar {
-	background-color: #fffae8;
+  background-color: #fffae8;
 }
 
 .card.komentar.childrend {
-	background-color: transparent;
-	border: none;
+  background-color: transparent;
+  border: none;
 }
 
 .card.komentar.childrend .card-header {
-	min-height: 55px;
+  min-height: 55px;
 }
 
 .card.komentar.childrend .card-header .date-created {
-	text-align: left;
+  text-align: left;
 }
 
 @media (min-width: 750px) {
-	.card.komentar.childrend .card-header .date-created {
-		position: absolute;
-		right: 0px;
-		top: 10px;
-		text-align: right;
-	}
+  .card.komentar.childrend .card-header .date-created {
+    position: absolute;
+    right: 0px;
+    top: 10px;
+    text-align: right;
+  }
 }
 
 @media (max-width: 400px) {
-	.card.komentar.childrend .card-header .card-text {
-		margin-left: -70px;
-		padding-top: 8px;
-		margin-right: -60px;
-	}
+  .card.komentar.childrend .card-header .card-text {
+    margin-left: -70px;
+    padding-top: 8px;
+    margin-right: -60px;
+  }
 }
 
 .card.komentar.childrend .card-body {
-	padding: 0px 10px;
+  padding: 0px 10px;
 }
 
 @media (max-width: 400px) {
-	.card-body {
-		padding: 7px;
-	}
+  .card-body {
+    padding: 7px;
+  }
 }
 
 @media (max-width: 400px) {
-	.rounded {
-		padding-right: 5px !important;
-		padding-left: 5px !important;
-	}
+  .rounded {
+    padding-right: 5px !important;
+    padding-left: 5px !important;
+  }
 }
 /*# sourceMappingURL=main.css.map */

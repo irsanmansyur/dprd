@@ -82,7 +82,6 @@ $this->load->view($thema_load . 'element/template/head_meta.php');
 
     <script>
         var dftAspirasi = $("tbody.daftar-aspirasi");
-        var baseUrl = "<?= base_url() ?>";
         var tr = null;
     </script>
     <script src="<?= $thema_folder ?>layout/aspirasi/admin.js"></script>
