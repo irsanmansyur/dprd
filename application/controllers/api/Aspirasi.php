@@ -40,7 +40,7 @@ class Aspirasi extends RestController
     public function index_get($id = null)
     {
 
-        $this->db->select("asp.*,tbl_user.image,tbl_user.name AS username,web_komisi.name AS komisi,(SELECT COUNT(id_komentar) FROM web_komentar AS kmt INNER JOIN tbl_user ON tbl_user.id_user=kmt.user_id where kmt.aspirasi_id=asp.id_aspirasi AND role_id!=2) AS jml_komentar,(SELECT COUNT(id_komentar) FROM web_komentar AS kmt INNER JOIN tbl_user ON tbl_user.id_user=kmt.user_id where kmt.aspirasi_id=asp.id_aspirasi AND role_id=2) AS jml_tanggapan");
+        $this->db->select("asp.*,tbl_user.image,tbl_user.name AS username,web_komisi.name AS komisi,(SELECT COUNT(id_komentar) FROM web_komentar AS kmt INNER JOIN tbl_user ON tbl_user.id_user=kmt.user_id where kmt.aspirasi_id=asp.id_aspirasi AND role_id!=2) AS jml_komentar, (SELECT name FROM tbl_user where tbl_user.id_user=asp.penanggun) AS nmpenanggun, (SELECT COUNT(id_komentar) FROM web_komentar AS kmt INNER JOIN tbl_user ON tbl_user.id_user=kmt.user_id where kmt.aspirasi_id=asp.id_aspirasi AND role_id=2) AS jml_tanggapan");
         $this->db->from("web_aspirasi asp");
         $this->db->join("web_komentar kmt", "kmt.aspirasi_id=asp.id_aspirasi", "left");
         $this->db->join("tbl_user", "tbl_user.id_user=asp.user_id");

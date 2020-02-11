@@ -72,9 +72,10 @@ function tampilkanAspirasiIni(res) {
 	let html = `
 			<div class="loading c-animated-background"></div>
 			<div class="card-header identitas position-relative" style='padding-left:80px'>
-				<img src="${res.file}"  alt="" class="position-absolute rounded-circle cardImg-profile">
+				<img src="${res.image}"  alt="" class="position-absolute rounded-circle cardImg-profile">
 				<h5 class="card-title mb-0">${res.username}</h5>
 				<span class="text-muted">Di arahkan ke : </span><span class="komisi font-weight-bold">${res.komisi}</span>
+				<span>Penanggung Jawab : ${res.nmpenanggun}</span>
 				<span class="position-absolute text-muted text-right" style="top:12px;right:15px">${date_created} ${tbl}</span>
 			</div>
 			<div class="card-body">
@@ -136,7 +137,7 @@ function cardParent(res) {
 	let html = `
 			<div class="card-header identitas position-relative" style='padding-left:80px'>
 				<img src="${
-					res.file
+					res.image
 				}" alt="" class="position-absolute rounded-circle cardImg-profile">
 				<h5 class="card-title komentar mb-0">${res.username}</h5>
 				<span class="text-muted">${
@@ -157,12 +158,13 @@ function cardParent(res) {
 
 function cardChildrend(komentar) {
 	let date_created = getTanggal(komentar.date_created);
+	console.log("ok lah" + komentar.image);
 
 	let htmlChildrend = `
 		<div class="card mt-2 komentar childrend">
 			<div class="card-header identitas position-relative mt-3" style='padding-left:80px;background: transparent;
 			border: none;'>
-				<img src="${komentar.file}" alt="" class="position-absolute rounded-circle cardImg-profile">
+				<img src="${komentar.image}" alt="" class="position-absolute rounded-circle cardImg-profile">
 				<h5 class="card-title komentar mb-0">${komentar.username}</h5>
 				<span class="text-muted date-created" style="">${date_created}</span>
 				<p class="card-text text-justify text-monospace"><span class="text-muted">Membalas : </span>
@@ -228,8 +230,6 @@ function showTanggapan(e) {
 }
 
 docReady(async function() {
-	
-
 	// add new css style
 	addCss(theme.folder + "layout/user/css/main.css");
 
@@ -250,9 +250,11 @@ docReady(async function() {
 				let html = `
 				<div class="lihat"><a href="${baseUrl}/aspirasi/id/${asp.id_aspirasi}" class="btn bg-utama">Lihat</a></div>
 				<div class="card-header identitas position-relative" style='padding-left:80px'>
-					<img src="${asp.file}"  alt="" class="position-absolute rounded-circle cardImg-profile">
+					<img src="${asp.image}"  alt="" class="position-absolute rounded-circle cardImg-profile">
 					<h5 class="card-title mb-0">${asp.username}</h5>
 					<span class="text-muted">Di arahkan ke : </span><span class="komisi font-weight-bold">${asp.komisi}</span>
+					<span>Penanggung Jawab : ${res.nmpenanggun}</span>
+
 					<span class="position-absolute text-muted text-right" style="top:12px;right:15px">${date_created}</span>
 				</div>
 				<div class="card-body">

@@ -49,13 +49,20 @@ $mobile: 400px;
 .c-utama {
 	color: $utama;
 }
+.identitas {
+	.card-title {
+		@include mobile {
+			font-size: 16px;
+		}
+	}
+}
 .card {
 	position: relative;
 	overflow: hidden;
 	.card-title {
 		@include mobile {
 			padding: 0;
-			font-size: 1.2em;
+			font-size: 16px;
 		}
 	}
 	.lihat {
