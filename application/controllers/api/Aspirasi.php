@@ -90,7 +90,7 @@ class Aspirasi extends RestController
 
     public function index_post()
     {
-        
+
 
         $this->form_validation->set_data($this->post());
         $this->form_validation->set_rules("message", "Pesan Aspiarsi", "required|min_length[5]");
@@ -192,7 +192,7 @@ class Aspirasi extends RestController
                         "penanggun" => $penanggun ? $penanggun : "user_001",
                         "kec_id" => $this->post('kec_id')
                     ];
-                    $dataku[]=$data;
+                    $dataku[] = $data;
 
 
 
@@ -210,7 +210,7 @@ class Aspirasi extends RestController
                     "penanggun" => "user_001",
                     "kec_id" => $this->post('kec_id')
                 ];
-                $dataku=$data;
+                $dataku = $data;
                 $this->db->insert("web_aspirasi", $data);
             }
 
