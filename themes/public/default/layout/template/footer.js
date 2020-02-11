@@ -26,18 +26,18 @@ modalAdd.addEventListener("click", function(e) {
 					body: formdata,
 					redirect: "follow"
 				};
-				let sendasp = await fetch(baseUrl + "api/aspirasi/", requestOptions)
+				fetch(baseUrl + "api/aspirasi/", requestOptions)
 					.then(response => response.json())
-					.then(result => result)
+					.then(result => {
+						if (result.status) {
+							alert("Aspirasi Berhasil di input");
+							location.replace(baseUrl + "user");
+						} else {
+							alert("Gagal Input aspirasi");
+						}
+						document.querySelector(".container2").style.visibility = "hidden";
+					})
 					.catch(error => console.log("error", error));
-				if (sendasp.status) {
-					alert("Aspirasi Berhasil di input");
-
-					location.replace(baseUrl + "user");
-				} else {
-					alert("Gagal Input aspirasi");
-				}
-				document.querySelector(".container2").style.visibility = "hidden";
 			};
 			proses();
 		} else {

@@ -65,7 +65,7 @@ function toDelete($link)
  * jika dikirim parameter role id maka di cek apakah ada atau tidak di user
  * yang sedang login,jika tidak ada dikembalikan nilai false. 
  */
-function is_login($roleId = null, $id_user = null)
+function is_login($roleId = null)
 {
     $msg =  response("Inisialisasi");
     $ci = &get_instance();
@@ -75,10 +75,7 @@ function is_login($roleId = null, $id_user = null)
         $ci->db->select("tbl_user.id_user,tbl_user.tentang_saya,tbl_user.date_created,tbl_user.role_id,tbl_user.name,tbl_user.email,tbl_user.no_hp,tbl_user.alamat,tbl_user.tgl_lahir,tbl_user.image,tbl_user_role.name as role_name");
         $ci->db->from("tbl_user");
         $ci->db->join("tbl_user_role", "tbl_user_role.id=tbl_user.role_id");
-        if ($id_user)
-            $ci->db->where(['tbl_user.id_user' => $id_user]);
-        else
-            $ci->db->where(['tbl_user.email' => $email]);
+        $ci->db->where(['tbl_user.email' => $email]);
         $user = $ci->db->get()->row_array();
         if ($user) {
             $msg->message = "user Ditemukan";

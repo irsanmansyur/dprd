@@ -90,8 +90,6 @@ class Aspirasi extends RestController
 
     public function index_post()
     {
-
-
         $this->form_validation->set_data($this->post());
         $this->form_validation->set_rules("message", "Pesan Aspiarsi", "required|min_length[5]");
         $this->form_validation->set_rules("user_id", "Id User ", "required|min_length[4]");
@@ -148,13 +146,18 @@ class Aspirasi extends RestController
                 if ($row['id_komisi'] != "kms_000") {
                     $hasil = cosineSimilarity($arr_textmining, $csn);
                     @$cosine[$row['id_komisi']] = $hasil;
-                    $hasil >= $max ? $max = $hasil : '';
+                    $hasil > $max ? $max = $hasil : '';
                 }
             }
+
+
+
             $minGap = $max * 0.75;
+
             $kms_id = [];
             foreach ($cosine as $key => $value) {
-                $value >= $minGap ? $kms_id[$key] = $value : "";
+                if ($minGap > 0)
+                    $value >= $minGap ? $kms_id[$key] = $value : "";
             }
 
             $dataku = [];

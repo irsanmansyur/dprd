@@ -5,14 +5,14 @@ class User extends MY_Controller
     public function __construct()
     {
         parent::__construct();
-        // $response = is_login(3);
+        $response = is_login(3);
         if (!$response->status) {
             $this->session->set_flashdata('message', '<div class="alert alert-danger alert-with-icon" data-notify="container"><i class="fa fa-volume-up" data-notify="icon"></i><button type="button" class="close" data-dismiss="alert" aria-label="Close"><i class="fa fa-times-circle"></i></button><span data-notify="message">Menu yang anda akses sebelumnya dilarang!</span></div>');
             redirect('admin/auth/index/3');
         }
     }
 
-    public function index($id = null)
+    public function index()
     {
         $aspirasi = $this->db->get_where("web_aspirasi", ['user_id' => $this->data['user']['id_user']]);
         $this->data['all_aspirasi'] = $aspirasi->result_array();
