@@ -152,7 +152,7 @@ class User extends RestController
                     $this->response([
                         "status" => true,
                         "message" => "user di temukan",
-                        "id_user" => $user['email'],
+                        "id_user" => $user['id_user'],
                         "data" => $user
                     ], 200);
                 } else {
