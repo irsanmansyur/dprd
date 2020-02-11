@@ -90,7 +90,6 @@ class Aspirasi extends RestController
 
     public function index_post()
     {
-        die(var_dump($this->post()));
         
 
         $this->form_validation->set_data($this->post());
@@ -152,15 +151,13 @@ class Aspirasi extends RestController
                     $hasil >= $max ? $max = $hasil : '';
                 }
             }
-            var_dump($max);
-
-
             $minGap = $max * 0.75;
             $kms_id = [];
             foreach ($cosine as $key => $value) {
                 $value >= $minGap ? $kms_id[$key] = $value : "";
             }
 
+            $dataku = [];
             if (count($kms_id) > 0) {
                 foreach ($kms_id as $key => $value) {
                     $this->db->select("web_komisi_user.*");
@@ -195,6 +192,7 @@ class Aspirasi extends RestController
                         "penanggun" => $penanggun ? $penanggun : "user_001",
                         "kec_id" => $this->post('kec_id')
                     ];
+                    $dataku[]=$data;
 
 
 
@@ -212,14 +210,23 @@ class Aspirasi extends RestController
                     "penanggun" => "user_001",
                     "kec_id" => $this->post('kec_id')
                 ];
+                $dataku=$data;
                 $this->db->insert("web_aspirasi", $data);
             }
 
             $respon = hasilCUD("Data Aspirasi Ditambahkan");
             if ($respon->status) {
-                $this->response($respon, 200);
+                $this->response([
+                    'status' => true,
+                    "message" => $respon->message,
+                    "data" => $dataku
+                ], 200);
             } else
-                $this->response($respon, 404);
+                $this->response([
+                    'status' => false,
+                    "message" => $respon->message,
+                    "data" => $dataku
+                ], 404);
         } else {
             $this->response([
                 'status' => FALSE,

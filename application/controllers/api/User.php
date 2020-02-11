@@ -42,36 +42,35 @@ class User extends RestController
     {
         $email = $this->post("email");
         $password = $this->post("password");
-        $user = $this->db->get_where("tbl_user",[
+        $user = $this->db->get_where("tbl_user", [
             "email" => $email
             // "password"=> $password
         ])->row_array();
-        if($user){
+        if ($user) {
             $this->response([
                 "status" => true,
                 "message" => "user di temukan",
                 "data" => $user
             ], 200);
-        }
-        else $this->response([
+        } else $this->response([
             "status" => false,
             "message" => "tidak di temukan"
-        ],400);
+        ], 400);
     }
 
     public function login_post()
     {
         $this->form_validation->set_data($this->post());
         $this->form_validation->set_rules("email", "Email", "required");
-        $this->form_validation->set_rules("password", "Password","required");
-        if($this->form_validation->run()){
+        $this->form_validation->set_rules("password", "Password", "required");
+        if ($this->form_validation->run()) {
             $email = $this->post("email");
             $password = $this->post("password");
-            $user = $this->db->get_where("tbl_user",[
+            $user = $this->db->get_where("tbl_user", [
                 "email" => $email
             ])->row_array();
-            if($user){
-                if(password_verify($password, $user['password'])){
+            if ($user) {
+                if (password_verify($password, $user['password'])) {
                     $this->response([
                         "status" => true,
                         "message" => "user di temukan",
@@ -84,14 +83,11 @@ class User extends RestController
                         "data" => $this->post("email")
                     ], 200);
                 }
-                
-            }
-            else $this->response([
+            } else $this->response([
                 "status" => false,
-                "message" => "tidak di temukan"
-            ],400);
-        } else{
-
+                "message" => "User tidak di temukan"
+            ], 200);
+        } else {
         }
     }
 

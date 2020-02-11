@@ -58,11 +58,11 @@
                   <form class="mt-3 komentar" method="post" action="<?= base_url() ?>">
                       <div class="form-group mt-2">
                           <select class="custom-select" name="kec_id">
-                              <option selected value=''>Open this select menu</option>
+                              <option selected value=''>Pili Kecamatan kejadian</option>
                               <?php
                                 $all_kec = $this->db->get("web_kecamatan")->result_array();
                                 foreach ($all_kec as $row) : ?>
-                                  <option value="<? $row['id_kec'] ?>"><?= $row['kecamatan'] ?></option>
+                                  <option value="<?= $row['id_kec'] ?>"><?= $row['kecamatan'] ?></option>
                               <?php endforeach ?>
                           </select>
                       </div>
