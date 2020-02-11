@@ -90,6 +90,8 @@ class Aspirasi extends RestController
 
     public function index_post()
     {
+        die(var_dump($this->post()));
+        
 
         $this->form_validation->set_data($this->post());
         $this->form_validation->set_rules("message", "Pesan Aspiarsi", "required|min_length[5]");

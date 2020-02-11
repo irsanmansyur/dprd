@@ -1,0 +1,129 @@
+.container2 {
+  position: fixed;
+  height: 100%;
+  visibility: hidden;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.363);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 99999;
+  width: 100%;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  font-family: "montserrat", sans-serif;
+  font-size: 32px;
+  opacity: 0.9;
+  cursor: wait;
+}
+
+.loading2 {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  text-align: center;
+  border-radius: 50%;
+  border-top: 10px solid #138071;
+  -webkit-animation: load2 2s linear infinite;
+          animation: load2 2s linear infinite;
+  /* border-bottom: 10px solid #f11717; */
+}
+
+.loading2::before,
+.loading2::after {
+  position: absolute;
+  top: -10;
+  width: 100%;
+  border-radius: 50%;
+  content: "";
+  height: 100%;
+  left: 0;
+}
+
+.loading2::before {
+  border-top: 10px solid #5e1d83;
+  -webkit-transform: rotate(120deg);
+          transform: rotate(120deg);
+}
+
+.loading2::after {
+  border-top: 10px solid #9f28a3;
+  -webkit-transform: rotate(240deg);
+          transform: rotate(240deg);
+}
+
+.loading2 span {
+  position: absolute;
+  width: 0%;
+  height: 100%;
+  text-align: center;
+  top: -10px;
+  left: 50%;
+  line-height: 200px;
+  font-weight: bold;
+  overflow: hidden;
+  -webkit-animation: text2 2s linear infinite;
+          animation: text2 2s linear infinite;
+}
+
+@-webkit-keyframes text2 {
+  0% {
+    color: #167575;
+  }
+  30% {
+    color: #157c5d;
+  }
+  65% {
+    color: #881d83;
+  }
+  100% {
+    -webkit-transform: rotate(-360deg);
+            transform: rotate(-360deg);
+    width: 100%;
+    color: #2a308a;
+    left: 0%;
+  }
+}
+
+@keyframes text2 {
+  0% {
+    color: #167575;
+  }
+  30% {
+    color: #157c5d;
+  }
+  65% {
+    color: #881d83;
+  }
+  100% {
+    -webkit-transform: rotate(-360deg);
+            transform: rotate(-360deg);
+    width: 100%;
+    color: #2a308a;
+    left: 0%;
+  }
+}
+
+@-webkit-keyframes load2 {
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
+@keyframes load2 {
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+/*# sourceMappingURL=footer.css.map */

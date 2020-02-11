@@ -39,9 +39,13 @@
           </div>
       </div>
   </div>
+  <div class="container2">
+      <div class="loading2"><span>Loading..</span></div>
+  </div>
+
   <!-- Modal input aspirasi -->
   <div class="modal fade" id="laporModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg" id="modal-add-aspirasi" role="document">
+      <div class="modal-dialog modal-dialog-centered modal-lg" id="modal-add-aspirasi" role="document">
           <div class="modal-content">
               <div class="modal-header">
                   <h5 class="modal-title" id="exampleModalLabel">New message</h5>
@@ -52,36 +56,47 @@
               <div class="modal-body">
 
                   <form class="mt-3 komentar" method="post" action="<?= base_url() ?>">
+                      <div class="form-group mt-2">
+                          <select class="custom-select" name="kec_id">
+                              <option selected value=''>Open this select menu</option>
+                              <?php
+                                $all_kec = $this->db->get("web_kecamatan")->result_array();
+                                foreach ($all_kec as $row) : ?>
+                                  <option value="<? $row['id_kec'] ?>"><?= $row['kecamatan'] ?></option>
+                              <?php endforeach ?>
+                          </select>
+                      </div>
                       <div class="form-group mt-4 komentar position-relative">
                           <textarea name='message' required class="form-control komentar_1" id="add_komentar_1" rows="3"></textarea>
                           <label for="add_komentar_1" class="label-komentar">
                               <span class="label-text">Ketikkan Komentar Anda Disini</span></label>
                           <input type="submit" value="Kirim" class="btn btn-primary submit-komentar">
                       </div>
-                  </form>
-                  <ul id="progressbar">
 
-                  </ul>
+                  </form>
+
               </div>
 
           </div>
+      </div>
+  </div>
 
 
 
 
-          <!-- Bootstrap core JavaScript -->
-          <script src="<?= $thema_folder; ?>assets/vendor/jquery/jquery.min.js"></script>
-          <script src="<?= $thema_folder; ?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- Bootstrap core JavaScript -->
+  <script src="<?= $thema_folder; ?>assets/vendor/jquery/jquery.min.js"></script>
+  <script src="<?= $thema_folder; ?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-          <!-- Plugin JavaScript -->
-          <script src="<?= $thema_folder; ?>assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+  <!-- Plugin JavaScript -->
+  <script src="<?= $thema_folder; ?>assets/vendor/jquery-easing/jquery.easing.min.js"></script>
 
-          <!-- Contact form JavaScript -->
-          <script src="<?= $thema_folder; ?>assets/js/jqBootstrapValidation.js"></script>
-          <script src="<?= $thema_folder; ?>assets/js/contact_me.js"></script>
+  <!-- Contact form JavaScript -->
+  <script src="<?= $thema_folder; ?>assets/js/jqBootstrapValidation.js"></script>
+  <script src="<?= $thema_folder; ?>assets/js/contact_me.js"></script>
 
-          <!-- Custom scripts for this template -->
-          <script src="<?= $thema_folder; ?>assets/js/agency.min.js"></script>
-          <script src="<?= $thema_folder; ?>assets/js/main.js"></script>
+  <!-- Custom scripts for this template -->
+  <script src="<?= $thema_folder; ?>assets/js/agency.min.js"></script>
+  <script src="<?= $thema_folder; ?>assets/js/main.js"></script>
 
-          <script src="<?= $thema_folder; ?>layout/template/footer.js"></script>
+  <script src="<?= $thema_folder; ?>layout/template/footer.js"></script>

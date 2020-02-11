@@ -29,7 +29,6 @@ class User extends RestController
         // Construct the parent class
         parent::__construct();
 
-
         // Configure limits on our controller methods
         // Ensure you have created the 'limits' table and enabled 'limits' within application/config/rest.php
         $this->methods['index_get']['limit'] = 10; // 500 requests per hour per user/key
@@ -38,193 +37,61 @@ class User extends RestController
         $this->load->library('form_validation');
     }
 
-    public function index_get($id = null)
-    {
-
-        $this->db->select("asp.*,tbl_user.image,tbl_user.name AS username,web_komisi.name AS komisi,(SELECT COUNT(id_komentar) FROM web_komentar AS kmt INNER JOIN tbl_user ON tbl_user.id_user=kmt.user_id where kmt.aspirasi_id=asp.id_aspirasi AND role_id!=2) AS jml_komentar,(SELECT COUNT(id_komentar) FROM web_komentar AS kmt INNER JOIN tbl_user ON tbl_user.id_user=kmt.user_id where kmt.aspirasi_id=asp.id_aspirasi AND role_id=2) AS jml_tanggapan");
-        $this->db->from("web_aspirasi asp");
-        $this->db->join("web_komentar kmt", "kmt.aspirasi_id=asp.id_aspirasi", "left");
-        $this->db->join("tbl_user", "tbl_user.id_user=asp.user_id");
-        $this->db->join("web_komisi", "web_komisi.id_komisi=asp.komisi_id");
-        $this->db->group_by("asp.id_aspirasi");
-
-
-        $page = 0;
-        $total = 1;
-        foreach ($this->get() as $key => $val) {
-
-            if ($key == "page") {
-                $page = $val;
-            } elseif ($key == "baru") {
-                $this->db->limit(10, 0);
-            } elseif ($key == "total") {
-                $total = is_int($val) ? $val : 1;
-            } else
-                $this->db->where([$key => $val]);
-        }
-        // is_int($page) ? $this->db->limit($total, $page) : '';
-        $this->db->order_by('asp.id_aspirasi', "desc");
-        $eks = $this->db->get();
-        if ($eks) {
-            $aspirasi = $eks->result_array();
-
-            if ($aspirasi) {
-                foreach ($aspirasi as $key => $val) {
-                    $aspirasi[$key]["image"] = getThumb($val['image']);
-                }
-                $this->response([
-                    "status" => true,
-                    "data" => $aspirasi
-                ], 200); // OK (200) being the HTTP response code
-            } else {
-                // Set the response and exit
-                $this->response([
-                    'status' => false,
-                    'message' => 'No Aspirasi were found'
-                ], 200);
-            }
-        } else  $this->response([
-            'status' => false,
-            'message' => 'Kesalahan dalam Inputan'
-        ], 400);
-    }
 
     public function index_post()
     {
-
-        $this->form_validation->set_data($this->post());
-        $this->form_validation->set_rules("message", "Pesan Aspiarsi", "required|min_length[5]");
-        $this->form_validation->set_rules("user_id", "Id User ", "required|min_length[4]");
-        $this->form_validation->set_rules("kec_id", "Id Kecamatan", "required|min_length[4]");
-
-        if ($this->form_validation->run()) {
-
-            /**
-             * proses menghilankan kata awal dan akhir
-             */
-            $stemmerFactory = new \Sastrawi\Stemmer\StemmerFactory();
-            $stemmer = $stemmerFactory->createStemmer();
-            $sentence = $this->input->post('message');
-            $outputstemmer = $stemmer->stem($sentence);
-
-            /**
-             * proses menghilankan kata yang tidak penting
-             */
-            $stopWordRemoverFactory = new \Sastrawi\StopWordRemover\StopWordRemoverFactory();
-            $stopword = $stopWordRemoverFactory->createStopWordRemover();
-            $outputstopword = $stopword->remove($outputstemmer);
-
-            /**
-             * load model komisi
-             * mengambil label setiap komisi
-             */
-            $this->load->model("komisi_m");
-            $this->load->helper("cosine_helper");
-
-            //menjadikan array Aspirasi setelah di Text Mining
-            $array = preg_split('/[^[:alnum:]]+/', strtolower($outputstopword));
-            $arr_textmining = [];
-            foreach ($array as $item) {
-                if (array_key_exists($item, $arr_textmining)) {
-                    $arr_textmining[$item]++;
-                } else {
-                    if (strlen($item) > 2)
-                        $arr_textmining[$item] = 1;
-                }
-            }
-
-            $all_komisi = $this->komisi_m->getKomisi();
-
-            $max = 0;
-            foreach ($all_komisi as $row) {
-                $csn = null;
-                $str = lblString($this->komisi_m->getLabel($row['id_komisi']));
-                $array = preg_split('/[^[:alnum:]]+/', strtolower($str));
-                foreach ($array as $item) {
-                    if (strlen($item) > 2) {
-                        @$csn[$item]++;
-                    }
-                }
-                if ($row['id_komisi'] != "kms_000") {
-                    $hasil = cosineSimilarity($arr_textmining, $csn);
-                    @$cosine[$row['id_komisi']] = $hasil;
-                    $hasil >= $max ? $max = $hasil : '';
-                }
-            }
-            var_dump($max);
-
-
-            $minGap = $max * 0.75;
-            $kms_id = [];
-            foreach ($cosine as $key => $value) {
-                $value >= $minGap ? $kms_id[$key] = $value : "";
-            }
-
-            if (count($kms_id) > 0) {
-                foreach ($kms_id as $key => $value) {
-                    $this->db->select("web_komisi_user.*");
-                    $this->db->from("web_komisi_user");
-                    $this->db->join("web_kecamatan", "web_kecamatan.dapil_id=web_komisi_user.dapil_id");
-                    $this->db->where([
-                        "web_kecamatan.id_kec" => $this->post('kec_id'),
-                        "web_komisi_user.komisi_id" => $key
-                    ]);
-                    $eks = $this->db->get()->result_array();
-                    $penanggun = null;
-                    if ($eks) {
-                        $min = 0;
-                        foreach ($eks as $row) {
-                            $row['jumlah_tugas'] >= $min ? $penanggun = $row['user_id'] : '';
-                        }
-                    }
-                    if (!$penanggun) {
-                        $dt = $this->db->get_where("web_komisi_user", [
-                            "komisi_id" => $key,
-                            "jabatan" => "Ketua"
-                        ])->row_array();
-                        $penanggun = $dt['user_id'];
-                    }
-
-                    $tbl = initTable("web_aspirasi", "asp");
-                    $data = [
-                        $tbl['key'] => $tbl['field'][$tbl['key']],
-                        "message" => $this->post('message'),
-                        "user_id" => $this->post('user_id'),
-                        "komisi_id" => $key,
-                        "penanggun" => $penanggun ? $penanggun : "user_001",
-                        "kec_id" => $this->post('kec_id')
-                    ];
-
-
-
-
-
-                    $this->db->insert("web_aspirasi", $data);
-                }
-            } else {
-                $tbl = initTable("web_aspirasi", "asp");
-                $data = [
-                    $tbl['key'] => $tbl['field'][$tbl['key']],
-                    "message" => $this->post('message'),
-                    "user_id" => $this->post('user_id'),
-                    "komisi_id" => "kms_000",
-                    "penanggun" => "user_001",
-                    "kec_id" => $this->post('kec_id')
-                ];
-                $this->db->insert("web_aspirasi", $data);
-            }
-
-            $respon = hasilCUD("Data Aspirasi Ditambahkan");
-            if ($respon->status) {
-                $this->response($respon, 200);
-            } else
-                $this->response($respon, 404);
-        } else {
+        $email = $this->post("email");
+        $password = $this->post("password");
+        $user = $this->db->get_where("tbl_user",[
+            "email" => $email
+            // "password"=> $password
+        ])->row_array();
+        if($user){
             $this->response([
-                'status' => FALSE,
-                'message' => 'Lengkapi data dulu',
-                "dataErrors" => $this->form_validation->error_array()
-            ], 404); // NOT_FOUND (404) being the HTTP response code
+                "status" => true,
+                "message" => "user di temukan",
+                "data" => $user
+            ], 200);
+        }
+        else $this->response([
+            "status" => false,
+            "message" => "tidak di temukan"
+        ],400);
+    }
+
+    public function login_post()
+    {
+        $this->form_validation->set_data($this->post());
+        $this->form_validation->set_rules("email", "Email", "required");
+        $this->form_validation->set_rules("password", "Password","required");
+        if($this->form_validation->run()){
+            $email = $this->post("email");
+            $password = $this->post("password");
+            $user = $this->db->get_where("tbl_user",[
+                "email" => $email
+            ])->row_array();
+            if($user){
+                if(password_verify($password, $user['password'])){
+                    $this->response([
+                        "status" => true,
+                        "message" => "user di temukan",
+                        "data" => $user['email']
+                    ], 200);
+                } else {
+                    $this->response([
+                        "status" => false,
+                        "message" => "Password Salah",
+                        "data" => $this->post("email")
+                    ], 200);
+                }
+                
+            }
+            else $this->response([
+                "status" => false,
+                "message" => "tidak di temukan"
+            ],400);
+        } else{
+
         }
     }
 
