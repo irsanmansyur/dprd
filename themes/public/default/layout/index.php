@@ -1,10 +1,10 @@
 <?php $this->load->view($thema_load . 'template/header.php'); ?>
 <!-- Home Title -->
-<header class="masthead">
+<header class="masthead" style="background-image: url('<?= base_url(); ?>/assets/img/setting/background.jpg');background-attachment: fixed;background-position: top center;">
   <div class="container">
     <div class="intro-text">
-      <div class="intro-lead-in"><?= @$page['title']; ?></div>
-      <div class="intro-heading text-uppercase">DPRD Makassar</div>
+      <div class="intro-lead-in" style="text-shadow: 3px -2px 6px #000000, -4px 2px 0px #484747;"><?= @$page['title']; ?></div>
+      <div class="intro-heading text-uppercase" style="text-shadow: 3px -2px 6px #000000, -4px 2px 0px #484747;">DPRD Makassar</div>
       <?php if ($this->router->fetch_class() == "home" && "index" == $this->router->fetch_method()) : ?>
         <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" data-toggle="modal" data-target="#laporModal" href="<?= base_url('user/lapor') ?>">Laporkan!</a>
       <?php endif; ?>

@@ -186,9 +186,9 @@ class User extends Admin_Controller
     {
         $user = $this->db->get_where("tbl_user", ["id_user" => $id])->row_array();
         if ($user) {
-            return json_encode(["status" => true, "message" => "Sukses Cuk"]);
+            return json_encode(["status" => true, "message" => "Sukses"]);
         } else {
-            return json_encode(["status" => false, "message" => "gagal Cuk"]);
+            return json_encode(["status" => false, "message" => "gagal"]);
         }
     }
 }

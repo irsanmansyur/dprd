@@ -9,7 +9,7 @@
 
     <!-- content -->
     <div class="wrapper wrapper-full-page">
-        <div class="page-header login-page header-filter bg-img" filter-color="black" style="background-image: url('<?= $thema_folder; ?>/assets/img/login.jpg')">
+        <div class="page-header login-page header-filter bg-img" filter-color="black" style="background-image: url('<?= base_url(); ?>/assets/img/setting/background.jpg')">
             <!--   you can change the color of the filter page using: data-color="blue | purple | green | orange | red | rose " -->
             <div class="container">
                 <div class="row">
@@ -117,6 +117,7 @@
 
     <script>
         $(document).ready(function() {
+            loadFileJs("layout/user/js/register.js");
 
             //change photo input
             $('#imagechange input').change(function(e) {
@@ -142,7 +143,6 @@
 
         });
         $(function() {
-
             $("#formInput").validate({
                 errorElement: 'span',
                 errorPlacement: function(error, element) {

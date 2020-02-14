@@ -5,6 +5,10 @@
 	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
 }
+html {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
 body {
 	position: relative;
 	font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -385,4 +389,20 @@ scroll menu
 /* =komentar */
 .list-komentar {
 	transition: all 500ms, opacity 0.5s linear;
+}
+
+/* header */
+header.masthead {
+	position: relative;
+}
+header.masthead::before {
+	position: absolute;
+	content: "";
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+	background: #000;
+	opacity: 0.45;
 }

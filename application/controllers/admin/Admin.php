@@ -121,20 +121,41 @@ class Admin extends Admin_Controller
     // CM_show
     function setting()
     {
-        $this->data['setting'] = $this->setting_m->get()->result();
+        $setting = $this->db->get("tbl_setting")->result();
+        $this->load->library("form_validation");
+        $validation = $this->form_validation;
 
-        $this->load->library('form_validation');
+        $this->data['setting'] = $setting;
         foreach ($this->data['setting'] as $row) {
-            $this->form_validation->set_rules($row->name, $row->name, 'trim|required');
+            if ($row->name != "web_logo")
+                $this->form_validation->set_rules($row->name, $row->name, 'required');
         }
-        if ($this->form_validation->run()) {
+
+        if ($validation->run()) {
+            $logo = $this->db->get_where('tbl_setting', [
+                'name' => "web_logo"
+            ])->row_array();
+            $image = $logo['title'];
+            if (isset($_FILES['web_logo'])) {
+                $config['allowed_types'] = 'gif|jpg|jpeg|png';
+                $config['max_size']      = '2048';
+                $config['upload_path'] = './assets/img/setting/';
+                $this->load->library('upload', $config);
+                if ($this->upload->do_upload('web_logo')) {
+                    if ($image != "logo.png") {
+                        deleteImg("setting", $image);
+                    }
+                    $image = $this->upload->data('file_name');
+                    $this->db->update("tbl_setting", ['title' => $image], ['name' => "web_logo"]);
+                }
+            }
             foreach ($this->input->post() as $row => $value) {
                 $where = ['name' => $row];
                 $data = ['title' => $value];
                 $this->setting_m->update($where, $data);
             }
-            $this->session->set_flashdata('message', "<div class='mb-5 alert alert-success' role='alert'>Sukses Update Pengaturan .!</div>");
 
+            $this->session->set_flashdata('message', "<div class='mb-5 alert alert-success' role='alert'>Sukses Update Pengaturan .!</div>");
             header("Refresh:0");
         } else {
             $this->data['themes_admin'] = $this->template->open_template('admin');
@@ -142,6 +163,7 @@ class Admin extends Admin_Controller
             $this->template->load('admin', 'setting', $this->data);
         }
     }
+
     function backup($new = null, $db = "")
     {
         $this->data['db_backup'] = bacaFolder(FCPATH . "/assets/backup/db/");

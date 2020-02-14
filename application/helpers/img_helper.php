@@ -39,6 +39,15 @@ function getThumb($img, $type = 'profile_')
     }
     return base_url() . 'assets/' . $imgb;
 }
+function getImg($img, $folder = null)
+{
+    $ci = get_instance();
+    $imgb = 'img/default.png';
+    if (is_file(FCPATH . 'assets/img/' . $folder . "/" . $img)) {
+        $imgb = 'img/' . $folder . "/" . $img;
+    }
+    return base_url() . 'assets/' . $imgb;
+}
 function getProfile($img, $type = null)
 {
     $ci = get_instance();
@@ -54,18 +63,6 @@ function getProfile($img, $type = null)
         $imgb = 'img/thumbnail/default.png';
     }
     return base_url('assets/')  . $imgb;
-}
-function getImg($img, $type = null)
-{
-    $ci = get_instance();
-    $imgb = 'img/thumbnails/default.png';
-    if (is_file(FCPATH . 'assets/img/' . $img)) {
-        $imgb = 'img/' . $img;
-        if ($type == 'thumbnail') {
-            $imgb = 'img/thumbnails/' . $img;
-        }
-    }
-    return $ci->assets . $imgb;
 }
 
 function _img_create_thumbs($file_name, $folder)

@@ -1,7 +1,7 @@
    <div class="sidebar" data-color="<?= $this->setting->data_color; ?>" data-background-color="<?= $this->setting->background_color; ?>" data-image="<?= $this->setting->background_image; ?>">
        <div class="logo">
-           <a href="http://www.creative-tim.com" class="simple-text logo-mini">
-               KM
+           <a href="<?= base_url() ?>" class="simple-text logo-mini">
+               <img src="<?= base_url("assets/img/setting/favicon.png") ?>" width="30px" />
            </a>
            <a href="<?= base_url() ?>" class="simple-text logo-normal">
                <?= $this->setting->site_name ?>

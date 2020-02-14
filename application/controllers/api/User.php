@@ -42,6 +42,9 @@ class User extends RestController
         $page = 1;
         $halaman = 10; //batasan halaman
         $mulai = 0;
+        $this->db->select("tbl_user.*,tbl_user_role.name AS komisi");
+        $this->db->from("tbl_user");
+        $this->db->join("tbl_user_role", "tbl_user_role.id=tbl_user.role_id");
         foreach ($this->get() as $key => $val) {
             if ($key == "page") {
                 $page = $val;
@@ -57,6 +60,12 @@ class User extends RestController
         }
         $user = $this->db->get()->result_array();
         if ($user) {
+
+            foreach ($user as $key => $val) {
+                $user[$key]['tgl_lahir'] = date("d/M/Y", $val['tgl_lahir']);
+                $user[$key]['image'] = getThumb($val["image"]);
+                $user[$key]['image_ori'] = getImg($val["image"], "profile");
+            }
             $this->response([
                 'status' => true,
                 "message" => "User di temukan",
@@ -70,18 +79,31 @@ class User extends RestController
         }
     }
 
+
     public function register_post()
     {
         $this->form_validation->set_data($this->post());
-        $this->form_validation->set_rules("name", "Nama Lengkap", "required|min_length[5]");
-        $this->form_validation->set_rules("email", "email", "required|is_unique[tbl_user.email]");
-        $this->form_validation->set_rules("no_hp", "No Handphone", "required|numeric");
-        $this->form_validation->set_rules("alamat", "Alamat", "required");
-        $this->form_validation->set_rules("password", "Password", "required");
-        $this->form_validation->set_rules("role_id", "role id", "required");
+        $this->form_validation->set_rules("name", "Nama Lengkap", "required|min_length[5]", [
+            "required" => "Nama Harus Di isi",
+            "min_length" => "Nama Min 5 Karakter"
+        ]);
+        $this->form_validation->set_rules("email", "email", "required|is_unique[tbl_user.email]", [
+            "required" => "Email Harus Di isi",
+            "is_unique" => "Gunakan email lain yang belum terdaftar"
+        ]);
+
+        $this->form_validation->set_rules("no_hp", "No Handphone", "required|numeric", [
+            "required" => "nomor Handphone Harus Di isi",
+            "numeric" => "Nomor Handphone Hanya boleh Nomor"
+        ]);
+        $this->form_validation->set_rules("alamat", "Alamat", "required", [
+            "required" => "Alamat Harus Di isi",
+        ]);
+        $this->form_validation->set_rules("password", "Password", "required", [
+            "required" => "Password Harus Di isi"
+        ]);
 
         if ($this->form_validation->run()) {
-            $post = $this->input->post();
             $image = "default.png";
             if (isset($_FILES['image'])) {
                 $config['allowed_types'] = 'gif|jpg|jpeg|png';
@@ -104,22 +126,22 @@ class User extends RestController
 
             $data = [
                 $tblUser['key'] =>  $tblUser['lastkey'],
-                "name" => $post['name'],
-                "email" => $post['email'],
-                "no_hp" => $post['no_hp'],
-                "alamat" => $post['alamat'],
-                "role_id" =>  $this->input->post('role_id') ? $this->input->post('role_id') : 3,
-                "is_active" => $this->input->post('is_active') ? $post['is_active'] : 0,
+                "name" => $this->post('name'),
+                "email" => $this->post('email'),
+                "no_hp" => $this->post('no_hp'),
+                "alamat" => $this->post('alamat'),
+                "role_id" =>  $this->post('role_id')  ? $this->post('role_id') : "3",
+                "is_active" => $this->post('is_active') ? $this->post('is_active') : 0,
                 "image" => $image,
-                "password" => password_hash($post['password'], PASSWORD_DEFAULT)
+                "password" => password_hash($this->post('password'), PASSWORD_DEFAULT)
             ];
             $this->db->insert($tblUser['name'], $data);
             $respon = hasilCUD("Data User Ditambahkan");
             $respon->data = $data;
-            if ($respon->status) {
-                if ($post["role_id"] == 3) {
-                    $this->_sendEmail([
-                        'email' => $post['email'],
+            if ($respon->status == true) {
+                if ($data['role_id'] == 3) {
+                    _sendEmail([
+                        'email' => $data['email'],
                         'type' => "verify",
                         "token" => uniqid()
                     ]);
@@ -164,19 +186,23 @@ class User extends RestController
                 }
             } else $this->response([
                 "status" => false,
-                "message" => "User tidak di temukan"
+                "message" => "Email tidak di temukan"
             ], 200);
         } else {
+            $this->response([
+                "status" => false,
+                "message" => "Data Tidak Lengkap",
+                "dataError" => $this->form_validation->error_array()
+            ], 200);
         }
     }
 
 
-    public function index_put()
+    public function index_put($id)
     {
-        $tbl = initTable("web_aspirasi", "asp");
-        $where = $this->input->get();
-        if (count($where) > 0) {
-            $this->db->where($where);
+        $tbl = initTable("tbl_user", "user");
+        $user = $this->db->get_where($tbl['name'], ["id_user" => $id])->row_array();
+        if ($user) {
             $update = $this->db->update($tbl['name'], $this->put());
             if ($update) {
                 $respon = hasilCUD("Data Berhasil Di Update");
@@ -185,11 +211,12 @@ class User extends RestController
                 else
                     $this->response($respon, 200);
             } else {
-                $this->response(['status' => false], 400);
+                $this->response(['status' => false, "message" => "Gagal Update", "data" => $user], 200);
             }
         } else
-            $this->response(['status' => false, 'message' => "Update Ditolak, Ada kesalahan.!"], 500);
+            $this->response(['status' => false, 'message' => "User Tidak Dikenali.!"], 500);
     }
+
     public function index_delete()
     {
 
@@ -209,39 +236,6 @@ class User extends RestController
                 'status' => false,
                 "message" => "Terjadi Kesalahan"
             ], 502); // BAD_REQUEST (400) being the HTTP response code
-        }
-    }
-    private function _sendEmail($data)
-    {
-        $config = [
-            'protocol'  => 'smtp',
-            'smtp_host' => 'ssl://smtp.googlemail.com',
-            'smtp_user' => 'berkominfo@gmail.com',
-            'smtp_pass' => 'ichaNK01',
-            'smtp_port' => 465,
-            'mailtype'  => 'html',
-            'charset'   => 'utf-8',
-            'newline'   => "\r\n"
-        ];
-
-        $this->load->library('email');
-        $this->email->initialize($config);
-
-        $this->email->from('berkominfo@gmail.com', 'Berkominfo');
-        $this->email->to($data['email']);
-
-        if ($data['type'] == 'verify') {
-            $this->email->subject('Account Verification');
-            $this->email->message('Your Token : ' . $data['token'] . ' ,</br>Click this link to verify you account : <a href="' . base_url() . 'admin/auth/verify?email=' . $this->input->post('email') . '&token=' . urlencode($data['token']) . '">Activate</a>');
-        } else if ($data['type'] == 'forgot') {
-            $this->email->subject('Reset Password');
-            $this->email->message('Your Token : ' . $data['token'] . ' ,</br>Click this link to reset your password : <a href="' . base_url() . 'admin/auth/resetpassword?email=' . $this->input->post('email') . '&token=' . urlencode($data['token']) . '">Reset Password</a>');
-        }
-        if ($this->email->send()) {
-            return true;
-        } else {
-            echo $this->email->print_debugger();
-            die();
         }
     }
 }

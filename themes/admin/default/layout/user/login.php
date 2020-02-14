@@ -8,13 +8,12 @@
 
   <!-- content -->
   <div class="wrapper wrapper-full-page">
-    <div class="page-header login-page header-filter" filter-color="black" style="background-image: url('<?= $thema_folder; ?>/assets/img/clint-mckoy.jpg'); background-size: cover; background-position: top center;">
+    <div class="page-header login-page header-filter" filter-color="black" style="background-image: url('<?= base_url(); ?>/assets/img/setting/background.jpg'); background-size: cover; background-position: top center;">
       <!--   you can change the color of the filter page using: data-color="blue | purple | green | orange | red | rose " -->
       <div class="container">
         <div class="row">
           <div class="col-lg-4 col-md-6 col-sm-8 ml-auto mr-auto">
-            <form class="form" method="post" action="<?= $form['action_login'] ?>">
-
+            <form class="form" method="post" action="<?= $form['action_login'] ?>" id="form-login">
               <div class="card card-login card-hidden">
                 <div class="card-header card-header-rose text-center">
                   <h4 class="card-title">Login Page</h4>
@@ -57,7 +56,7 @@
                   </span>
                 </div>
                 <div class="card-footer justify-content-center">
-                  <input type="submit" name="loginnow" class="btn btn-rose btn-link btn-lg" value="Lets Go!">
+                  <input type="submit" name="loginnow" class="btn btn-rose btn-link btn-lg" value="Login!">
                 </div>
               </div>
             </form>
@@ -68,7 +67,7 @@
       <?php $this->load->view($thema_load . 'element/template/auth/footer'); ?>
     </div>
   </div>
-
+  <script src="<?= $thema_folder ?>layout/user/js/login.js"></script>
   <script>
     $(document).ready(function() {
       // md.checkFullPageBackgroundImage();

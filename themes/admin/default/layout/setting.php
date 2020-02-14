@@ -22,7 +22,7 @@ $this->load->view($thema_load . 'element/template/head_meta.php');
         </div>
         <div class="card-body ">
             <a href="" class="btn btn-primary mb-3" id="addSetting" data-toggle="modal" data-url="" <?= base_url('admin/menu/submenu'); ?>" data-target="#newSubMenuModal">Tambah Setting</a>
-            <form class="form form-horizontal" method="post" action="">
+            <form class="form form-horizontal" method="post" action="" enctype="multipart/form-data">
                 <?php foreach ($setting as $row) : ?>
                     <div class="row">
                         <label class="col-md-3 col-form-label"><?= $row->name ?> <a href="#" data-url="<?= base_url('admin/admin/delete_setting/') . $row->id_setting ?>" class="ml-2 deleteSetting" data-tooltip="tooltip" data-toggle="modal" data-target="#modalDelete" data-placement="top" title="Menghapus Setting"><i class="material-icons">clear</i></a></label>
@@ -34,11 +34,18 @@ $this->load->view($thema_load . 'element/template/head_meta.php');
                                     <?php endforeach; ?>
                                 </select>
                             <?php } else if ($row->name == "theme_admin") { ?>
-                                <select class="form-control my-3" id="exampleFormControlSelect1" name="<?= $row->name ?>" id="<?= $row->name ?>">
+                                <select class="form-control my-3" id="exampleFormControlSelect2" name="<?= $row->name ?>" id="<?= $row->name ?>">
                                     <?php foreach ($themes_admin as $rows => $value) : ?>
                                         <option <?= $row->title == $value ? "selected" : '' ?> value="<?= $value; ?>"><?= $value; ?></option>
                                     <?php endforeach; ?>
                                 </select>
+                            <?php } else if ($row->name == "web_logo") { ?>
+                                <div class="conatiner">
+                                    <div class="card-avatar">
+                                        <label for="web_logo"><img class="img" data-name="web_logo" style="width:80px;height:80px;border-radius:50%" src="http://localhost/irsan/dprd/assets/img/setting/<?= $row->title ?>"></label>
+                                        <input id="web_logo" type="file" name="web_logo" />
+                                    </div>
+                                </div>
                             <?php } else { ?>
                                 <div class="form-group has-default bmd-form-group">
                                     <input type="text" name="<?= $row->name ?>" value="<?= $row->title ?>" class="form-control">
@@ -47,7 +54,7 @@ $this->load->view($thema_load . 'element/template/head_meta.php');
                         </div>
                     </div>
                 <?php endforeach; ?>
-                <div class="row">
+                <!-- <div class="row">
                     <label class="col-md-3"></label>
                     <div class="col-md-9">
                         <div class="form-check">
@@ -59,7 +66,7 @@ $this->load->view($thema_load . 'element/template/head_meta.php');
                             </label>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <div class="card-footer ">
                     <div class="row">
                         <div class="col-md-9">
@@ -86,6 +93,8 @@ $this->load->view($thema_load . 'element/template/head_meta.php');
     <?php
     $this->load->view($thema_load . 'element/template/fixed-setting.php');
     ?>
+
+
 
     <!-- modal dan script -->
     <!-- Modal -->
@@ -150,6 +159,7 @@ $this->load->view($thema_load . 'element/template/head_meta.php');
     <script src="<?= $thema_folder ?>assets/js/plugins/jquery.validate.min.js"></script>
 
     <script>
+        loadFileJs("assets/js/setting.js");
         $(function() {
             $('[data-tooltip="tooltip"]').tooltip()
         })

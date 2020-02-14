@@ -254,3 +254,39 @@ function getApi($url)
     // mengembalikan hasil curl
     return $output;
 }
+
+function _sendEmail($data)
+{
+    $ci = get_instance();
+
+    $config = [
+        'protocol'  => 'smtp',
+        'smtp_host' => 'ssl://smtp.googlemail.com',
+        'smtp_user' => 'berkominfo@gmail.com',
+        'smtp_pass' => 'ichaNK01',
+        'smtp_port' => 465,
+        'mailtype'  => 'html',
+        'charset'   => 'utf-8',
+        'newline'   => "\r\n"
+    ];
+
+    $ci->load->library('email');
+    $ci->email->initialize($config);
+
+    $ci->email->from('berkominfo@gmail.com', 'Berkominfo');
+
+    $ci->email->to($data['email']);
+
+    if ($data['type'] == 'verify') {
+        $ci->email->subject('Account Verification');
+        $ci->email->message('Your Token : ' . $data['token'] . ' ,</br>Click this link to verify you account : <a href="' . base_url() . 'admin/auth/verify?email=' . $data['email'] . '&token=' . urlencode($data['token']) . '">Activate</a>');
+    } else if ($data['type'] == 'forgot') {
+        $ci->email->subject('Reset Password');
+        $ci->email->message('Your Token : ' . $data['token'] . ' ,</br>Click this link to reset your password : <a href="' . base_url() . 'admin/auth/resetpassword?email=' . $data['email'] . '&token=' . urlencode($data['token']) . '">Reset Password</a>');
+    }
+    if ($ci->email->send()) {
+        return true;
+    } else {
+        return false;
+    }
+}

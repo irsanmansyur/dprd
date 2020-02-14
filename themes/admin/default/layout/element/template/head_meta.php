@@ -1,7 +1,7 @@
 <head>
     <meta charset="utf-8" />
     <link rel="apple-touch-icon" sizes="76x76" href="<?= $thema_folder; ?>assets/img/apple-icon.png">
-    <link rel="icon" type="image/png" href="<?= $thema_folder; ?>assets/img/favicon.png">
+    <link rel="icon" type="image/png" href="<?= base_url("assets/img/setting/favicon.png") ?>">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>
         <?= @$page['title'] ?>
@@ -67,19 +67,42 @@
 
         function getData(url, method = {}) {
             return fetch(baseUrl + url, method)
-                .then((response) => response.json())
-                .then(res => res)
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error(response.statusText);
+                    }
+                    return response.json()
+                })
+                .then(res => {
+                    if (res.status === false) {
+                        let msg = res.message + "</br>";
+                        if (res.dataErrors) {
+                            for (const [key, value] of Object.entries(res.dataErrors)) {
+                                msg += `${key}  :  ${value}</br>`;
+                            }
+                        }
+                        throw new Error(msg);
+                    }
+                    return res.data;
+                })
                 .catch((error) => {
-                    console.error('Error:', error);
+                    throw new Error(error);
                 });
         }
 
-        function addCss(url) {
+        function loadFileJs(url, folder = null) {
+            let elJs = document.createElement("script");
+            elJs.src = folder ? url : folderTheme + url;
+            document.querySelector("head").appendChild(elJs);
+            return true;
+        }
+
+        function addCss(url, folder = null) {
 
             let link = document.createElement("link");
             link.rel = "stylesheet";
             link.type = "text/css";
-            link.href = folderTheme + url;
+            link.href = folder ? url : folderTheme + url;
             document.querySelector("head").appendChild(link);
             return "Added";
         }

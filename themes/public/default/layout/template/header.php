@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" type="image/png" href="http://dprd-makassarkota.go.id/public/uploads/favicon.png">
+    <link rel="icon" type="image/png" href="<?= base_url("assets/img/setting/favicon.png") ?>">
     <meta property="og:image" content="<?= base_url() ?>assets/img/logo.png">
     <meta property="og:title" content="<?= @$page['title']; ?>" />
     <meta property="og:url" content="<?= base_url() ?>" />

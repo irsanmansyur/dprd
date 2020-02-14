@@ -1,3 +1,6 @@
+loadFileJs(baseUrl + "node_modules/sweetalert2/dist/sweetalert2.min.js", "url");
+addCss(baseUrl + "node_modules/sweetalert2/sweetalert2.min.css", "url");
+
 var status, message;
 
 function tbodySort() {
@@ -224,41 +227,40 @@ elListUser.addEventListener("click", e => {
 		dataModal.title = "Edit User";
 		ChangeMdl(dataModal);
 	} else if (el.hasAttribute("evActive")) {
-		const userId = elUser.dataset.iduser;
-		const is_active = el.checked ? "1" : "0";
-
-		var myHeaders = new Headers();
-		myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-
-		var urlencoded = new URLSearchParams();
-		urlencoded.append("is_active", is_active === "1" ? "1" : "0");
-
-		var requestOptions = {
-			method: "PUT",
-			headers: myHeaders,
-			body: urlencoded,
-			redirect: "follow"
+		let dt = async () => {
+			try {
+				const userId = elUser.dataset.iduser;
+				const is_active = el.checked ? "1" : "0";
+				let urlencoded = new URLSearchParams();
+				urlencoded.append("is_active", is_active === "1" ? "1" : "0");
+				let requestOptions = {
+					method: "PUT",
+					body: urlencoded
+				};
+				Swal.showLoading();
+				let ChangeActive = await getData("api/user/" + userId, requestOptions);
+				el.closest("div").querySelector(".label").innerHTML = el.checked
+					? "Active"
+					: "Non active";
+				await Swal.fire({
+					position: "center",
+					icon: "success",
+					title: "Berhasil Di Ubah",
+					showConfirmButton: false,
+					timer: 1000
+				});
+			} catch (error) {
+				Swal.fire({
+					icon: "error",
+					title: "Oops...",
+					// onBeforeOpen: () => {
+					// 	Swal.showLoading();
+					// },
+					html: error
+				});
+			}
 		};
-		document.querySelector("#loader-wrapper").style.display = "block";
-		fetch(
-			"http://localhost/irsan/dprd/api/komisi/user/user_006",
-			requestOptions
-		)
-			.then(response => response.json())
-			.then(res => {
-				if (res.status) {
-					el.closest("div").querySelector(".label").innerHTML = el.checked
-						? "Active"
-						: "Non active";
-					alert("Succes Change");
-				} else {
-					alert("gagal");
-				}
-			})
-			.then(res => {
-				document.querySelector("#loader-wrapper").style.display = "none";
-			})
-			.catch(error => console.log("error", error));
+		dt();
 	}
 });
 function ChangeMdl({ dtKomisi, dtUser, ...option }) {

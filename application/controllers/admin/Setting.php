@@ -49,22 +49,50 @@ class Setting extends Admin_Controller
     // CM_show
     function setting()
     {
-        $setting = $this->setting_m;
+        $setting = $this->db->get("tbl_setting")->result();
         $validation = $this->form_validation;
-        $validation->set_rules($setting->rules());
-        $this->data['setting'] = $this->setting_m->get()->result();
+
+        $this->data['setting'] = $setting;
         foreach ($this->data['setting'] as $row) {
-            $this->form_validation->set_rules($row->name, $row->name, 'trim|required');
+            if ($row->name != "web_logo")
+                $this->form_validation->set_rules($row->name, $row->name, 'required');
         }
+
         if ($validation->run()) {
+            die(var_dump($this->input->post()));
+
             foreach ($this->input->post() as $row => $value) {
                 $where = ['name' => $row];
                 $data = ['title' => $value];
+
+                if ($row == "web_logo") {
+                    if (isset($_FILES['web_logo'])) {
+                        $logo = $this->db->get_where('tbl_setting', [
+                            'name' => "web_logo"
+                        ])->row_array();
+
+                        $image = $logo['title'];
+                        $config['allowed_types'] = 'gif|jpg|jpeg|png';
+                        $config['max_size']      = '2048';
+                        $config['upload_path'] = './assets/img/setting/';
+                        $this->load->library('upload', $config);
+                        if ($this->upload->do_upload('web_logo')) {
+                            if ($image != "logo.png") {
+                                deleteImg("setting", $image);
+                            }
+                            $image = $this->upload->data('file_name');
+                        }
+                        $data = ['title' => $image];
+                    }
+                }
                 $this->setting_m->update($where, $data);
             }
+
             $this->session->set_flashdata('message', "<div class='mb-5 alert alert-success' role='alert'>Sukses Update Pengaturan .!</div>");
             header("Refresh:0");
         } else {
+            die(var_dump($this->form_validation->error_array()));
+
             $this->data['themes_admin'] = $this->template->bacaFolder('admin');
             $this->data['themes_public'] = $this->template->bacaFolder('public');
             $this->template->load('admin', 'setting', $this->data);
