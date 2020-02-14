@@ -394,10 +394,12 @@ scroll menu
 /* header */
 header.masthead {
 	position: relative;
+	z-index: 2;
 }
 header.masthead::before {
 	position: absolute;
 	content: "";
+	z-index: -1;
 	top: 0;
 	left: 0;
 	width: 100%;
