@@ -234,7 +234,11 @@ docReady(async function() {
 	addCss(theme.folder + "layout/user/css/main.css");
 
 	let elListAsp = document.querySelector("#data-aspirasi");
-	data.aspirasi = await getData("api/aspirasi?id_user=" + user.id_user);
+	data.aspirasi = await fetch(baseUrl + "api/aspirasi?id_user=" + user.id_user)
+		.then(res => {
+			return res.json();
+		})
+		.catch(error => {});
 	let aspbaru = await getData("api/aspirasi?baru='yes'");
 
 	let baru = () => {
@@ -252,8 +256,8 @@ docReady(async function() {
 				<div class="card-header identitas position-relative" style='padding-left:80px'>
 					<img src="${asp.image}"  alt="" class="position-absolute rounded-circle cardImg-profile">
 					<h5 class="card-title mb-0">${asp.username}</h5>
-					<span class="text-muted">Di arahkan ke : </span><span class="komisi font-weight-bold">${asp.komisi}</span>
-					<span>Penanggung Jawab : ${res.nmpenanggun}</span>
+					<span class="text-muted">Di arahkan ke : </span><span class="komisi font-weight-bold">${asp.komisi}</span></br>
+					<span>Penanggung Jawab : ${asp.nmpenanggun}</span>
 
 					<span class="position-absolute text-muted text-right" style="top:12px;right:15px">${date_created}</span>
 				</div>

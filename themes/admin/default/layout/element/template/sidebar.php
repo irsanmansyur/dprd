@@ -46,12 +46,14 @@
                </div>
            </div>
            <ul class="nav">
-               <li class="nav-item <?= ($this->router->fetch_class() == 'dashboard') ? 'active' : ''; ?>">
-                   <a class="nav-link" href="<?= base_url('admin/dashboard') ?>">
-                       <i class="material-icons">dashboard</i>
-                       <p> Dashboard </p>
-                   </a>
-               </li>
+               <?php if ($this->session->userdata("role_id") != "3") : ?>
+                   <li class="nav-item <?= ($this->router->fetch_class() == 'dashboard') ? 'active' : ''; ?>">
+                       <a class="nav-link" href="<?= base_url('admin/dashboard') ?>">
+                           <i class="material-icons">dashboard</i>
+                           <p> Dashboard </p>
+                       </a>
+                   </li>
+               <?php endif ?>
                <!-- QUERY MENU -->
                <?php foreach ($menu_all as $m) : ?>
                    <?php

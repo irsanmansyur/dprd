@@ -140,9 +140,11 @@ class User extends Admin_Controller
                     }
                 }
                 $data['image'] = $image;
+                $status =  false;
                 $this->db->update($tblUser['name'], $data, ["id_user" => $id]);
-
-
+                $respon = hasilCUD("Data User Di Update");
+                if ($respon->status)
+                    $status =  true;
                 $tbl = initTable("web_komisi_user", "kom_u");
                 $data = [];
                 foreach ($tbl['field'] as $key => $val) {
@@ -151,10 +153,12 @@ class User extends Admin_Controller
                     }
                 }
                 $this->db->update("web_komisi_user", $data, ["user_id" => $id]);
-
                 $respon = hasilCUD("Data User Di Update");
-                $type = $respon->status ? "success" : "danger";
-                $this->session->set_flashdata('message', '<div class="alert alert-' . $type . '" role="alert">' . $respon->message . '!</div>');
+                $status = $respon->status ? true : ($status ? true : false);
+                $type = "danger";
+                $message = "Tidak ada yang berubah";
+                $status ? [$type = "success", $message = "Data User Di Update"] : '';
+                $this->session->set_flashdata('message', '<div class="alert alert-' . $type . '" role="alert">' . $message . '!</div>');
             } else {
                 $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Gagal..!</div>');
             }

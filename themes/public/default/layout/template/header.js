@@ -91,7 +91,7 @@ function setNotif(notif) {
 			icon += `<span class="card-text text-justify text-monospace">${kmt}.</span><span class="position-absolute text-muted" style="top:6px;right:15px;font-size:12px">${ttime}</span>`;
 			isi += `<li><div class="card-body identitas position-relative mt-3" style='padding-left:55px'>
 			<img src="${baseUrl}assets/img/thumbnail/profile_${res.file}" style="width: 40px;height:40px;left:5px;top:10px" alt="" class="position-absolute rounded-circle">
-			<h5 class="card-title mb-0 pb-0" style="margin-top:-15px;font-size: 16px;">${res.name}</h5>${icon}<p><a href="${baseUrl}aspirasi/id/${res.aspirasi_id}/${res.id_komentar}" class='badge badge-primary ml-2'>Lihat</a></p></div>
+			<h5 class="card-title mb-0 pb-0" style="margin-top:-15px;font-size: 16px;">${res.name}</h5>${icon}<p><a href="${baseUrl}aspirasi/id/${res.aspirasi_id}/${res.id_komentar}" class='badge badge-primary ml-2 btn-notif-show'>Lihat</a></p></div>
 			</li>`;
 		});
 	} else {

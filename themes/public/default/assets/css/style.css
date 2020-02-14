@@ -118,6 +118,9 @@ div.dropdown-menu a.dropdown-item:hover {
 	.notfound .notfound-404 h1 {
 		font-size: 122px;
 	}
+	.btn-login {
+		margin-bottom: 5px;
+	}
 }
 p:last-child {
 	margin: 0px;
@@ -406,5 +409,5 @@ header.masthead::before {
 	height: 100%;
 	pointer-events: none;
 	background: #000;
-	opacity: 0.45;
+	opacity: 0.4;
 }

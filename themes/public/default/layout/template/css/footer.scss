@@ -1,3 +1,17 @@
+$utama: #fed136;
+$kedua: #c04f03;
+$dekstop: 750px;
+$mobile: 400px;
+@mixin dekstops {
+	@media (min-width: $dekstop) {
+		@content;
+	}
+}
+@mixin mobile {
+	@media (max-width: $mobile) {
+		@content;
+	}
+}
 .container2 {
 	position: fixed;
 	height: 100%;
@@ -79,5 +93,10 @@
 @keyframes load2 {
 	100% {
 		transform: rotate(360deg);
+	}
+}
+.btn-notif-show {
+	@include mobile {
+		display: inline;
 	}
 }

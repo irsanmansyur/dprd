@@ -68,7 +68,7 @@
                 <div class="navbar-nav">
                     <?php if ($this->session->userdata('role_id') != "3") : ?>
                         <div class="my-auto mr-md-2">
-                            <a class="nav-link btn btn-outline-warning btn-sm" href="<?= base_url('admin/auth') ?>">Login</a>
+                            <a class="nav-link btn btn-outline-warning btn-sm btn-login" href="<?= base_url('admin/auth') ?>">Login</a>
                         </div>
                         <div class="my-auto">
                             <a class="nav-link btn btn-danger btn-sm mx-auto text-light" href="<?= base_url('admin/auth/registration/masyarakat') ?>">Register</a>

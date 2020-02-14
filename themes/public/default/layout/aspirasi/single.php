@@ -56,6 +56,7 @@
                             <h5 class="card-title mb-0"><?= $aspirasi['username'] ?></h5>
                             <span class="text-muted">Di arahkan ke : </span>
                             <span class="komisi font-weight-bold"><?= $aspirasi['komisi'] ?></span>
+                            </br><span>Penanggung Jawab :<?= $aspirasi['nmpenanggun'] ?></span>
                             <span class="position-absolute text-muted" style="top:12px;right:15px"><?= date("D, m - Y", $aspirasi['date_created']) ?> </span>
                         </div>
                         <div class="card-body">
