@@ -208,6 +208,7 @@ class Aspirasi extends RestController
                 $data = [
                     $tbl['key'] => $tbl['field'][$tbl['key']],
                     "message" => $this->post('message'),
+                    "date_created" => time(),
                     "user_id" => $this->post('user_id'),
                     "komisi_id" => "kms_000",
                     "penanggun" => "user_001",
