@@ -74,8 +74,8 @@ function tampilkanAspirasiIni(res) {
 			<div class="card-header identitas position-relative" style='padding-left:80px'>
 				<img src="${res.image}"  alt="" class="position-absolute rounded-circle cardImg-profile">
 				<h5 class="card-title mb-0">${res.username}</h5>
-				<span class="text-muted">Di arahkan ke : </span><span class="komisi font-weight-bold">${res.komisi}</span>
-				<span>Penanggung Jawab : ${res.nmpenanggun}</span>
+				<span class="text-muted">Di arahkan ke : </span><span class="komisi font-weight-bold">${res.komisi}</span></br>
+				<span style="margin-right:-70px">Penanggung Jawab : ${res.nmpenanggun}</span>
 				<span class="position-absolute text-muted text-right" style="top:12px;right:15px">${date_created} ${tbl}</span>
 			</div>
 			<div class="card-body">

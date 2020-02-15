@@ -50,7 +50,7 @@
                             <li class="nav-item asp" data-status="2">
                                 <a class="nav-link text-dark" href="#">Belum Di Tanggapi</a>
                             </li>
-                            <li class="nav-item asp" data-status="3">
+                            <li class="nav-item asp" data-status="4">
                                 <a class="nav-link text-dark" href="#">Belum Dibaca</a>
                             </li>
                         </ul>

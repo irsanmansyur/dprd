@@ -50,7 +50,7 @@ $mobile: 400px;
 	color: $utama;
 }
 .identitas {
-	.card-title {
+	h5.card-title {
 		@include mobile {
 			font-size: 16px;
 		}

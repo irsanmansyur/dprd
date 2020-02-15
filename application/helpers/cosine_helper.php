@@ -37,11 +37,13 @@ function cosineSimilarity($tokensA, $tokensB)
     return $hasil;
 }
 
-function lblString($array = [])
+function lblString($array = [], $message_array)
 {
     $str = '';
     foreach ($array as $val) {
-        $str .= strval($val['label']) . ' ';
+        if (array_key_exists($val['label'], $message_array))
+            $str .= strval($val['label']) . ' ';
+        // $str .= strval($val['label']) . ' ';
     }
     return $str;
 }

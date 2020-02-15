@@ -136,72 +136,67 @@ class Aspirasi extends RestController
             $max = 0;
             foreach ($all_komisi as $row) {
                 $csn = null;
-                $str = lblString($this->komisi_m->getLabel($row['id_komisi']));
+
+                $arr_label = $this->komisi_m->getLabel($row['id_komisi']);
+                $str = lblString($arr_label, $arr_textmining);
+
                 $array = preg_split('/[^[:alnum:]]+/', strtolower($str));
                 foreach ($array as $item) {
                     if (strlen($item) > 2) {
                         @$csn[$item]++;
                     }
                 }
-                if ($row['id_komisi'] != "kms_000") {
+                // var_dump($csn);
+                if ($csn) {
                     $hasil = cosineSimilarity($arr_textmining, $csn);
                     @$cosine[$row['id_komisi']] = $hasil;
                     $hasil > $max ? $max = $hasil : '';
+                } else {
+                    @$cosine[$row['id_komisi']] = 0;
                 }
             }
 
-
-
             $minGap = $max * 0.75;
-
-            $kms_id = [];
-            foreach ($cosine as $key => $value) {
-                if ($minGap > 0)
-                    $value >= $minGap ? $kms_id[$key] = $value : "";
-            }
-
             $dataku = [];
-            if (count($kms_id) > 0) {
-                foreach ($kms_id as $key => $value) {
-                    $this->db->select("web_komisi_user.*");
-                    $this->db->from("web_komisi_user");
-                    $this->db->join("web_kecamatan", "web_kecamatan.dapil_id=web_komisi_user.dapil_id");
-                    $this->db->where([
-                        "web_kecamatan.id_kec" => $this->post('kec_id'),
-                        "web_komisi_user.komisi_id" => $key
-                    ]);
-                    $eks = $this->db->get()->result_array();
-                    $penanggun = null;
-                    if ($eks) {
-                        $min = 0;
-                        foreach ($eks as $row) {
-                            $row['jumlah_tugas'] >= $min ? $penanggun = $row['user_id'] : '';
+
+            if ($minGap > 0) {
+                foreach ($cosine as $key => $value) {
+                    if ($value >= $minGap) {
+                        $this->db->select("web_komisi_user.*");
+                        $this->db->from("web_komisi_user");
+                        $this->db->join("web_kecamatan", "web_kecamatan.dapil_id=web_komisi_user.dapil_id");
+                        $this->db->where([
+                            "web_kecamatan.id_kec" => $this->post('kec_id'),
+                            "web_komisi_user.komisi_id" => $key
+                        ]);
+                        $eks = $this->db->get()->result_array();
+                        $penanggun = null;
+                        if ($eks) {
+                            $min = 0;
+                            foreach ($eks as $row) {
+                                $row['jumlah_tugas'] >= $min ? $penanggun = $row['user_id'] : '';
+                            }
                         }
-                    }
-                    if (!$penanggun) {
-                        $dt = $this->db->get_where("web_komisi_user", [
+                        if (!$penanggun) {
+                            $dt = $this->db->get_where("web_komisi_user", [
+                                "komisi_id" => $key,
+                                "jabatan" => "Ketua"
+                            ])->row_array();
+                            $penanggun = $dt['user_id'];
+                        }
+                        $tbl = initTable("web_aspirasi", "asp");
+                        $data = [
+                            $tbl['key'] => $tbl['field'][$tbl['key']],
+                            "message" => $this->post('message'),
+                            "date_created" => time(),
+                            "user_id" => $this->post('user_id'),
                             "komisi_id" => $key,
-                            "jabatan" => "Ketua"
-                        ])->row_array();
-                        $penanggun = $dt['user_id'];
+                            "penanggun" => $penanggun ? $penanggun : "user_001",
+                            "kec_id" => $this->post('kec_id')
+                        ];
+                        $dataku[] = $data;
+                        $this->db->insert("web_aspirasi", $data);
                     }
-
-                    $tbl = initTable("web_aspirasi", "asp");
-                    $data = [
-                        $tbl['key'] => $tbl['field'][$tbl['key']],
-                        "message" => $this->post('message'),
-                        "user_id" => $this->post('user_id'),
-                        "komisi_id" => $key,
-                        "penanggun" => $penanggun ? $penanggun : "user_001",
-                        "kec_id" => $this->post('kec_id')
-                    ];
-                    $dataku[] = $data;
-
-
-
-
-
-                    $this->db->insert("web_aspirasi", $data);
                 }
             } else {
                 $tbl = initTable("web_aspirasi", "asp");
@@ -217,7 +212,6 @@ class Aspirasi extends RestController
                 $dataku = $data;
                 $this->db->insert("web_aspirasi", $data);
             }
-
             $respon = hasilCUD("Data Aspirasi Ditambahkan");
             if ($respon->status) {
                 $this->response([
