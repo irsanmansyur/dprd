@@ -87,9 +87,8 @@ class User extends RestController
             "required" => "Nama Harus Di isi",
             "min_length" => "Nama Min 5 Karakter"
         ]);
-        $this->form_validation->set_rules("email", "email", "required|is_unique[tbl_user.email]", [
-            "required" => "Email Harus Di isi",
-            "is_unique" => "Gunakan email lain yang belum terdaftar"
+        $this->form_validation->set_rules("email", "email", "required", [
+            "required" => "Email Harus Di isi"
         ]);
 
         $this->form_validation->set_rules("no_hp", "No Handphone", "required|numeric", [

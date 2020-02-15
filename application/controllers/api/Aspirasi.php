@@ -96,21 +96,23 @@ class Aspirasi extends RestController
         $this->form_validation->set_rules("kec_id", "Id Kecamatan", "required|min_length[4]");
 
         if ($this->form_validation->run()) {
+            $sentence = $this->post('message');
+            /**
+             * Tokenizing
+             */
+            $stopWordRemoverFactory = new \Sastrawi\StopWordRemover\StopWordRemoverFactory();
+            $stopword = $stopWordRemoverFactory->createStopWordRemover();
+            $outputstopword = $stopword->remove($sentence);
 
             /**
+             * Stemming
              * proses menghilankan kata awal dan akhir
              */
             $stemmerFactory = new \Sastrawi\Stemmer\StemmerFactory();
             $stemmer = $stemmerFactory->createStemmer();
-            $sentence = $this->input->post('message');
-            $outputstemmer = $stemmer->stem($sentence);
+            $outputstemmer = $stemmer->stem($outputstopword);
 
-            /**
-             * proses menghilankan kata yang tidak penting
-             */
-            $stopWordRemoverFactory = new \Sastrawi\StopWordRemover\StopWordRemoverFactory();
-            $stopword = $stopWordRemoverFactory->createStopWordRemover();
-            $outputstopword = $stopword->remove($outputstemmer);
+
 
             /**
              * load model komisi
@@ -120,7 +122,7 @@ class Aspirasi extends RestController
             $this->load->helper("cosine_helper");
 
             //menjadikan array Aspirasi setelah di Text Mining
-            $array = preg_split('/[^[:alnum:]]+/', strtolower($outputstopword));
+            $array = preg_split('/[^[:alnum:]]+/', strtolower($outputstemmer));
             $arr_textmining = [];
             foreach ($array as $item) {
                 if (array_key_exists($item, $arr_textmining)) {

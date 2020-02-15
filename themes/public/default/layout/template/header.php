@@ -87,8 +87,8 @@
                                 <?= $user['name'] ?>
                             </a>
                             <div class="dropdown-menu mt-2" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="<?= base_url('user') ?>">Profile</a>
-                                <a class="dropdown-item" href="<?= base_url('admin/user/profile') ?>">Change Profile</a>
+                                <a class="dropdown-item" href="<?= base_url('user') ?>">Aspirasiku</a>
+                                <a class="dropdown-item" href="<?= base_url('admin/user/profile') ?>">Profile</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" data-toggle="modal" data-target=".modal#logout" href="#">Logout</a>
                             </div>
