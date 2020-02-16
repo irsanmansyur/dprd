@@ -166,10 +166,13 @@ class User extends RestController
             $email = $this->post("email");
             $password = $this->post("password");
             $user = $this->db->get_where("tbl_user", [
-                "email" => $email
+                "email" => $email,
+                "is_active" => 1
             ])->row_array();
             if ($user) {
                 if (password_verify($password, $user['password'])) {
+                    $user['image_sm'] = getThumb($user['image']);
+                    $user['image_lg'] = getImg($user['image'], "profile");
                     $this->response([
                         "status" => true,
                         "message" => "user di temukan",
