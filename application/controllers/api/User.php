@@ -166,11 +166,16 @@ class User extends RestController
             $email = $this->post("email");
             $password = $this->post("password");
             $user = $this->db->get_where("tbl_user", [
-                "email" => $email,
-                "is_active" => 1
+                "email" => $email
             ])->row_array();
             if ($user) {
-                if (password_verify($password, $user['password'])) {
+                if ($user['is_active'] === 0) {
+                    $this->response([
+                        "status" => false,
+                        "message" => "User Belum Di aktivasi",
+                        "data" => $this->post("email")
+                    ], 200);
+                } else if (password_verify($password, $user['password'])) {
                     $user['image_sm'] = getThumb($user['image']);
                     $user['image_lg'] = getImg($user['image'], "profile");
                     $this->response([
@@ -199,6 +204,23 @@ class User extends RestController
         }
     }
 
+    public function upload_post()
+    {
+        $path = "assets/img/profile/" . $this->post("id_user") . ".jpeg";
+        if (file_put_contents($path, base64_decode($this->post("image")))) {
+            $this->response([
+                "status" => true,
+                "message" => "Foto Profile Di Update",
+                "data" => $this->post()
+            ], 200);
+        } else {
+            $this->response([
+                "status" => false,
+                "message" => "Foto Profile Gagal Di Upload",
+                "data" => $this->post()
+            ], 200);
+        }
+    }
 
     public function index_put($id)
     {
