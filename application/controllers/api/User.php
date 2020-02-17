@@ -236,7 +236,7 @@ class User extends RestController
         $tbl = initTable("tbl_user", "user");
         $user = $this->db->get_where($tbl['name'], ["id_user" => $id])->row_array();
         if ($user) {
-            $update = $this->db->update($tbl['name'], $this->put());
+            $update = $this->db->update($tbl['name'], $this->put(), ["id_user" => $id]);
             if ($update) {
                 $respon = hasilCUD("Data Berhasil Di Update");
                 if ($respon->status) {
