@@ -67,6 +67,10 @@ $route['api/komisi'] = 'api/notif/komisi'; // komentar 4
 // router aspirasi
 $route['api/aspirasi/page/(:num)'] = 'api/aspirasi/index/$1'; // komentar 4
 
+// router kecamatan
+$route['api/kecamatan'] = 'api/kecamatan/index'; // komentar 4
+$route['api/kecamatan/(:any)'] = 'api/kecamatan/index/$1'; // kecamatan
+
 
 // Router Komentar
 $route['api/komentar'] = 'api/komentar/index'; // komentar 4
