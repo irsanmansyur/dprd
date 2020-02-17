@@ -212,7 +212,7 @@ class User extends RestController
             "status" => false,
             "message" => "User Tidak Dikenali",
             "data" => $this->post('id_user')
-        ], 404);
+        ], 200);
 
         $unig = uniqid();
         $image = $id._$uniqid . ".jpeg";
