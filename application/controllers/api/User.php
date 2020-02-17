@@ -206,18 +206,27 @@ class User extends RestController
 
     public function upload_post()
     {
-        $path = "assets/img/profile/" . $this->post("id_user") . ".jpeg";
+        $image = $this->post("id_user") . ".jpeg";
+        $path = "assets/img/profile/" . $image;
         if (file_put_contents($path, base64_decode($this->post("image")))) {
+            $this->db->update("tbl_user", ['image' => $image], ['id_user' => $this->post("id_user")]);
+            /**
+             * Helper CI
+             * Create thumb image with 
+             * _img_create_thumbs({nama file image}, {Folder file gambar});
+             */
+            $path = "assets/img/thumbnail/profile_" . $image;
+            file_put_contents($path, base64_decode($this->post("image")));
             $this->response([
                 "status" => true,
-                "message" => "Foto Profile Di Update",
-                "data" => $this->post()
+                "message" => "Foto Profile Di Upload",
+                "data" => ['image' => $image]
             ], 200);
         } else {
             $this->response([
                 "status" => false,
                 "message" => "Foto Profile Gagal Di Upload",
-                "data" => $this->post()
+                "data" => $this->post('id_user')
             ], 200);
         }
     }
@@ -230,13 +239,14 @@ class User extends RestController
             $update = $this->db->update($tbl['name'], $this->put());
             if ($update) {
                 $respon = hasilCUD("Data Berhasil Di Update");
-                if ($respon->status)
+                if ($respon->status) {
+                    $user = $this->db->get_where($tbl['name'], ["id_user" => $id])->row_array();
+                    $respon->data = $user;
                     $this->response($respon, 201);
-                else
+                } else
                     $this->response($respon, 200);
-            } else {
+            } else
                 $this->response(['status' => false, "message" => "Gagal Update", "data" => $user], 200);
-            }
         } else
             $this->response(['status' => false, 'message' => "User Tidak Dikenali.!"], 500);
     }
