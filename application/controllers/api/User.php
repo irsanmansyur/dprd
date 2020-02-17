@@ -217,10 +217,12 @@ class User extends RestController
              */
             $path = "assets/img/thumbnail/profile_" . $image;
             file_put_contents($path, base64_decode($this->post("image")));
+            $imgSm = base_url("assets/img/profile/" . $image);
+            $imgLg = base_url("assets/img/thumbnail/profile_" . $image);
             $this->response([
                 "status" => true,
                 "message" => "Foto Profile Di Upload",
-                "data" => ['image' => $image]
+                "data" => ['imageSm' => $imgSm, "imageLg" => $imgLg]
             ], 200);
         } else {
             $this->response([
