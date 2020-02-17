@@ -241,6 +241,8 @@ class User extends RestController
                 $respon = hasilCUD("Data Berhasil Di Update");
                 if ($respon->status) {
                     $user = $this->db->get_where($tbl['name'], ["id_user" => $id])->row_array();
+                    $user['image_sm'] = getThumb($user['image']);
+                    $user['image_lg'] = getImg($user['image'], "profile");
                     $respon->data = $user;
                     $this->response($respon, 201);
                 } else
