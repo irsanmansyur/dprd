@@ -73,6 +73,7 @@ class Aspirasi extends RestController
                 }
                 $this->response([
                     "status" => true,
+                    "message" => "Aspirasi berhasil dimuat",
                     "data" => $aspirasi
                 ], 200); // OK (200) being the HTTP response code
             } else {
