@@ -72,13 +72,13 @@ class Kecamatan extends RestController
 
             $this->response([
                 'status' => true,
-                "message" => "User di temukan",
+                "message" => "Kecamatan di temukan",
                 "data" => $kecamatan
             ], 200);
         } else {
             $this->response([
                 'status' => false,
-                "message" => "User tidak di temukan"
+                "message" => "Kecamatan tidak di temukan"
             ], 200);
         }
     }
