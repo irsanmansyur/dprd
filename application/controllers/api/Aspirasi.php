@@ -46,7 +46,9 @@ class Aspirasi extends RestController
         $this->db->join("tbl_user", "tbl_user.id_user=asp.user_id");
         $this->db->join("web_komisi", "web_komisi.id_komisi=asp.komisi_id");
         $this->db->group_by("asp.id_aspirasi");
-
+        if ($id) {
+            $this->db->where(["asp.user_id" => $id]);
+        }
 
         $page = 0;
         $total = 1;
