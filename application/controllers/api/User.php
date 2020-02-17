@@ -207,24 +207,24 @@ class User extends RestController
     public function upload_post()
     {
         $id = $this->post("id_user");
-        $user = $this->db->get_where("tbl_user",["id_user"=>$id])->row_array();
+        $user = $this->db->get_where("tbl_user", ["id_user" => $id])->row_array();
         if (!$user) $this->response([
             "status" => false,
             "message" => "User Tidak Dikenali",
             "data" => $this->post('id_user')
-        ], 200);
+        ], 404);
 
-        $unig = uniqid();
-        $image = $id._$uniqid . ".jpeg";
+        $uniq = uniqid();
+        $image = $id . "_" . $uniq . ".jpeg";
         $path = "assets/img/profile/" . $image;
-        if (file_put_contents($path, base64_decode($this->post("image")))) {    
+        if (file_put_contents($path, base64_decode($this->post("image")))) {
             $this->db->update("tbl_user", ['image' => $image], ['id_user' => $this->post("id_user")]);
             /**
              * Helper CI
              * Create thumb image with 
              * _img_create_thumbs({nama file image}, {Folder file gambar});
              */
-            deleteImg("profile",$user['image']);
+            deleteImg("profile", $user['image']);
             $path = "assets/img/thumbnail/profile_" . $image;
             file_put_contents($path, base64_decode($this->post("image")));
             $imgSm = base_url("assets/img/profile/" . $image);
