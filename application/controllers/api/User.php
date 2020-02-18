@@ -103,6 +103,11 @@ class User extends RestController
         ]);
 
         if ($this->form_validation->run()) {
+
+            $datetime = (int) $this->post("tgl_lahir");
+
+
+
             $image = "default.png";
             if (isset($_FILES['image'])) {
                 $config['allowed_types'] = 'gif|jpg|jpeg|png';
@@ -125,6 +130,7 @@ class User extends RestController
 
             $data = [
                 $tblUser['key'] =>  $tblUser['lastkey'],
+                "tgl_lahir" => $datetime,
                 "name" => $this->post('name'),
                 "email" => $this->post('email'),
                 "no_hp" => $this->post('no_hp'),
@@ -169,7 +175,7 @@ class User extends RestController
                 "email" => $email
             ])->row_array();
             if ($user) {
-                if ($user['is_active'] === 0) {
+                if ($user['is_active'] != "1") {
                     $this->response([
                         "status" => false,
                         "message" => "User Belum Di aktivasi",
@@ -177,6 +183,7 @@ class User extends RestController
                     ], 200);
                 } else if (password_verify($password, $user['password'])) {
                     $user['image_sm'] = getThumb($user['image']);
+                    $user['tgl_lahir'] = date("d/M/Y", $user['tgl_lahir']);
                     $user['image_lg'] = getImg($user['image'], "profile");
                     $this->response([
                         "status" => true,
@@ -213,10 +220,10 @@ class User extends RestController
             "message" => "User Tidak Dikenali",
             "data" => $this->post('id_user')
         ], 404);
-
         $uniq = uniqid();
         $image = $id . "_" . $uniq . ".jpeg";
         $path = "assets/img/profile/" . $image;
+
         if (file_put_contents($path, base64_decode($this->post("image")))) {
             $this->db->update("tbl_user", ['image' => $image], ['id_user' => $this->post("id_user")]);
             /**
