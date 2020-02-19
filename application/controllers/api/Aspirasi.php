@@ -258,14 +258,16 @@ class Aspirasi extends RestController
         } else
             $this->response(['status' => false, 'message' => "Update Ditolak, Ada kesalahan.!"], 500);
     }
-    public function index_delete()
+    public function index_delete($id = null)
     {
-
         $where = $this->input->get();
         if (count($this->delete()) > 0) {
             foreach ($this->delete() as $row => $value) {
                 $where[$row] = $value;
             }
+        }
+        if ($id) {
+            $where['id_aspirasi'] = $id;
         }
 
         $respon = $this->db->delete("web_aspirasi", $where);
