@@ -197,12 +197,13 @@ class Aspirasi extends RestController
                             "date_created" => time(),
                             "user_id" => $this->post('user_id'),
                             "komisi_id" => $key,
+                            "status" => $this->post('status') ? $this->post('status') : 4,
                             "penanggun" => $penanggun ? $penanggun : "user_001",
                             "kec_id" => $this->post('kec_id')
                         ];
-                        $dataku[] = $data;
-                        //ggggg
                         $this->db->insert("web_aspirasi", $data);
+
+                        $dataku[] = $this->getAsp($tbl['field'][$tbl['key']]);
                     }
                 }
             } else {
@@ -216,8 +217,8 @@ class Aspirasi extends RestController
                     "penanggun" => "user_001",
                     "kec_id" => $this->post('kec_id')
                 ];
-                $dataku[] = $data;
                 $this->db->insert("web_aspirasi", $data);
+                $dataku[] = $this->getAsp($tbl['field'][$tbl['key']]);
             }
             $respon = hasilCUD("Data Aspirasi Ditambahkan");
             if ($respon->status) {
@@ -282,5 +283,17 @@ class Aspirasi extends RestController
                 "message" => "Terjadi Kesalahan"
             ], 502); // BAD_REQUEST (400) being the HTTP response code
         }
+    }
+
+    public function getAsp($id)
+    {
+        $this->db->select("asp.*,tbl_user.image,tbl_user.name AS username,web_komisi.name AS komisi,(SELECT COUNT(id_komentar) FROM web_komentar AS kmt INNER JOIN tbl_user ON tbl_user.id_user=kmt.user_id where kmt.aspirasi_id=asp.id_aspirasi AND role_id!=2) AS jml_komentar, (SELECT name FROM tbl_user where tbl_user.id_user=asp.penanggun) AS nmpenanggun, (SELECT COUNT(id_komentar) FROM web_komentar AS kmt INNER JOIN tbl_user ON tbl_user.id_user=kmt.user_id where kmt.aspirasi_id=asp.id_aspirasi AND role_id=2) AS jml_tanggapan");
+        $this->db->from("web_aspirasi asp");
+        $this->db->join("web_komentar kmt", "kmt.aspirasi_id=asp.id_aspirasi", "left");
+        $this->db->join("tbl_user", "tbl_user.id_user=asp.user_id");
+        $this->db->join("web_komisi", "web_komisi.id_komisi=asp.komisi_id");
+        $this->db->group_by("asp.id_aspirasi");
+        $this->db->where("asp.id_aspirasi", $id);
+        return $this->db->get()->result_array();
     }
 }
