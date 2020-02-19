@@ -162,6 +162,7 @@ class Aspirasi extends RestController
             }
 
             $minGap = $max * 0.75;
+
             $dataku = [];
 
             if ($minGap > 0) {
@@ -200,6 +201,7 @@ class Aspirasi extends RestController
                             "kec_id" => $this->post('kec_id')
                         ];
                         $dataku[] = $data;
+                        //ggggg
                         $this->db->insert("web_aspirasi", $data);
                     }
                 }
@@ -214,7 +216,7 @@ class Aspirasi extends RestController
                     "penanggun" => "user_001",
                     "kec_id" => $this->post('kec_id')
                 ];
-                $dataku = $data;
+                $dataku[] = $data;
                 $this->db->insert("web_aspirasi", $data);
             }
             $respon = hasilCUD("Data Aspirasi Ditambahkan");
