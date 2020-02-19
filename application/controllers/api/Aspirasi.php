@@ -71,6 +71,7 @@ class Aspirasi extends RestController
 
             if ($aspirasi) {
                 foreach ($aspirasi as $key => $val) {
+                    $aspirasi[$key]['dateCreated'] = date("d/M/Y", $aspirasi[$key]['date_created']);
                     $aspirasi[$key]["image"] = getThumb($val['image']);
                 }
                 $this->response([
@@ -294,6 +295,8 @@ class Aspirasi extends RestController
         $this->db->join("web_komisi", "web_komisi.id_komisi=asp.komisi_id");
         $this->db->group_by("asp.id_aspirasi");
         $this->db->where("asp.id_aspirasi", $id);
-        return $this->db->get()->row_array();
+        $aspirasi = $this->db->get()->row_array();
+        $aspirasi['dateCreated'] = date("d/M/Y", $aspirasi['date_created']);
+        return $aspirasi;
     }
 }
