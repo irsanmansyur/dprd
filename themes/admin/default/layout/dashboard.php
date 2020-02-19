@@ -35,7 +35,7 @@ $this->load->view($thema_load . 'element/template/head_meta.php');
                 </div>
             </div>
         </div>
-        <div class="col-lg-3 col-md-6 col-sm-6">
+        <!-- <div class="col-lg-3 col-md-6 col-sm-6">
             <div class="card card-stats">
                 <div class="card-header card-header-rose card-header-icon">
                     <div class="card-icon">
@@ -52,7 +52,7 @@ $this->load->view($thema_load . 'element/template/head_meta.php');
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="col-lg-3 col-md-6 col-sm-6">
             <div class="card card-stats">
                 <div class="card-header card-header-success card-header-icon">
@@ -61,12 +61,12 @@ $this->load->view($thema_load . 'element/template/head_meta.php');
                             folder_open
                         </i>
                     </div>
-                    <p class="card-category">Jumlah Submenu</p>
-                    <h3 class="card-title"><?= $jumlah_submenu ?></h3>
+                    <p class="card-category">Jumlah Aspirasi</p>
+                    <h3 class="card-title"><?= $all_aspirasi ?></h3>
                 </div>
                 <div class="card-footer">
                     <div class="stats">
-                        <i class="material-icons">date_range</i> Berdasarkan User role dan menu
+                        <i class="material-icons">date_range</i> Aspirasi dari masyarakat
                     </div>
                 </div>
             </div>

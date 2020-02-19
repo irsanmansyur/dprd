@@ -54,6 +54,7 @@ class Komentar extends RestController
                 }
                 $this->response([
                     "status" => true,
+                    "message" => "Komentar di temukan",
                     "data" => $komentar
                 ], 200); // OK (200) being the HTTP response code
             } else {

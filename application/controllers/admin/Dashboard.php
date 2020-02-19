@@ -16,6 +16,14 @@ class Dashboard extends Admin_Controller
         $this->data['jumlah_submenu'] =  $this->menu_m->getSubmenu()->num_rows();
         $this->data['jumlah_menu'] =  $this->menu_m->getMenu()->num_rows();
 
+        /**
+         * ! Menampilkan semua aspirasi
+         * ? filter sendiri nantinya untuk kebutuhan tiap dashboard
+         */
+        $all_aspirasi = $this->db->get("web_aspirasi")->result_array();
+        $this->data['all_aspirasi'] = count($all_aspirasi);
+
+
         $this->db->where([
             "status" => "1"
         ]);

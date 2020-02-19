@@ -28,7 +28,7 @@ class Label extends Admin_Controller
         }
         $this->data['page']['title'] = 'Mengolah Data Label';
         $this->data['page']['description'] = 'Silahkan edit Label Atau Tambahkan Label Baru.!';
-        $this->data['page']['before'] = ['url' => base_url('admin/komisi'), "title" => "Komisi"];
+        $this->data['page']['before'] = ['url' => base_url('admin/komisi/home'), "title" => "Komisi"];
         $this->data['page']['submenu'] = 'Daftar Label';
 
         $validation = $this->form_validation;
