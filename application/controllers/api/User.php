@@ -263,6 +263,7 @@ class User extends RestController
                 if ($respon->status) {
                     $user = $this->db->get_where($tbl['name'], ["id_user" => $id])->row_array();
                     $user['image_sm'] = getThumb($user['image']);
+                    $user['tgl_lahir'] = date("d-m-Y", $user['tgl_lahir']);
                     $user['image_lg'] = getImg($user['image'], "profile");
                     $respon->data = $user;
                     $this->response($respon, 201);
