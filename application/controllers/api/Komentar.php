@@ -90,7 +90,7 @@ class Komentar extends RestController
             $respon = hasilCUD("Komentar Ditambahkan");
             $respon->data = [];
             if ($respon->status) {
-                $respon->data[] = $this->getId($tbl['field'][$tbl['key']]);
+                $respon->data = $this->getId($tbl['field'][$tbl['key']]);
                 $this->response($respon, 201);
             } else
                 $this->response($respon, 400);
