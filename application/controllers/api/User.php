@@ -256,7 +256,7 @@ class User extends RestController
         $user = $this->db->get_where($tbl['name'], ["id_user" => $id])->row_array();
         if ($user) {
             $data = $this->put();
-            $data['tgl_lahir'] = strtotime($data['tgl_lahir'] ? $data['tgl_lahir'] : "12-12-2000");
+            $data['tgl_lahir'] = strtotime($this->put('tgl_lahir') ? $this->put('tgl_lahir') : "12-12-2000");
             $update = $this->db->update($tbl['name'], $data, ["id_user" => $id]);
             if ($update) {
                 $respon = hasilCUD("Data Berhasil Di Update");
