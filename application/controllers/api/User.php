@@ -250,7 +250,6 @@ class User extends RestController
             ], 200);
         }
     }
-
     public function index_put($id)
     {
         $tbl = initTable("tbl_user", "user");
@@ -258,7 +257,7 @@ class User extends RestController
         if ($user) {
             $data = $this->put();
             $data['tgl_lahir'] = strtotime($data['tgl_lahir'] ? $data['tgl_lahir'] : "12-12-2000");
-            $update = $this->db->update($tbl['name'], $this->put(), ["id_user" => $id]);
+            $update = $this->db->update($tbl['name'], $data, ["id_user" => $id]);
             if ($update) {
                 $respon = hasilCUD("Data Berhasil Di Update");
                 if ($respon->status) {
