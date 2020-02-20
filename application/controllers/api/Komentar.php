@@ -153,5 +153,6 @@ class Komentar extends RestController
         $this->db->where("id_komentar", $id);
         $komentar = $this->db->get()->row_array();
         $komentar['dateCreated'] =  date("d/M/Y", $komentar['date_created']);
+        return $komentar;
     }
 }
