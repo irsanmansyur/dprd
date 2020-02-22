@@ -218,7 +218,7 @@ $(".getInfo").click(function(e) {
 				dt.data.forEach(row => {
 					if ($(this).data("role") == row.role_id && row.parent == 0) {
 						let date_created = getTanggal(row.date_created);
-						list += `<li>
+						list += `<li id="tanggapan-root" data-idkomentar="${row.id_komentar}">
 								<div class="comment-main-level">
 									<div class="comment-avatar"><img src="${row.file}" alt=""></div>
 									<div class="comment-box">
@@ -257,7 +257,9 @@ $(".getInfo").click(function(e) {
 });
 let ReplyKomentar = $(".comments-list").on("click", ".kmt-reply", function() {
 	// tentukan id komentar target
-	let id_komentar = $(this).data("id");
+	let elRoot = $(this).parents("#tanggapan-root");
+	let id_komentar = elRoot.data("idkomentar");
+	console.log(id_komentar);
 	let parent = $(this).parents(".comment-main-level");
 
 	komentar_selected = komentar_all.find(obj => {

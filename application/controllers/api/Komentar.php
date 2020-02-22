@@ -90,12 +90,12 @@ class Komentar extends RestController
             if ($respon->status) {
                 $this->response($respon, 201);
             } else
-                $this->response($respon, 400);
+                $this->response($respon, 200);
         } else {
             $this->response([
                 'status' => FALSE,
                 'message' => 'Lengkapi data dulu',
-                "dataErrors" => validation_errors('<span class="error">', '</span>')
+                "dataErrors" => $this->form_validation->error_array()
             ], 200);
         }
     }
@@ -141,5 +141,13 @@ class Komentar extends RestController
                 "message" => "Terjadi Kesalahan"
             ], 500); // BAD_REQUEST (400) being the HTTP response code
         }
+    }
+
+    function getId()
+    {
+        $this->db->select("web_komentar.*,tbl_user.image,tbl_user.role_id,tbl_user.name AS username");
+        $this->db->from("web_komentar");
+        $this->db->join("tbl_user", "tbl_user.id_user=web_komentar.user_id");
+        $komentar = $this->db->get()->row_array();
     }
 }
