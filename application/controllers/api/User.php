@@ -104,6 +104,7 @@ class User extends RestController
 
         if ($this->form_validation->run()) {
 
+
             $datetime = (int) $this->post("tgl_lahir");
 
 
@@ -130,7 +131,7 @@ class User extends RestController
 
             $data = [
                 $tblUser['key'] =>  $tblUser['lastkey'],
-                "tgl_lahir" => $datetime,
+                "tgl_lahir" => strtotime($this->post('tgl_lahir') ? $this->post('tgl_lahir') : "12-12-2000"),
                 "name" => $this->post('name'),
                 "email" => $this->post('email'),
                 "no_hp" => $this->post('no_hp'),
@@ -249,18 +250,20 @@ class User extends RestController
             ], 200);
         }
     }
-
     public function index_put($id)
     {
         $tbl = initTable("tbl_user", "user");
         $user = $this->db->get_where($tbl['name'], ["id_user" => $id])->row_array();
         if ($user) {
-            $update = $this->db->update($tbl['name'], $this->put(), ["id_user" => $id]);
+            $data = $this->put();
+            $data['tgl_lahir'] = strtotime($this->put('tgl_lahir') ? $this->put('tgl_lahir') : "12-12-2000");
+            $update = $this->db->update($tbl['name'], $data, ["id_user" => $id]);
             if ($update) {
                 $respon = hasilCUD("Data Berhasil Di Update");
                 if ($respon->status) {
                     $user = $this->db->get_where($tbl['name'], ["id_user" => $id])->row_array();
                     $user['image_sm'] = getThumb($user['image']);
+                    $user['tgl_lahir'] = date("d-m-Y", $user['tgl_lahir']);
                     $user['image_lg'] = getImg($user['image'], "profile");
                     $respon->data = $user;
                     $this->response($respon, 201);

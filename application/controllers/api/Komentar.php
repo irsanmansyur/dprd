@@ -51,6 +51,7 @@ class Komentar extends RestController
             if ($komentar) {
                 foreach ($komentar as $key => $val) {
                     $komentar[$key]["image"] = getThumb($val['image']);
+                    $komentar[$key]["dateCreated"] = date("d/M/Y", $komentar[$key]['date_created']);
                 }
                 $this->response([
                     "status" => true,
@@ -87,7 +88,9 @@ class Komentar extends RestController
             $this->post('parent') ? $data['parent'] = $this->post('parent') : '';
             $this->db->insert($tbl['name'], $data);
             $respon = hasilCUD("Komentar Ditambahkan");
+            $respon->data = [];
             if ($respon->status) {
+                $respon->data = $this->getId($tbl['field'][$tbl['key']]);
                 $this->response($respon, 201);
             } else
                 $this->response($respon, 200);
@@ -120,34 +123,30 @@ class Komentar extends RestController
             }
         }
     }
-    public function index_delete()
+    public function index_delete($id = null)
     {
-        $where = $this->input->get();
-        if (count($this->delete()) > 0) {
-            foreach ($this->delete() as $row => $value) {
-                $where[$row] = $value;
-            }
-        }
-
+        $where = [
+            "id_komentar" => $id
+        ];
         $respon = $this->db->delete("web_komentar", $where);
         if ($respon) {
             $eks = hasilCUD("deleted.!");
-            if ($eks->status) {
-                $this->response($eks, 200);
-            } else $this->response($eks, 304);
+            $this->response($eks, 200);
         } else {
             $this->response([
                 'status' => false,
                 "message" => "Terjadi Kesalahan"
-            ], 500); // BAD_REQUEST (400) being the HTTP response code
+            ], 502); // BAD_REQUEST (400) being the HTTP response code
         }
     }
-
-    function getId()
+    function getId($id)
     {
         $this->db->select("web_komentar.*,tbl_user.image,tbl_user.role_id,tbl_user.name AS username");
         $this->db->from("web_komentar");
         $this->db->join("tbl_user", "tbl_user.id_user=web_komentar.user_id");
+        $this->db->where("id_komentar", $id);
         $komentar = $this->db->get()->row_array();
+        $komentar['dateCreated'] =  date("d/M/Y", $komentar['date_created']);
+        return $komentar;
     }
 }
