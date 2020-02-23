@@ -9,6 +9,12 @@ class Dashboard extends Admin_Controller
     //Menampilkan Dashboard
     function index()
     {
+        $user = $this->db->get_where("web_komisi_user", [
+            "user_id" => $this->data['user']['id_user']
+        ])->row_array();
+
+
+
         $this->data['page']['title'] = 'Selamat Datang..!';
         $this->data['page']['description'] = 'Silahkan lihat informasi.!';
 
@@ -24,21 +30,24 @@ class Dashboard extends Admin_Controller
         $this->data['all_aspirasi'] = count($all_aspirasi);
 
 
+
+
         $this->db->where([
-            "status" => "1"
+            "status" => "1",
+            "komisi_id" => $user['komisi_id']
         ]);
         $this->db->from("web_aspirasi asp");
-        $this->db->join("web_komisi", "web_komisi.id_komisi=asp.komisi_id");
-
         $this->data['aspirasi_read'] = $this->db->count_all_results();
+
 
         $this->db->where([
             "status!=" => "1",
+            "komisi_id" => $user['komisi_id']
         ]);
         $this->db->from("web_aspirasi asp");
-        $this->db->join("web_komisi", "web_komisi.id_komisi=asp.komisi_id");
-
         $this->data['aspirasi_not_read'] = $this->db->count_all_results();
+
+
 
         $visitor = $this->visitor_m->getVisitor()->result_array();
         foreach ($visitor as $row) {
