@@ -146,11 +146,20 @@ class User extends RestController
             $respon->data = $data;
             if ($respon->status == true) {
                 if ($data['role_id'] == 3) {
+                    $token = uniqid();
                     _sendEmail([
                         'email' => $data['email'],
                         'type' => "verify",
-                        "token" => uniqid()
+                        "token" => $token
                     ]);
+
+                    $tbl = initTable("tbl_user_token", "tkn");
+                    $user_token = [
+                        'email' => $data['email'],
+                        'token' => $token,
+                        'date_created' => time()
+                    ];
+                    $this->db->insert($tbl["name"], $user_token);
                 }
             }
             $this->response($respon, 200);

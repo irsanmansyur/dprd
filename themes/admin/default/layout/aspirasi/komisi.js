@@ -136,6 +136,9 @@ function htmlTanggapi(myDiv = $("#comments-list")) {
 				message = null;
 			$.post(baseUrl + "api/komentar", data)
 				.done(res => {
+					if (res.status) {
+						loadAspirasi();
+					}
 					status = res.status;
 					message = res.message;
 				})
@@ -218,15 +221,15 @@ $(".getInfo").click(function(e) {
 				dt.data.forEach(row => {
 					if ($(this).data("role") == row.role_id && row.parent == 0) {
 						let date_created = getTanggal(row.date_created);
-						list += `<li id="tanggapan-root" data-idkomentar="${row.id_komentar}">
+						list += `<li id="tanggapan-root" data-id="${row.id_komentar}">
 								<div class="comment-main-level">
-									<div class="comment-avatar"><img src="${row.file}" alt=""></div>
+									<div class="comment-avatar"><img src="${row.image}" alt=""></div>
 									<div class="comment-box">
 										<div class="comment-head">
 											<h6 class="comment-name by-author"><a href="#">${row.username}</a></h6>
 											<span>${date_created}</span>
-											<i class="fa fa-reply kmt-reply" data-id="${row.id_komentar}"></i>
-											
+											<i class="material-icons kmt-delete mt-0">delete_forever</i>
+											<i class="fa fa-reply kmt-reply" data-id="${row.id_komentar}"></i>										
 										</div>
 										<div class="comment-content">
 											${row.komentar}
@@ -255,6 +258,7 @@ $(".getInfo").click(function(e) {
 		}
 	});
 });
+
 let ReplyKomentar = $(".comments-list").on("click", ".kmt-reply", function() {
 	// tentukan id komentar target
 	let elRoot = $(this).parents("#tanggapan-root");
@@ -325,29 +329,12 @@ $("#formInput").on("submit", function(e) {
 	});
 });
 
+loadFileJs("layout/aspirasi/elemen/card_komentar.js");
 function listReplies(parent, list) {
 	var reply = ``;
 	list.forEach(element => {
 		if (element.parent == parent) {
-			let date_created = getTanggal(element.date_created);
-
-			let lists = `<li>
-							<div class="comment-main-level reply">
-								<div class="comment-avatar"><img src="${element.file}" alt=""></div>
-								<div class="comment-box">
-									<div class="comment-head">
-										<h6 class="comment-name by-author"><a href="#">${element.username}</a></h6>
-										<span>${date_created}</span>
-										<i class="fa fa-reply kmt-reply" data-id="${element.id_komentar}"></i>
-										
-									</div>
-									<div class="comment-content">
-										${element.komentar}
-									</div>
-								</div>
-							</div>
-						</li>`;
-			reply += lists;
+			reply += cardKomentar(element);
 			reply += listReplies(element.id_komentar, list);
 		}
 	});

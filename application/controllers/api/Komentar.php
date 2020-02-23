@@ -125,10 +125,11 @@ class Komentar extends RestController
     }
     public function index_delete($id = null)
     {
-        $where = [
+        $this->db->where([
             "id_komentar" => $id
-        ];
-        $respon = $this->db->delete("web_komentar", $where);
+        ]);
+        $this->db->or_where("parent", $id);
+        $respon = $this->db->delete("web_komentar");
         if ($respon) {
             $eks = hasilCUD("deleted.!");
             $this->response($eks, 200);

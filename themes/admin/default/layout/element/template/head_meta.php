@@ -83,7 +83,7 @@
                         }
                         throw new Error(msg);
                     }
-                    return res.data;
+                    return res.data ? res.data : res;
                 })
                 .catch((error) => {
                     throw new Error(error);
