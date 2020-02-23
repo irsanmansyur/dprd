@@ -141,18 +141,18 @@ class User extends RestController
                 "image" => $image,
                 "password" => password_hash($this->post('password'), PASSWORD_DEFAULT)
             ];
+
             $this->db->insert($tblUser['name'], $data);
             $respon = hasilCUD("Data User Ditambahkan");
             $respon->data = $data;
             if ($respon->status == true) {
                 if ($data['role_id'] == 3) {
                     $token = uniqid();
-                    _sendEmail([
+                    $send = _sendEmail([
                         'email' => $data['email'],
                         'type' => "verify",
                         "token" => $token
                     ]);
-
                     $tbl = initTable("tbl_user_token", "tkn");
                     $user_token = [
                         'email' => $data['email'],
@@ -303,6 +303,14 @@ class User extends RestController
                 'status' => false,
                 "message" => "Terjadi Kesalahan"
             ], 502); // BAD_REQUEST (400) being the HTTP response code
+        }
+    }
+    public function test_get()
+    {
+        if (fsockopen("mail.dprdmks.com", 465)) {
+            print "port 465 terbuka";
+        } else {
+            print "port 465 tertutup";
         }
     }
 }

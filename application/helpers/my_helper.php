@@ -261,19 +261,18 @@ function _sendEmail($data)
 
     $config = [
         'protocol'  => 'smtp',
-        'smtp_host' => 'ssl://smtp.googlemail.com',
-        'smtp_user' => 'berkominfo@gmail.com',
-        'smtp_pass' => 'ichaNK01',
-        'smtp_port' => 465,
+        'smtp_host' => 'mail.dprdmks.com',
+        'smtp_port' => 587,
+        'smtp_user' => 'admin@dprdmks.com',
+        'smtp_pass' => 'stmikDP00',
         'mailtype'  => 'html',
-        'charset'   => 'utf-8',
-        'newline'   => "\r\n"
+        'charset'   => 'utf-8'
     ];
 
     $ci->load->library('email');
     $ci->email->initialize($config);
 
-    $ci->email->from('berkominfo@gmail.com', 'Berkominfo');
+    $ci->email->from('admin@dprdmks.com', 'Admin DPRD Makasar');
 
     $ci->email->to($data['email']);
 
@@ -287,6 +286,6 @@ function _sendEmail($data)
     if ($ci->email->send()) {
         return true;
     } else {
-        return false;
+        return $ci->email->print_debugger(array('headers'));
     }
 }
