@@ -19,7 +19,7 @@ $this->load->view($thema_load . 'element/template/head_meta.php');
             <div class="card-icon">
                 <i class="material-icons">assignment</i>
             </div>
-            <h4 class="card-title">Daftar Aspirasi Masyarakat Pada KOmisi A</h4>
+            <h4 class="card-title">Daftar Aspirasi Masyarakat Pada Komisi <?= $komisi['name'] ?></h4>
         </div>
         <div class="card-body">
             <div class="table-responsive">

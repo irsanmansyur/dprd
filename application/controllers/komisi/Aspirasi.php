@@ -17,8 +17,9 @@ class Aspirasi extends Admin_Controller
         $this->data['page']['submenu'] = 'Menu Komisi';
 
 
-        $this->db->select("web_komisi_user.*");
+        $this->db->select("web_komisi_user.*,web_komisi.name");
         $this->db->from("web_komisi_user");
+        $this->db->join("web_komisi", "web_komisi.id_komisi=web_komisi_user.komisi_id");
         $this->db->where("web_komisi_user.user_id", $this->data['user']['id_user']);
         $eks = $this->db->get()->row_array();
         $this->data['komisi'] = $eks;
