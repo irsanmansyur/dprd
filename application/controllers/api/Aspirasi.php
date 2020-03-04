@@ -169,7 +169,6 @@ class Aspirasi extends RestController
                     @$cosine[$key] = 0;
                 }
             }
-            die("\nselesai");
             $minGap = $max * 0.75;
             $dataku = [];
 
@@ -309,6 +308,7 @@ class Aspirasi extends RestController
                     $arr_message[$item] = 1;
             }
         }
+        $arr_message = $this->removeTerm($arr_message);
 
         $arr_labelKomisi = $this->getLabelKomisi();
         $data = ["message" => $arr_message];
@@ -385,5 +385,20 @@ class Aspirasi extends RestController
         $aspirasi = $this->db->get()->row_array();
         $aspirasi['dateCreated'] = date("d/M/Y", $aspirasi['date_created']);
         return $aspirasi;
+    }
+
+    function removeTerm($arr_message)
+    {
+        $list_romove = [];
+        $data = $this->db->select("text")->from("web_text_mining")->get()->result_array();
+        foreach ($data as $row) {
+            $list_romove[] = $row['text'];
+        }
+        foreach ($arr_message as $key => $value) {
+            if (in_array($key, $list_romove)) {
+                unset($arr_message[$key]);
+            }
+        }
+        return $arr_message;
     }
 }
