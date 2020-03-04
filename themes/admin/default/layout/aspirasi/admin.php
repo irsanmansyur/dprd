@@ -48,6 +48,7 @@ $this->load->view($thema_load . 'element/template/head_meta.php');
     $this->load->view($thema_load . 'element/template/fixed-setting.php');
     ?>
 
+
     <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="#modalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -79,12 +80,55 @@ $this->load->view($thema_load . 'element/template/head_meta.php');
             </div>
         </div>
     </div>
+    <div class="modal fade" id="tampil" tabindex="-1" role="dialog" aria-labelledby="#modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-notice modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">Detail Aspirasi</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="card">
+                    <div class="card-header card-header-rose card-header-icon">
+                        <div class="card-icon">
+                            <i class="material-icons">assignment</i>
+                        </div>
+                        <h4 class="card-title">Perhitungan Text Mining dan Cosine Similarity</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" rowspan="2">Aspirasi</th>
+                                        <th colspan="4" class="text-center">komisi</th>
+                                    </tr>
+                                    <tr>
+                                        <th>A</th>
+                                        <th>B</th>
+                                        <th>C</th>
+                                        <th>D</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="detail-aspirasi">
+
+                                </tbody>
+                                <tfoot class="hasil">
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         var dftAspirasi = $("tbody.daftar-aspirasi");
         var tr = null;
     </script>
-    <script src="<?= $thema_folder ?>layout/aspirasi/admin.js"></script>
+    <script src="<?= $thema_folder ?>layout/aspirasi/admins.js"></script>
 </body>
 
 </html>

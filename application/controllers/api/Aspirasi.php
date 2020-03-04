@@ -118,14 +118,10 @@ class Aspirasi extends RestController
 
 
 
-            /**
-             * load model komisi
-             * mengambil label setiap komisi
-             */
-            $this->load->model("komisi_m");
-            $this->load->helper("cosine_helper");
 
-            //menjadikan array Aspirasi setelah di Text Mining
+            /**
+             * ! Aspirasi di ubah menjadi array setelah di text mining
+             */
             $array = preg_split('/[^[:alnum:]]+/', strtolower($outputstemmer));
             $arr_textmining = [];
             foreach ($array as $item) {
@@ -137,33 +133,44 @@ class Aspirasi extends RestController
                 }
             }
 
-            $all_komisi = $this->komisi_m->getKomisi();
+            /**
+             * load model komisi
+             * mengambil label setiap komisi
+             */
+
+            $this->load->model("komisi_m");
+            $this->load->helper("cosine_helper");
+
+            // $all_komisi =  $this->komisi_m->getKomisi();
+            $arrayDataKomisi =  $this->getLabelKomisi();
+
+            $dataTabel = [];
 
             $max = 0;
-            foreach ($all_komisi as $row) {
+            foreach ($arrayDataKomisi as $key => $label) {
+                // ! array label
+                $arrayLabel = preg_split('/[^[:alnum:]]+/', strtolower($label));
+                $stringLabel = lblString($arrayLabel, $arr_textmining);
+                $array = preg_split('/[^[:alnum:]]+/', strtolower($stringLabel));
                 $csn = null;
 
-                $arr_label = $this->komisi_m->getLabel($row['id_komisi']);
-                $str = lblString($arr_label, $arr_textmining);
 
-                $array = preg_split('/[^[:alnum:]]+/', strtolower($str));
                 foreach ($array as $item) {
                     if (strlen($item) > 2) {
                         @$csn[$item]++;
                     }
                 }
-                // var_dump($csn);
+
                 if ($csn) {
-                    $hasil = cosineSimilarity($arr_textmining, $csn);
-                    @$cosine[$row['id_komisi']] = $hasil;
+                    $hasil = cosineSimilarity($arr_textmining, $csn)['hasil'];
+                    @$cosine[$key] = $hasil;
                     $hasil > $max ? $max = $hasil : '';
                 } else {
-                    @$cosine[$row['id_komisi']] = 0;
+                    @$cosine[$key] = 0;
                 }
             }
-
+            die("\nselesai");
             $minGap = $max * 0.75;
-
             $dataku = [];
 
             if ($minGap > 0) {
@@ -241,6 +248,95 @@ class Aspirasi extends RestController
                 "dataErrors" => $this->form_validation->error_array()
             ], 404); // NOT_FOUND (404) being the HTTP response code
         }
+    }
+
+    function getLabelKomisi()
+    {
+        $idKms = $this->db->select("id_komisi")->from("web_komisi")->get()->result();
+        $textMiningKomisi = [];
+        foreach ($idKms as $row) {
+            if ($row->id_komisi == "kms_000") {
+                continue;
+            }
+            $dataKomisi = $this->db->select("label")->from("web_komisi_label")->where(['komisi_id' => $row->id_komisi])->get()->result();
+            $textMiningString = null;
+            foreach ($dataKomisi as $label) {
+                $textMiningString .= $this->Textmining($label->label);
+            }
+            $textMiningKomisi[$row->id_komisi] = $textMiningString;
+        }
+        return $textMiningKomisi;
+    }
+
+    function Textmining($sentence)
+    {
+        /**
+         * Tokenizing
+         */
+        $stopWordRemoverFactory = new \Sastrawi\StopWordRemover\StopWordRemoverFactory();
+        $stopword = $stopWordRemoverFactory->createStopWordRemover();
+        $outputstopword = $stopword->remove($sentence);
+
+        /**
+         * Stemming
+         * proses menghilankan kata awal dan akhir
+         */
+        $stemmerFactory = new \Sastrawi\Stemmer\StemmerFactory();
+        $stemmer = $stemmerFactory->createStemmer();
+        $outputstemmer = $stemmer->stem($outputstopword);
+        return $outputstemmer . " ";
+    }
+
+    function tampilkan_get($id)
+    {
+        $this->load->helper("cosine_helper");
+        $aspirasi = $this->db->select("message")->from("web_aspirasi")->where(["id_aspirasi" => $id])->get()->row();
+
+        if (!$aspirasi)
+            $this->response([
+                'status' => FALSE,
+                'message' => 'Aspirasi Tidak Di temukan',
+                "dataErrors" => []
+            ], 404); // NOT_FOUND (404) being the HTTP response code
+
+        $array = preg_split('/[^[:alnum:]]+/', strtolower($this->Textmining($aspirasi->message)));
+        $arr_message = [];
+        foreach ($array as $item) {
+            if (array_key_exists($item, $arr_message)) {
+                $arr_message[$item]++;
+            } else {
+                if (strlen($item) > 2)
+                    $arr_message[$item] = 1;
+            }
+        }
+
+        $arr_labelKomisi = $this->getLabelKomisi();
+        $data = ["message" => $arr_message];
+        foreach ($arr_labelKomisi as $key => $label) {
+            // ! array label
+            $arrayLabel = preg_split('/[^[:alnum:]]+/', strtolower($label));
+
+            $stringLabel = lblString($arrayLabel, $arr_message);
+
+
+            $array = preg_split('/[^[:alnum:]]+/', strtolower($stringLabel));
+
+
+            $csn = null;
+            foreach ($array as $item) {
+                if (strlen($item) > 2) {
+                    @$csn[$item]++;
+                }
+            }
+            if ($csn) {
+                $data[$key] = cosineSimilarity($arr_message, $csn);
+            } else $data[$key] = null;
+        }
+        $this->response([
+            'status' => true,
+            'message' => 'Data di temukan',
+            "data" => $data
+        ], 200); // NOT_FOUND (404) being the HTTP response code
     }
 
     public function index_put()

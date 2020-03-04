@@ -34,15 +34,17 @@ function cosineSimilarity($tokensA, $tokensB)
     $htmlOutput .= "Nilai Atas  = " . $nilaiAtas . "</br>";
     $htmlOutput .= "Nilai Bawah = " . $nilaiBawah . "</br>";
     $htmlOutput .= "Hasilnya    = " . $hasil . "</br></br>";
-    return $hasil;
+
+    return ["y" => $yArray, "nilaiAtas" => $nilaiAtas, "nilaiBawah" => $nilaiBawah, "hasil" => $hasil];
+    // return $hasil;
 }
 
 function lblString($array = [], $message_array)
 {
     $str = '';
     foreach ($array as $val) {
-        if (array_key_exists($val['label'], $message_array))
-            $str .= strval($val['label']) . ' ';
+        if (array_key_exists($val, $message_array))
+            $str .= strval($val) . ' ';
         // $str .= strval($val['label']) . ' ';
     }
     return $str;
