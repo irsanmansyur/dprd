@@ -35,8 +35,8 @@ class Label extends Admin_Controller
         $this->label_m->addRules("label");
         $validation->set_rules($this->label_m->getRules());
 
+        $tbl = initTable("web_komisi_label");
         if ($validation->run() == false) {
-            $tbl = initTable("web_komisi_label");
             $this->db->select($tbl['name'] . ".*");
             $this->db->from($tbl['name']);
             $this->db->join("web_komisi", "web_komisi_label.komisi_id=web_komisi.id_komisi");
@@ -52,46 +52,14 @@ class Label extends Admin_Controller
             $this->post['komisi_id'] = $id;
 
 
+            $data = [
+                $tbl["key"] => $tbl['field'][$tbl["key"]],
+                "komisi_id" => $this->post['komisi_id'],
+                "label" => $this->input->post('label')
+            ];
 
-            /**
-             * proses menghilankan kata awal dan akhir
-             */
-            $stemmerFactory = new \Sastrawi\Stemmer\StemmerFactory();
-            $stemmer = $stemmerFactory->createStemmer();
-            $sentence = $this->input->post('label');
-            $outputstemmer = $stemmer->stem($sentence);
-
-
-
-            /**
-             * proses menghilankan kata yang tidak penting
-             */
-            $stopWordRemoverFactory = new \Sastrawi\StopWordRemover\StopWordRemoverFactory();
-            $stopword = $stopWordRemoverFactory->createStopWordRemover();
-            $outputstopword = $stopword->remove($outputstemmer);
-
-            $array = preg_split('/[^[:alnum:]]+/', strtolower($outputstopword));
-            $arr_textmining = [];
-
-
-
-            foreach ($array as $item) {
-                if (array_key_exists($item, $arr_textmining)) {
-                    $arr_textmining[$item]++;
-                } else {
-                    if (strlen($item) > 2) {
-                        $tbl = initTable("web_komisi_label", "lbl");
-                        $data = [
-                            $tbl["key"] => $tbl['field'][$tbl["key"]],
-                            "komisi_id" => $this->post['komisi_id'],
-                            "label" => $item
-                        ];
-                        $this->db->insert($tbl['name'], $data);
-                        $arr_textmining[$item] = 1;
-                        $respon  = hasilCUD("Sukses Menambahkan Label");
-                    }
-                }
-            }
+            $this->db->insert($tbl['name'], $data);
+            $respon  = hasilCUD("Sukses Menambahkan Label");
             redirect('admin/komisi/label/' . $id);
         }
     }
