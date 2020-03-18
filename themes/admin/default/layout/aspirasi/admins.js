@@ -1,28 +1,57 @@
 var _aspirasi = null;
 var _list = null;
-dftAspirasi.on("click", ".mdl#delete", function() {
+dftAspirasi.on("click", ".mdl#delete", function () {
 	_aspirasi = $("tr[id=" + $(this).data("id") + "]");
 	const url_delete = $(this).data("url");
-	$(".modal#logout")
+
+	$("#modal-delete")
 		.find(".btn.url")
 		.attr("href", url_delete)
 		.html("Delete");
-	$(".modal#logout")
-		.find(".modal-title")
-		.html("Jika Anda menghapus maka data yang berkaitan akan terhapus juga");
 });
+
+const notifAjax = document.querySelector(".notif#ajax");
+let elMdlDelete = document.querySelector("#modal-delete");
+elMdlDelete.addEventListener("click", function (e) {
+	let el = e.target;
+	if (el.classList.contains("url")) {
+		e.preventDefault();
+		let url = el.getAttribute('href');
+		fetch(url, {
+			method: "DELETE"
+		}).then(res => res.json()).then(res => {
+			let css = res.status ? "success" : "danger";
+			let notif = `<div class="alert alert-${css}">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <i class="material-icons">close</i>
+            </button>
+            <span>${res.message}</span>
+		  </div>`;
+			notifAjax.innerHTML = notif;
+			$(".main-panel").animate(
+				{
+					scrollTop: $(".notif#ajax").offset().top
+				},
+				"slow"
+			);
+			$(".modal").modal("hide");
+			init();
+		})
+	}
+
+})
 function tbodySort() {
 	$("tbody > tr")
-		.sort(function(a, b) {
+		.sort(function (a, b) {
 			return $("td.number", b).text() > +$("td.number", a).text();
 		})
 		.appendTo("tbody")
 		.find("th:first")
-		.text(function(index) {
+		.text(function (index) {
 			return ++index + ".";
 		});
 }
-$("a.url.mdl").on("click", function(e) {
+$("a.url.mdl").on("click", function (e) {
 	e.preventDefault();
 	var parents = $(this).parents(".modal-content");
 	let url = $(this).attr("href");
@@ -43,10 +72,10 @@ $("a.url.mdl").on("click", function(e) {
 			message = data.message;
 			status = data.status;
 		},
-		error: function(e) {
+		error: function (e) {
 			console.log("error");
 		},
-		complete: function() {
+		complete: function () {
 			$("head").append("<style>.mdlProgresBarr::before{width:100%;}</style>");
 			$(".mdlProgresBarr").remove();
 			$(".modal").modal("hide");
@@ -57,7 +86,7 @@ $("a.url.mdl").on("click", function(e) {
             </button>
             <span>${message}</span>
           </div>`;
-			$(".fullpage").hide("slow", function() {
+			$(".fullpage").hide("slow", function () {
 				$(".fullpage").remove();
 			});
 			$(".notif#ajax").html(notif);
@@ -70,7 +99,7 @@ $("a.url.mdl").on("click", function(e) {
 		}
 	});
 });
-dftAspirasi.on("click", ".mdl#edit", function() {
+dftAspirasi.on("click", ".mdl#edit", function () {
 	_aspirasi = $("tr[id=" + $(this).data("id") + "]");
 	let url = baseUrl + "api/aspirasi?id_aspirasi=" + $(this).data("id");
 	let komisi_id = $(this).data("komisi");
@@ -81,7 +110,8 @@ dftAspirasi.on("click", ".mdl#edit", function() {
 		.attr("selected", true);
 	$("textarea[name=message]").val(message);
 });
-$().ready(function() {
+const init = () => {
+	dftAspirasi.html(``);
 	$.ajax({
 		url: baseUrl + "api/aspirasi",
 		type: "get",
@@ -102,7 +132,7 @@ $().ready(function() {
                             <td>
                                 <a href="#" class="badge badge-secondary tampilkan" data-komisi="${e.komisi_id}" data-message="${e.message}" data-id="${e.id_aspirasi}" data-toggle="modal" data-target=".modal#tampil" id="tampilkan">Lihat</a>
                                 <a href="#" class="badge badge-primary mdl btn" data-komisi="${e.komisi_id}" data-message="${e.message}" data-id="${e.id_aspirasi}" data-toggle="modal" data-target=".modal#edit" id="edit">Edit</a>
-                                <a href="" class="mdl badge badge-danger" id="delete"  data-id="${e.id_aspirasi}" data-toggle="modal" data-url="${baseUrl}api/aspirasi?id_aspirasi=${e.id_aspirasi}" data-target=".modal#logout">delete</a>
+                                <a href="" class="mdl badge badge-danger" id="delete"  data-id="${e.id_aspirasi}" data-toggle="modal" data-url="${baseUrl}api/aspirasi/${e.id_aspirasi}" data-target="#modal-delete">delete</a>
                             </td>
                         </tr>
                     `;
@@ -120,9 +150,10 @@ $().ready(function() {
 			$(".mdlProgresBarr").remove();
 		}
 	});
-});
+};
+init();
 let daftarAspirasi = document.querySelector(".daftar-aspirasi");
-daftarAspirasi.addEventListener("click", function(e) {
+daftarAspirasi.addEventListener("click", function (e) {
 	el = e.target;
 	if (el.classList.contains("tampilkan")) {
 		e.preventDefault();
@@ -185,7 +216,7 @@ const loadPerhitungan = async ({ id, message, komisi }) => {
 	}
 };
 
-$("#formInput").on("submit", function(e) {
+$("#formInput").on("submit", function (e) {
 	e.preventDefault();
 	var myForm = $(this);
 	let url = myForm.attr("action");
@@ -215,7 +246,7 @@ $("#formInput").on("submit", function(e) {
 			status = dt.status;
 			message = dt.message;
 		},
-		complete: function() {
+		complete: function () {
 			$("head").append("<style>.mdlProgresBarr::before{width:100%;}</style>");
 			$(".mdlProgresBarr").remove();
 			$(".modal").modal("hide");
@@ -226,7 +257,7 @@ $("#formInput").on("submit", function(e) {
             </button>
             <span>${message}</span>
           </div>`;
-			$(".fullpage").hide("slow", function() {
+			$(".fullpage").hide("slow", function () {
 				$(".fullpage").remove();
 			});
 			$(".notif#ajax").html(notif);

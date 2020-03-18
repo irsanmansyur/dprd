@@ -15,6 +15,7 @@ $this->load->view($thema_load . 'element/template/head_meta.php');
 
     <!-- isi content -->
     <div class="card">
+        <div class="notif" id="ajax"></div>
         <div class="card-header card-header-primary card-header-icon">
             <div class="card-icon">
                 <i class="material-icons">assignment</i>
@@ -123,6 +124,28 @@ $this->load->view($thema_load . 'element/template/head_meta.php');
             </div>
         </div>
     </div>
+    <div class="modal fade" id="modal-delete" tabindex="-1" role="dialog" aria-labelledby="#modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-notice modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">Delete Aspirasi</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+    
+                <div class="modal-body">
+                    <p>Apaka Anda yakin ingin menghapus...?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <a href="" class="btn btn-danger url">Hapus</a>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
 
     <script>
         var dftAspirasi = $("tbody.daftar-aspirasi");

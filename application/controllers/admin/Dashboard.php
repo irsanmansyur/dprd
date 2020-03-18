@@ -14,7 +14,6 @@ class Dashboard extends Admin_Controller
         ])->row_array();
 
 
-
         $this->data['page']['title'] = 'Selamat Datang..!';
         $this->data['page']['description'] = 'Silahkan lihat informasi.!';
 
@@ -31,19 +30,23 @@ class Dashboard extends Admin_Controller
 
 
 
-
-        $this->db->where([
-            "status" => "1",
-            "komisi_id" => $user['komisi_id']
-        ]);
+        $where = [
+            "status" => "1"
+        ];
+        if ($user) {
+            $where["komisi_id"]=$user['komisi_id'];
+        }
+        $this->db->where($where);
         $this->db->from("web_aspirasi asp");
         $this->data['aspirasi_read'] = $this->db->count_all_results();
 
-
-        $this->db->where([
-            "status!=" => "1",
-            "komisi_id" => $user['komisi_id']
-        ]);
+        $where = [
+            "status!=" => "1"
+        ];
+        if ($user) {
+            $where["komisi_id"]=$user['komisi_id'];
+        }
+        $this->db->where($where);
         $this->db->from("web_aspirasi asp");
         $this->data['aspirasi_not_read'] = $this->db->count_all_results();
 
@@ -60,9 +63,6 @@ class Dashboard extends Admin_Controller
             $this->template->load('admin', 'dashboard', $this->data);
     }
 
-    function test()
-    {
-    }
 
 
 
