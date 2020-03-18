@@ -2,6 +2,24 @@
 # TABLE STRUCTURE FOR: keys
 #
 
+DROP TABLE IF EXISTS `keys`;
+
+CREATE TABLE `keys` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` varchar(9) NOT NULL,
+  `key` varchar(40) NOT NULL,
+  `level` int(2) NOT NULL,
+  `ignore_limits` tinyint(1) NOT NULL DEFAULT 0,
+  `is_private_key` tinyint(1) NOT NULL DEFAULT 0,
+  `ip_addresses` text DEFAULT NULL,
+  `date_created` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `keys_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `tbl_user` (`id_user`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+INSERT INTO `keys` (`id`, `user_id`, `key`, `level`, `ignore_limits`, `is_private_key`, `ip_addresses`, `date_created`) VALUES (1, 'user_001', 'wpu123', 1, 0, 0, NULL, 2);
+
 
 #
 # TABLE STRUCTURE FOR: limits
@@ -85,49 +103,6 @@ INSERT INTO `tbl_setting` (`id_setting`, `name`, `title`, `status`) VALUES (12, 
 INSERT INTO `tbl_setting` (`id_setting`, `name`, `title`, `status`) VALUES (13, 'background_color', 'black', '1');
 
 
-
-
-#
-# TABLE STRUCTURE FOR: tbl_user_role
-#
-
-DROP TABLE IF EXISTS `tbl_user_role`;
-
-CREATE TABLE `tbl_user_role` (
-  `id` int(2) NOT NULL AUTO_INCREMENT,
-  `name` varchar(128) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
-
-INSERT INTO `tbl_user_role` (`id`, `name`) VALUES (1, 'admin');
-INSERT INTO `tbl_user_role` (`id`, `name`) VALUES (2, 'komisi');
-INSERT INTO `tbl_user_role` (`id`, `name`) VALUES (3, 'masyarakat');
-
-
-#
-# TABLE STRUCTURE FOR: tbl_user_file
-#
-
-DROP TABLE IF EXISTS `tbl_user_file`;
-
-CREATE TABLE `tbl_user_file` (
-  `id_file` varchar(9) NOT NULL,
-  `user_id` varchar(9) CHARACTER SET utf8 NOT NULL,
-  `file` varchar(128) NOT NULL,
-  `type` enum('1','2','3','4') NOT NULL DEFAULT '1' COMMENT '1 .Image, 2.Document, 3.MP3, 4.Video',
-  PRIMARY KEY (`id_file`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-INSERT INTO `tbl_user_file` (`id_file`, `user_id`, `file`, `type`) VALUES ('f001', 'user_001', '3_X_4_.jpg', '1');
-INSERT INTO `tbl_user_file` (`id_file`, `user_id`, `file`, `type`) VALUES ('file_001', '', 'default.png', '1');
-INSERT INTO `tbl_user_file` (`id_file`, `user_id`, `file`, `type`) VALUES ('file_002', 'user_003', '3_X_4_1.jpg', '1');
-INSERT INTO `tbl_user_file` (`id_file`, `user_id`, `file`, `type`) VALUES ('file_003', 'user_005', '3_X_4_1.jpg', '1');
-INSERT INTO `tbl_user_file` (`id_file`, `user_id`, `file`, `type`) VALUES ('file_008', 'user_002', '71nnIWIaBFL__SS1000_.jpg', '1');
-INSERT INTO `tbl_user_file` (`id_file`, `user_id`, `file`, `type`) VALUES ('file_009', 'user_008', '3_x_4_5.jpg', '1');
-INSERT INTO `tbl_user_file` (`id_file`, `user_id`, `file`, `type`) VALUES ('file_011', 'user_013', '3_x_4_4.jpg', '');
-INSERT INTO `tbl_user_file` (`id_file`, `user_id`, `file`, `type`) VALUES ('file_012', 'user_003', '3_x_4_1.jpg', '1');
-
-
 #
 # TABLE STRUCTURE FOR: tbl_user
 #
@@ -158,51 +133,39 @@ CREATE TABLE `tbl_user` (
   CONSTRAINT `tbl_user_ibfk_2` FOREIGN KEY (`file_id`) REFERENCES `tbl_user_file` (`id_file`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
 INSERT INTO `tbl_user` (`id_user`, `komisi_id`, `name`, `email`, `password`, `tentang_saya`, `no_hp`, `alamat`, `tgl_lahir`, `role_id`, `is_active`, `menu_active`, `date_created`, `date_updated`, `file_id`) VALUES ('user_001', '', 'Admin WEB', 'admin@gmail.com', '$2y$10$atyi8D112NQRFL.qwXShm.7KZfuRjj95moeIAE0gSj/fcFaEMJmaO', 'g', '085298884534', 'Ds. Jongbiru 001/001 kec. Gampengrejo - Kediri', -25200, 1, 1, 'yes', 1567261992, 2147483647, 'file_001');
 INSERT INTO `tbl_user` (`id_user`, `komisi_id`, `name`, `email`, `password`, `tentang_saya`, `no_hp`, `alamat`, `tgl_lahir`, `role_id`, `is_active`, `menu_active`, `date_created`, `date_updated`, `file_id`) VALUES ('user_002', '', 'Andi Suharji', 'komisi1@gmail.com', '$2y$10$0wKcZvzYGxDDTT2lLGTZcuEAFzsNhUXqruqOXLdgfadep5gHtG.ca', 'fgfgf', '085298884534', 'Ds. Jongbiru 001/001 kec. Gampengrejo - Kediri', -25200, 2, 1, 'yes', 0, 1577263628, 'file_008');
 INSERT INTO `tbl_user` (`id_user`, `komisi_id`, `name`, `email`, `password`, `tentang_saya`, `no_hp`, `alamat`, `tgl_lahir`, `role_id`, `is_active`, `menu_active`, `date_created`, `date_updated`, `file_id`) VALUES ('user_003', '', 'Irsan Mansyur', 'masyarakat1@gmail.com', '$2y$10$uze90ZmhjG1/GOC/THznBusV4h.D2G6WR2MXpp42habClKiESlXQK', 'Masyarakat biasa\r\n', '085298884534', 'Ds. Jongbiru 001/001 kec. Gampengrejo - Kediri', -25200, 3, 1, '', 0, 1579904425, 'file_012');
 
 
+#
+# TABLE STRUCTURE FOR: tbl_user_about
+#
 
-DROP TABLE IF EXISTS `keys`;
+DROP TABLE IF EXISTS `tbl_user_about`;
 
-CREATE TABLE `keys` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` varchar(9) NOT NULL,
-  `key` varchar(40) NOT NULL,
-  `level` int(2) NOT NULL,
-  `ignore_limits` tinyint(1) NOT NULL DEFAULT 0,
-  `is_private_key` tinyint(1) NOT NULL DEFAULT 0,
-  `ip_addresses` text DEFAULT NULL,
-  `date_created` int(11) NOT NULL,
+CREATE TABLE `tbl_user_about` (
+  `id` int(5) NOT NULL AUTO_INCREMENT,
+  `name` varchar(46) NOT NULL,
+  `file_id` varchar(9) CHARACTER SET utf8mb4 NOT NULL,
+  `motivasi` varchar(400) NOT NULL,
+  `pekerjaan` varchar(300) NOT NULL,
+  `tentang_saya` varchar(1000) NOT NULL,
+  `id_gallery` int(5) NOT NULL,
+  `user_id` varchar(9) CHARACTER SET utf8 NOT NULL,
+  `no_hp` varchar(20) NOT NULL,
+  `nip` varchar(10) NOT NULL,
+  `situs` varchar(188) NOT NULL,
+  `alamat` varchar(288) NOT NULL,
+  `tgl_lahir` int(12) NOT NULL,
+  `date_updated` int(11) NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`),
-  CONSTRAINT `keys_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `tbl_user` (`id_user`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  UNIQUE KEY `file_id` (`file_id`),
+  KEY `user_about_ibfk_1` (`user_id`),
+  CONSTRAINT `tbl_user_about_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `tbl_user` (`id_user`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
-INSERT INTO `keys` (`id`, `user_id`, `key`, `level`, `ignore_limits`, `is_private_key`, `ip_addresses`, `date_created`) VALUES (1, 'user_001', 'wpu123', 1, 0, 0, NULL, 2);
-
-
-#
-# TABLE STRUCTURE FOR: tbl_user_menu
-#
-
-DROP TABLE IF EXISTS `tbl_user_menu`;
-
-CREATE TABLE `tbl_user_menu` (
-  `id_menu` int(11) NOT NULL AUTO_INCREMENT,
-  `menu` varchar(88) NOT NULL,
-  PRIMARY KEY (`id_menu`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8;
-
-INSERT INTO `tbl_user_menu` (`id_menu`, `menu`) VALUES (1, 'admin');
-INSERT INTO `tbl_user_menu` (`id_menu`, `menu`) VALUES (2, 'user');
-INSERT INTO `tbl_user_menu` (`id_menu`, `menu`) VALUES (9, 'Menu Managements');
-INSERT INTO `tbl_user_menu` (`id_menu`, `menu`) VALUES (28, 'Komisi');
-INSERT INTO `tbl_user_menu` (`id_menu`, `menu`) VALUES (29, 'Aspirasi');
-INSERT INTO `tbl_user_menu` (`id_menu`, `menu`) VALUES (30, 'Aspirasi Anda');
-
+INSERT INTO `tbl_user_about` (`id`, `name`, `file_id`, `motivasi`, `pekerjaan`, `tentang_saya`, `id_gallery`, `user_id`, `no_hp`, `nip`, `situs`, `alamat`, `tgl_lahir`, `date_updated`) VALUES (1, 'Admin WEB', 'file_001', 'Tak Ada usaha yang menghianati hasil. Yakinlah semakin besar usahamu, semakin besar kamu mencapai impianmu.', 'Petani|Guru Honorer|Pegawai', '&quot;Tak Ada usaha yang menghianati hasil. Yakinlah semakin besar usahamu, semakin besar kamu mencapai impianmu&quot;', 1, 'user_001', '085298198343', '161290', 'http://www.irsandp.com', 'Kamp. Sarroanging, Desa Mappilawing, Kec. eremerasa, Kab. Bantaeng', 1795021200, 2147483647);
 
 
 #
@@ -231,6 +194,65 @@ INSERT INTO `tbl_user_access_menu` (`id`, `role_id`, `menu_id`) VALUES (82, 1, 2
 INSERT INTO `tbl_user_access_menu` (`id`, `role_id`, `menu_id`) VALUES (84, 2, 29);
 
 
+#
+# TABLE STRUCTURE FOR: tbl_user_file
+#
+
+DROP TABLE IF EXISTS `tbl_user_file`;
+
+CREATE TABLE `tbl_user_file` (
+  `id_file` varchar(9) NOT NULL,
+  `user_id` varchar(9) CHARACTER SET utf8 NOT NULL,
+  `file` varchar(128) NOT NULL,
+  `type` enum('1','2','3','4') NOT NULL DEFAULT '1' COMMENT '1 .Image, 2.Document, 3.MP3, 4.Video',
+  PRIMARY KEY (`id_file`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `tbl_user_file` (`id_file`, `user_id`, `file`, `type`) VALUES ('f001', 'user_001', '3_X_4_.jpg', '1');
+INSERT INTO `tbl_user_file` (`id_file`, `user_id`, `file`, `type`) VALUES ('file_001', '', 'default.png', '1');
+INSERT INTO `tbl_user_file` (`id_file`, `user_id`, `file`, `type`) VALUES ('file_002', 'user_003', '3_X_4_1.jpg', '1');
+INSERT INTO `tbl_user_file` (`id_file`, `user_id`, `file`, `type`) VALUES ('file_003', 'user_005', '3_X_4_1.jpg', '1');
+INSERT INTO `tbl_user_file` (`id_file`, `user_id`, `file`, `type`) VALUES ('file_008', 'user_002', '71nnIWIaBFL__SS1000_.jpg', '1');
+INSERT INTO `tbl_user_file` (`id_file`, `user_id`, `file`, `type`) VALUES ('file_009', 'user_008', '3_x_4_5.jpg', '1');
+INSERT INTO `tbl_user_file` (`id_file`, `user_id`, `file`, `type`) VALUES ('file_011', 'user_013', '3_x_4_4.jpg', '');
+INSERT INTO `tbl_user_file` (`id_file`, `user_id`, `file`, `type`) VALUES ('file_012', 'user_003', '3_x_4_1.jpg', '1');
+
+
+#
+# TABLE STRUCTURE FOR: tbl_user_menu
+#
+
+DROP TABLE IF EXISTS `tbl_user_menu`;
+
+CREATE TABLE `tbl_user_menu` (
+  `id_menu` int(11) NOT NULL AUTO_INCREMENT,
+  `menu` varchar(88) NOT NULL,
+  PRIMARY KEY (`id_menu`)
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8;
+
+INSERT INTO `tbl_user_menu` (`id_menu`, `menu`) VALUES (1, 'admin');
+INSERT INTO `tbl_user_menu` (`id_menu`, `menu`) VALUES (2, 'user');
+INSERT INTO `tbl_user_menu` (`id_menu`, `menu`) VALUES (9, 'Menu Managements');
+INSERT INTO `tbl_user_menu` (`id_menu`, `menu`) VALUES (28, 'Komisi');
+INSERT INTO `tbl_user_menu` (`id_menu`, `menu`) VALUES (29, 'Aspirasi');
+INSERT INTO `tbl_user_menu` (`id_menu`, `menu`) VALUES (30, 'Aspirasi Anda');
+
+
+#
+# TABLE STRUCTURE FOR: tbl_user_role
+#
+
+DROP TABLE IF EXISTS `tbl_user_role`;
+
+CREATE TABLE `tbl_user_role` (
+  `id` int(2) NOT NULL AUTO_INCREMENT,
+  `name` varchar(128) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+
+INSERT INTO `tbl_user_role` (`id`, `name`) VALUES (1, 'admin');
+INSERT INTO `tbl_user_role` (`id`, `name`) VALUES (2, 'komisi');
+INSERT INTO `tbl_user_role` (`id`, `name`) VALUES (3, 'masyarakat');
 
 
 #
@@ -344,6 +366,53 @@ INSERT INTO `tbl_visitor` (`id_visitor`, `ip`, `os`, `browser`, `date_created`) 
 INSERT INTO `tbl_visitor` (`id_visitor`, `ip`, `os`, `browser`, `date_created`) VALUES (60, '::1', 'Unknown Platform', '', 1580823955);
 
 
+#
+# TABLE STRUCTURE FOR: web_aspirasi
+#
+
+DROP TABLE IF EXISTS `web_aspirasi`;
+
+CREATE TABLE `web_aspirasi` (
+  `id_aspirasi` varchar(9) CHARACTER SET utf8 NOT NULL,
+  `message` text NOT NULL,
+  `komisi_id` varchar(9) CHARACTER SET utf8 NOT NULL,
+  `user_id` varchar(9) CHARACTER SET utf8 NOT NULL,
+  `status` enum('1','2','3','4') NOT NULL DEFAULT '4' COMMENT '1 = Ditanggapi, 2 = Dibaca, 3 = belum dibaca, 4 = tidak terkirim kekomisi ',
+  `date_created` int(11) NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id_aspirasi`),
+  KEY `user_id` (`user_id`),
+  KEY `web_aspirasi_ibfk_2` (`komisi_id`),
+  CONSTRAINT `web_aspirasi_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `tbl_user` (`id_user`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `web_aspirasi_ibfk_2` FOREIGN KEY (`komisi_id`) REFERENCES `web_komisi` (`id_komisi`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `web_aspirasi` (`id_aspirasi`, `message`, `komisi_id`, `user_id`, `status`, `date_created`) VALUES ('asp_002', 'hallo guys', 'kms_000', 'user_003', '3', 2147483647);
+
+
+#
+# TABLE STRUCTURE FOR: web_komentar
+#
+
+DROP TABLE IF EXISTS `web_komentar`;
+
+CREATE TABLE `web_komentar` (
+  `id_komentar` varchar(9) CHARACTER SET utf8 NOT NULL,
+  `komentar` varchar(290) NOT NULL,
+  `aspirasi_id` varchar(9) CHARACTER SET utf8 NOT NULL,
+  `komisi_id` varchar(9) CHARACTER SET utf8 NOT NULL,
+  `user_id` varchar(9) CHARACTER SET utf8 NOT NULL,
+  `type` enum('0','1','2','3') NOT NULL DEFAULT '0' COMMENT '0 = tidak dibaca , 1 = dibaca, 2= dikomentari, 3 = like',
+  `parent` varchar(10) NOT NULL DEFAULT '0',
+  `date_created` int(11) NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id_komentar`),
+  KEY `aspirasi_id` (`aspirasi_id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `web_komentar_ibfk_1` FOREIGN KEY (`aspirasi_id`) REFERENCES `web_aspirasi` (`id_aspirasi`) ON DELETE CASCADE,
+  CONSTRAINT `web_komentar_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `tbl_user` (`id_user`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `web_komentar` (`id_komentar`, `komentar`, `aspirasi_id`, `komisi_id`, `user_id`, `type`, `parent`, `date_created`) VALUES ('kmt_001', 'Ini komentar dari masyarakat', 'asp_002', '', 'user_003', '0', '0', 1580800759);
+
 
 #
 # TABLE STRUCTURE FOR: web_komisi
@@ -392,55 +461,6 @@ INSERT INTO `web_komisi_label` (`id_label`, `label`, `komisi_id`) VALUES ('lbl_0
 INSERT INTO `web_komisi_label` (`id_label`, `label`, `komisi_id`) VALUES ('lbl_012', 'luban', 'kms_004');
 INSERT INTO `web_komisi_label` (`id_label`, `label`, `komisi_id`) VALUES ('lbl_013', 'rusak', 'kms_004');
 INSERT INTO `web_komisi_label` (`id_label`, `label`, `komisi_id`) VALUES ('lbl_014', 'jembatan', 'kms_004');
-
-
-
-#
-# TABLE STRUCTURE FOR: web_aspirasi
-#
-
-DROP TABLE IF EXISTS `web_aspirasi`;
-
-CREATE TABLE `web_aspirasi` (
-  `id_aspirasi` varchar(9) CHARACTER SET utf8 NOT NULL,
-  `message` text NOT NULL,
-  `komisi_id` varchar(9) CHARACTER SET utf8 NOT NULL,
-  `user_id` varchar(9) CHARACTER SET utf8 NOT NULL,
-  `status` enum('1','2','3','4') NOT NULL DEFAULT '4' COMMENT '1 = Ditanggapi, 2 = Dibaca, 3 = belum dibaca, 4 = tidak terkirim kekomisi ',
-  `date_created` int(11) NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id_aspirasi`),
-  KEY `user_id` (`user_id`),
-  KEY `web_aspirasi_ibfk_2` (`komisi_id`),
-  CONSTRAINT `web_aspirasi_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `tbl_user` (`id_user`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `web_aspirasi_ibfk_2` FOREIGN KEY (`komisi_id`) REFERENCES `web_komisi` (`id_komisi`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-INSERT INTO `web_aspirasi` (`id_aspirasi`, `message`, `komisi_id`, `user_id`, `status`, `date_created`) VALUES ('asp_002', 'hallo guys', 'kms_000', 'user_003', '3', 2147483647);
-
-
-#
-# TABLE STRUCTURE FOR: web_komentar
-#
-
-DROP TABLE IF EXISTS `web_komentar`;
-
-CREATE TABLE `web_komentar` (
-  `id_komentar` varchar(9) CHARACTER SET utf8 NOT NULL,
-  `komentar` varchar(290) NOT NULL,
-  `aspirasi_id` varchar(9) CHARACTER SET utf8 NOT NULL,
-  `komisi_id` varchar(9) CHARACTER SET utf8 NOT NULL,
-  `user_id` varchar(9) CHARACTER SET utf8 NOT NULL,
-  `type` enum('0','1','2','3') NOT NULL DEFAULT '0' COMMENT '0 = tidak dibaca , 1 = dibaca, 2= dikomentari, 3 = like',
-  `parent` varchar(10) NOT NULL DEFAULT '0',
-  `date_created` int(11) NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id_komentar`),
-  KEY `aspirasi_id` (`aspirasi_id`),
-  KEY `user_id` (`user_id`),
-  CONSTRAINT `web_komentar_ibfk_1` FOREIGN KEY (`aspirasi_id`) REFERENCES `web_aspirasi` (`id_aspirasi`) ON DELETE CASCADE,
-  CONSTRAINT `web_komentar_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `tbl_user` (`id_user`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-INSERT INTO `web_komentar` (`id_komentar`, `komentar`, `aspirasi_id`, `komisi_id`, `user_id`, `type`, `parent`, `date_created`) VALUES ('kmt_001', 'Ini komentar dari masyarakat', 'asp_002', '', 'user_003', '0', '0', 1580800759);
 
 
 #

@@ -123,7 +123,7 @@ const init = () => {
 			if (respon.status) {
 				let Urut = 1;
 				respon.data.forEach(e => {
-					let tr = `
+					let tr = ` 
                         <tr id="${e.id_aspirasi}">
                             <th scope="row">${Urut}</th>
                             <td name='username'>${e.username}</td>
